@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+ 	
+    <p:panelGrid columns="1" 
+    	columnClasses="ui-xl-12 ui-lg-12 ui-g-12 ui-md-12 ui-sm-12" 
+    	layout="grid" 
+    	styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading" >
+    	<p:outputLabel for="@next" value="#{campoTexto.tituloCampo}" styleClass="lbl-componente"/>
+    	
+    	<!-- INPUTTEXT CUANDO ES UN CAMPO DE TEXTO ALFANUMERICO -->
+    	<p:inputText id="txt_#{campoTexto.idComponente}"
+    		value="#{registrarFormularioBean.mapRespuestas[campoTexto.respuestaComponente]}"
+    		onkeyup="if(#{(campoTexto.catValidadoresDTO == null or (campoTexto.catValidadoresDTO != null and campoTexto.catValidadoresDTO.idValidador != 2 and campoTexto.catValidadoresDTO.idValidador != 4))}) {$(this).val($(this).val().toUpperCase());}"    		    		
+    		readonly="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 
+			    			or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) 
+			    			or (registrarFormularioBean.usuarioBack and registrarFormularioBean.validacionTramite == true)
+			    			or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}"
+    		required="#{campoTexto.requerido}" 
+    		maxlength="#{campoTexto.valorMaximo}"
+    		placeholder="#{campoTexto.habilitaTextoInterior ? campoTexto.textoInterior : '' }"
+    		requiredMessage="#{msg.msj_campo_requerido}"
+    		styleClass="componente-campo-texto">
+    					
+    		<f:attribute name="detSecurityDomainCurpDTO" value="#{seccionSecurityCurpApplication.detSecurityDomainCurpDTO}"/>
+    			
+    		<!--  
+    		<c:if test="${campoTexto.alfanumerico eq true and campoTexto.catValidadoresDTO.idValidador != 4}">
+	    		<p:keyFilter regEx="/[A-Za-z0-9_\s,:/\-\.'@áéíóúÁÉÍÓÚäëïöüÄËÏÖÜñÑ]/i" preventPaste="false" />
+    		</c:if>
+    		-->
+    		
+    		<!-- Cualquier carácter imprimible -->
+			<c:if test="${campoTexto.alfanumerico eq true and campoTexto.catValidadoresDTO == null}">
+			    <p:keyFilter regEx="/[\x20-\x7E]/" preventPaste="false" />
+			</c:if>
+			
+    		<!-- Email -->
+			<c:if test="${campoTexto.alfanumerico eq true and campoTexto.catValidadoresDTO != null and campoTexto.catValidadoresDTO.idValidador == 2}">
+    			<p:keyFilter regEx="/[a-zA-Z0-9@._-]/" preventPaste="false" />
+			</c:if>
+
+			<!-- URL -->
+			<c:if test="${campoTexto.alfanumerico eq true and campoTexto.catValidadoresDTO != null and campoTexto.catValidadoresDTO.idValidador == 4}">
+			    <p:keyFilter regEx="/[A-Za-z0-9:\/\.\?&amp;=_\-]/" preventPaste="false" />
+			</c:if>
+
+			<!-- CURP -->
+			<c:if test="${campoTexto.alfanumerico eq true and campoTexto.catValidadoresDTO != null and campoTexto.catValidadoresDTO.idValidador == 3}">
+			    <p:keyFilter regEx="/[A-Za-z0-9]/" preventPaste="false" />
+			</c:if>
+
+    		<!-- Solo números -->
+    		<c:if test="${campoTexto.alfanumerico eq true and campoTexto.catValidadoresDTO != null and campoTexto.catValidadoresDTO.idValidador == 5}">
+        		<p:keyFilter regEx="/[0-9]/" preventPaste="false" />
+    		</c:if>
+    		
+    		<!--  
+			<c:if test="${campoTexto.validadores eq true}">
+    			<f:validator validatorId="emailValidator" disabled="#{campoTexto.catValidadoresDTO.idValidador == 1 or campoTexto.catValidadoresDTO.idValidador == 3 or campoTexto.catValidadoresDTO.idValidador == 4}" />
+    			<f:validator validatorId="curpValidator" disabled="#{campoTexto.catValidadoresDTO.idValidador == 1 or campoTexto.catValidadoresDTO.idValidador == 2 or campoTexto.catValidadoresDTO.idValidador == 4}" />
+    			<f:validator validatorId="urlValidator" disabled="#{campoTexto.catValidadoresDTO.idValidador == 1 or campoTexto.catValidadoresDTO.idValidador == 2 or campoTexto.catValidadoresDTO.idValidador == 3}" />	
+    		</c:if>
+    		-->
+
+    		 <c:if test="${campoTexto.validadores eq true and campoTexto.catValidadoresDTO.idValidador == 2}">
+			    <f:validator validatorId="emailValidator"/>
+			</c:if>
+			
+			<c:if test="${campoTexto.validadores eq true and campoTexto.catValidadoresDTO.idValidador == 3}">
+			    <f:validator validatorId="curpValidator"/>
+			</c:if>
+			
+			<c:if test="${campoTexto.validadores eq true and campoTexto.catValidadoresDTO.idValidador == 4}">
+			    <f:validator validatorId="urlValidator"/>
+			</c:if>
+
+    		<f:validateLength disabled="#{campoTexto.numerico}"
+    			minimum="#{campoTexto.valorMinimo}" maximum="#{campoTexto.valorMaximo}"/>
+<!--     		<f:ajax event="blur" render="txt_#{campoTexto.idComponente}" />	 -->
+    	</p:inputText>
+
+		<c:if test="${campoTexto.requerido or campoTexto.validadores}">
+    		<p:message for="frmFormulario:componente_#{campoTexto.idComponente}:txt_#{campoTexto.idComponente}" display="text"/>
+    	</c:if>
+    	<p:tooltip rendered="#{campoTexto.tooltip}" 
+    		for="frmFormulario:componente_#{campoTexto.idComponente}:txt_#{campoTexto.idComponente}"
+    		value="#{campoTexto.descripcionTooltip}"
+    		position="bottom" showEvent="mouseover" hideEvent="mouseout"/>
+    </p:panelGrid>
+    
+</ui:composition>

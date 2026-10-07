@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- JBoss, Home of Professional Open Source Copyright 2013, Red Hat, Inc. 
+	and/or its affiliates, and individual contributors by the @authors tag. See 
+	the copyright.txt in the distribution for a full listing of individual contributors. 
+	Licensed under the Apache License, Version 2.0 (the "License"); you may not 
+	use this file except in compliance with the License. You may obtain a copy 
+	of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>motor-interprete</artifactId>
+		<groupId>mx.gob.atdt</groupId>
+		<version>0.44.15</version> 
+	</parent>
+
+	<artifactId>motor-interprete-ejb</artifactId>
+	<packaging>ejb</packaging>
+
+	<name>motor-interprete: EJB Module</name>
+
+	<url>http://www.gob.mx</url>
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<distribution>repo</distribution>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+		</license>
+	</licenses>
+
+	<dependencies>
+
+		<!-- Dependency on the COMMONS module so we can use it's services if needed -->
+		<dependency>
+			<groupId>mx.gob.atdt</groupId>
+			<artifactId>motor-interprete-commons</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- Declare the APIs we depend on and need for compilation. All of them 
+			are provided by JBoss WildFly -->
+
+		<!-- Import the EJB API, we use provided scope as the API is included in 
+			JBoss WildFly -->
+		<dependency>
+			<groupId>org.jboss.spec.javax.ejb</groupId>
+			<artifactId>jboss-ejb-api_3.2_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- Para poder usar la anotacion TransactionTimeout -->
+		<dependency>
+			<groupId>org.jboss.ejb3</groupId>
+			<artifactId>jboss-ejb3-ext-api</artifactId>
+			<version>2.2.0.Final</version>
+			<scope>provided</scope>
+		</dependency>		
+
+		<!-- Import the CDI API, we use provided scope as the API is included in 
+			JBoss WildFly -->
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Import the JPA API, we use provided scope as the API is included in 
+			JBoss WildFly -->
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- JSR-303 (Bean Validation) Implementation -->
+		<!-- Provides portable constraints such as @Email -->
+		<!-- Hibernate Validator is shipped in JBoss WildFly -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-core</artifactId>
+		    <scope>provided</scope>
+		</dependency>
+
+		<!-- Test scope dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+		     <groupId>org.slf4j</groupId>
+		     <artifactId>slf4j-api</artifactId>
+		     <version>1.7.22.jbossorg-1</version>
+		     <scope>provided</scope>
+	  	</dependency>
+	  
+	  	<dependency>
+			 <groupId>org.jboss.logging</groupId>
+			 <artifactId>jboss-logging</artifactId>
+			 <version>3.4.0.Final</version>
+			 <scope>provided</scope>
+	  	</dependency>
+	  	
+		<!-- Librería para utilizar el cliente Jersey para servicios REST-->
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-json</artifactId>
+			<version>1.19</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-client</artifactId>
+			<version>1.19</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			  <artifactId>jersey-multipart</artifactId>
+			 <version>1.19</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			 <artifactId>jersey-core</artifactId>
+			 <version>1.19</version>
+		</dependency>
+		
+	  <!-- Librería para utilizar las utilerías de Apache Commons -->
+	  <dependency>
+	      <groupId>commons-io</groupId>
+	      <artifactId>commons-io</artifactId>
+	      <version>2.15.1</version>
+	  </dependency>
+	  
+	 <!-- Librería que es un wrapper de un cliente para llamar los servicios web para envío de correos a través de Mandrill -->
+		<dependency>
+	      <groupId>com.cribbstechnologies.clients</groupId>
+	      <artifactId>mandrillClient</artifactId>
+<!-- 		  La versión 1.1.1 es una versión empaquetada manualmente, que solventa un error en la conversión del JSON de la respuesta,  -->
+<!-- 	      la clase modificada fue MessageResponse y se le agregó un nuevo atributo "queuedReason" -->
+	      <version>1.1.1</version>
+<!-- 	      Es La versión que se encuentra en Maven Central-->
+<!-- 	      <version>1.1</version> -->
+	 	 </dependency>
+	  
+	  	<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+		<!-- libreria se declara commomns -->
+	  	<!--<dependency>
+	      	<groupId>com.google.code.gson</groupId>
+	      	<artifactId>gson</artifactId>
+	      	<version>2.8.6</version>
+	  	</dependency>
+	  	 -->
+	  	<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations -->
+		<!-- libreria se declara commomns -->
+		<!--<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-annotations</artifactId>
+		    <version>2.3.3</version>
+		</dependency>-->
+	  	
+	  	<!-- Se agrega dependencia para usar Flyway como herramienta de control de versiones de la BD del sistema -->
+        <dependency>
+	        <groupId>org.flywaydb</groupId>
+	        <artifactId>flyway-core</artifactId>
+	        <version>9.2.0</version>
+	    </dependency>
+	    
+	    <!-- Se agrega dependencia para generación de reportes excel -->
+		<dependency>
+			    <groupId>org.apache.poi</groupId>
+			    <artifactId>poi</artifactId>
+			    <version>5.2.5</version>
+			</dependency>
+			
+			<dependency>
+			    <groupId>org.apache.poi</groupId>
+			    <artifactId>poi-ooxml</artifactId>
+			    <version>5.2.5</version>
+			</dependency>
+		
+		<!-- Librerias para la generacion de formatos pdf, se mudan del proyecto web -->
+			<dependency>
+	        	<groupId>com.itextpdf</groupId>
+	        	<artifactId>itextpdf</artifactId>
+	        	<version>5.5.0</version>
+	    	</dependency>
+	    	
+	    	<dependency>
+		      	<groupId>com.google.zxing</groupId>
+		      	<artifactId>core</artifactId>
+		      	<version>3.4.0</version>	
+	  		</dependency>
+	</dependencies>
+	
+	<repositories>
+		
+		<!-- Del repositorio de RedHat 3rd Party se obtienen las librerias de Wildfly -->
+		<repository>
+			<id>redhat3rdparty</id>
+			<name>RedHat 3rd party</name>
+			<url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		
+		<repository>
+            <id>infotec</id>
+            <name>maven-external</name>
+            <url>https://nexus-gep.infotec.mx/repository/maven-external</url>
+        </repository>
+		
+	</repositories>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<artifactId>maven-ejb-plugin</artifactId>
+				<version>${version.ejb.plugin}</version>
+				<configuration>
+					<!-- Tell Maven we are using EJB 3.2 -->
+					<ejbVersion>3.2</ejbVersion>
+				</configuration>
+			</plugin>
+			
+			 <!-- Se agrega este plugin para tener los parametros de git del proyecto, como por ejemplo  la versión del build, o el id del commit -->
+            <plugin>
+			    <groupId>pl.project13.maven</groupId>
+			    <artifactId>git-commit-id-plugin</artifactId>
+			    <version>4.9.10</version>
+			    <executions>
+			        <execution>
+			            <goals>
+			                <goal>revision</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			    <configuration>
+					<useNativeGit>false</useNativeGit>
+                    <failOnNoGitDirectory>false</failOnNoGitDirectory>
+                    <abbrevLength>7</abbrevLength>
+                    <gitDescribe>
+                        <skip>true</skip>
+                    </gitDescribe>
+			        <generateGitPropertiesFile>true</generateGitPropertiesFile>
+			        <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+			        <includeOnlyProperties>
+                        <includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>
+                        <includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>
+                    </includeOnlyProperties>
+                    <commitIdGenerationMode>full</commitIdGenerationMode>			        
+			    </configuration>
+			</plugin>
+			
+			<plugin>
+			    <groupId>com.github.wvengen</groupId>
+			    <artifactId>proguard-maven-plugin</artifactId>
+			    <version>2.6.1</version>
+			
+			    <executions>
+			        <execution>
+			            <phase>package</phase>
+			            <goals>
+			                <goal>proguard</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			
+			    <configuration>
+			
+			        <obfuscate>false</obfuscate>
+			
+			        <proguardInclude>
+			            ${project.basedir}/proguard/proguard.pro
+			        </proguardInclude>
+			
+			        <injar>${project.build.finalName}.jar</injar>
+			        <outjar>${project.build.finalName}.jar</outjar>
+			
+			        <outputDirectory>${project.build.directory}</outputDirectory>
+			
+			        <libs>
+			            <lib>${java.home}/lib/rt.jar</lib>
+			        </libs>
+			
+			        <!-- Archivos de salida para analizar la ofuscación -->
+			        <options>
+			            <option>-printmapping ${project.build.directory}/proguard_map.txt</option>
+			            <option>-printseeds ${project.build.directory}/proguard_seed.txt</option>
+			        </options>
+			
+			    </configuration>
+			</plugin>
+		</plugins>
+		
+		 <!-- Se activa el filtrado Maven en la carpeta resources del modulo EJB.
+    	Con lo anterior, Maven sustituira los valores del archivo src/main/resources/META-INF/env.properties con los definidos en este pom.xml -->
+    	<resources>
+    		<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>local</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<app.profile>local</app.profile>
+				<app.git.version>${git.build.version}</app.git.version>
+
+				<ejb.log>false</ejb.log>
+				<web.log>false</web.log>
+				<jsf.lifeCycle>false</jsf.lifeCycle>
+
+				<jpa.as.showsql>false</jpa.as.showsql>
+				<jpa.as.sql_comments>false</jpa.as.sql_comments>
+				<jpa.as.statistics>false</jpa.as.statistics>
+				<jpa.as.formatsql>false</jpa.as.formatsql>
+				<jpa.test.showsql>false</jpa.test.showsql>
+				<jpa.test.statistics>false</jpa.test.statistics>
+				<jpa.test.formatsql>false</jpa.test.formatsql>
+				
+				<!-- Valores para acceso con llave -->			
+				<login.urlLoginCdmx>https://val-llave.infotec.mx/oauth.xhtml</login.urlLoginCdmx>
+				<services.cdmx.getToken>https://val-api-llave.infotec.mx/ws/rest/oauth/obtenerToken</services.cdmx.getToken>
+				<services.cdmx.getDatosUsuario>https://val-api-llave.infotec.mx/ws/rest/oauth/datosUsuario</services.cdmx.getDatosUsuario>
+				<services.cdmx.getRolesUsuario>https://val-api-llave.infotec.mx/ws/rest/oauth/getRolesUsuarioLogueado</services.cdmx.getRolesUsuario>
+				<services.cdmx.logout>https://val-api-llave.infotec.mx/ws/rest/oauth/cerrarSesion</services.cdmx.logout>
+				<services.cdmx.getSituacionRol>https://val-api-llave.infotec.mx/ws/rest/llave/roles/estatusNombreRol</services.cdmx.getSituacionRol>
+				<services.cdmx.getInformacionPersonaMoral>https://val-api-llave.infotec.mx/ws/rest/perfil/moral</services.cdmx.getInformacionPersonaMoral>
+				
+				<!-- Ruta para consulta del Estatus de QR -->
+				<url.consulta.tramite>/public/ConsultaEstatusTramite.xhtml?</url.consulta.tramite>
+				
+				<!-- Estás dos líneas se utilizan buscar imágenes y archivos de proyectos remplazando la ruta del archivos física 
+				 por la ruta en que los expone el servidor de archivos del wildfly del motor-->
+				<url.fileserver.motoradmin>http://localhost:8080/file-server/</url.fileserver.motoradmin>
+				<path.fileserver.motor>/home/usr_mtransaccional/proyectos/public/</path.fileserver.motor>
+				
+				<!-- Directorio en el que el intérprete registra los documentos que se adjuntan en el componente de carga de documentos -->
+				<path.documentos.cliente.motor>/home/wildfly/documentos/</path.documentos.cliente.motor>
+				
+				<!-- Directorio temporal para carga de documentos (Este directorio puede ser depurado, si contiene archivos estos no se encuentran
+					asociados a un registro en BD) -->
+				<path.archivos.temporal>/home/wildfly/tmp/</path.archivos.temporal>
+				
+				<!-- Directorio en el que el intérprete toma las plantillas para emitir comprobantes al finalizar registro de formulario  
+					 y el archivo captcha.properties-->
+				<path.plantillas.cliente.pdf>/home/wildfly/plantillaRegistro/</path.plantillas.cliente.pdf>
+				
+				<!-- Credenciales para consumo de servicio de reinicio de bitácora  -->
+				<services.cdmx.motor.bitacora>http://localhost:8080/rest/bitacora/reiniciaMovimientos</services.cdmx.motor.bitacora>
+				<services.cdmx.motor.bitacora.user>admin</services.cdmx.motor.bitacora.user>
+				<services.cdmx.motor.bitacora.password>admin</services.cdmx.motor.bitacora.password>
+				
+				<!-- Consumo de servicio de sincronización  -->
+				<services.cdmx.motor.sincronizar>http://localhost:8080/rest/proyecto/sincronizar</services.cdmx.motor.sincronizar>
+				<services.cdmx.motor.estatus>http://localhost:8080/rest/proyecto/estatus</services.cdmx.motor.estatus>
+				<services.cdmx.motor.validaSincronizacion>http://localhost:8080/rest/proyecto/validarSincronizacion</services.cdmx.motor.validaSincronizacion>
+				
+				<!-- Credenciales para consumo de servicio para registro de contadores de dashboard  -->
+				<services.cdmx.motor.dashboard>http://localhost:8080/rest/proyecto/reportes/actualizar</services.cdmx.motor.dashboard>
+				<services.cdmx.motor.dashboard.user>clienteDashboard</services.cdmx.motor.dashboard.user>
+				<services.cdmx.motor.dashboard.password>cL13nT3%D45B04rD%D3v</services.cdmx.motor.dashboard.password>
+				
+				<!-- URI para consumo de servicios para firmadado de trámites  -->
+				<services.cdmx.firma.registro>https://val-pasarela-efirma.infotec.mx/rest/firmado/registro</services.cdmx.firma.registro>
+				<services.cdmx.firma.consulta>https://val-pasarela-efirma.infotec.mx/rest/firmado/consultaFirmado</services.cdmx.firma.consulta>
+				
+				<!-- Configuracion de puente DPA LINEA DE CAPTURA  -->
+				<services.path.consulta.status.lc>/rest/lineaCaptura/consultaLineaCaptura</services.path.consulta.status.lc>
+				<services.path.genera.lc>/rest/lineaCaptura/generarLineaCaptura</services.path.genera.lc>
+				
+			</properties>
+		</profile>
+	
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<app.profile>dev</app.profile>
+				<app.git.version>${git.build.version}</app.git.version>
+
+				<ejb.log>false</ejb.log>
+				<web.log>false</web.log>
+				<jsf.lifeCycle>false</jsf.lifeCycle>
+
+				<jpa.as.showsql>false</jpa.as.showsql>
+				<jpa.as.sql_comments>false</jpa.as.sql_comments>
+				<jpa.as.statistics>false</jpa.as.statistics>
+				<jpa.as.formatsql>false</jpa.as.formatsql>
+				<jpa.test.showsql>false</jpa.test.showsql>
+				<jpa.test.statistics>false</jpa.test.statistics>
+				<jpa.test.formatsql>false</jpa.test.formatsql>
+				
+				<!-- Valores para acceso con llave -->				
+				<login.urlLoginCdmx>https://val-llave.infotec.mx/oauth.xhtml</login.urlLoginCdmx>
+				<services.cdmx.getToken>https://val-api-llave.infotec.mx/ws/rest/oauth/obtenerToken</services.cdmx.getToken>
+				<services.cdmx.getDatosUsuario>https://val-api-llave.infotec.mx/ws/rest/oauth/datosUsuario</services.cdmx.getDatosUsuario>
+				<services.cdmx.getRolesUsuario>https://val-api-llave.infotec.mx/ws/rest/oauth/getRolesUsuarioLogueado</services.cdmx.getRolesUsuario>
+				<services.cdmx.logout>https://val-api-llave.infotec.mx/ws/rest/oauth/cerrarSesion</services.cdmx.logout>
+				<services.cdmx.getSituacionRol>https://val-api-llave.infotec.mx/ws/rest/llave/roles/estatusNombreRol</services.cdmx.getSituacionRol>
+				<services.cdmx.getInformacionPersonaMoral>https://val-api-llave.infotec.mx/ws/rest/perfil/moral</services.cdmx.getInformacionPersonaMoral>		
+
+				<!-- Ruta para consulta del Estatus de QR -->
+				<url.consulta.tramite>/public/ConsultaEstatusTramite.xhtml?</url.consulta.tramite>
+				
+				<!-- Estás dos líneas se utilizan buscar imágenes y archivos de proyectos remplazando la ruta del archivos física 
+				 por la ruta en que los expone el servidor de archivos del wildfly del motor-->
+				<url.fileserver.motoradmin>https://dev-motortrans-admin.infotec.mx/file-server/</url.fileserver.motoradmin>
+				<path.fileserver.motor>/data/proyectos/public/</path.fileserver.motor>
+								
+				<!-- Directorio en el que el intérprete registra los documentos que se adjuntan en el componente de carga de documentos -->
+				<path.documentos.cliente.motor>/data/wildfly/documentos/</path.documentos.cliente.motor>
+				
+				<!-- Directorio temporal para carga de documentos (Este directorio puede ser depurado, si contiene archivos estos no se encuentran
+					asociados a un registro en BD) -->
+				<path.archivos.temporal>/data/wildfly/tmp/</path.archivos.temporal>
+				
+				<!-- Directorio en el que el intérprete toma las plantillas para emitir comprobantes al finalizar registro de formulario  
+					 y el archivo captcha.properties-->
+				<path.plantillas.cliente.pdf>/data/wildfly/plantillaRegistro/</path.plantillas.cliente.pdf>
+							
+				<!-- Credenciales para consumo de servicio de reinicio de bitácora  -->
+				<services.cdmx.motor.bitacora>https://dev-motortrans-admin.infotec.mx/rest/bitacora/reiniciaMovimientos</services.cdmx.motor.bitacora>
+				<services.cdmx.motor.bitacora.user>cliente_motor</services.cdmx.motor.bitacora.user>
+				<services.cdmx.motor.bitacora.password>cl13nt3%M0t0R%d3V%</services.cdmx.motor.bitacora.password>
+				
+				<!-- Consumo de servicio de sincronización  -->
+				<services.cdmx.motor.sincronizar>https://dev-motortrans-admin.infotec.mx/rest/proyecto/sincronizar</services.cdmx.motor.sincronizar>
+				<services.cdmx.motor.estatus>https://dev-motortrans-admin.infotec.mx/rest/proyecto/estatus</services.cdmx.motor.estatus>
+				<services.cdmx.motor.validaSincronizacion>https://dev-motortrans-admin.infotec.mx/rest/proyecto/validarSincronizacion</services.cdmx.motor.validaSincronizacion>
+								
+				<!-- Credenciales para consumo de servicio para registro de contadores de dashboard  -->
+				<services.cdmx.motor.dashboard>https://dev-motortrans-admin.infotec.mx/rest/proyecto/reportes/actualizar</services.cdmx.motor.dashboard>
+				<services.cdmx.motor.dashboard.user>clienteDashboard</services.cdmx.motor.dashboard.user>
+				<services.cdmx.motor.dashboard.password>cL13nT3%D45B04rD%D3v</services.cdmx.motor.dashboard.password>	
+				
+				<!-- URI para consumo de servicios para firmadado de trámites  -->
+				<services.cdmx.firma.registro>https://val-pasarela-efirma.infotec.mx/rest/firmado/registro</services.cdmx.firma.registro>
+				<services.cdmx.firma.consulta>https://val-pasarela-efirma.infotec.mx/rest/firmado/consultaFirmado</services.cdmx.firma.consulta>
+				
+				<!-- Configuracion de puente DPA LINEA DE CAPTURA  -->
+				<services.path.consulta.status.lc>/rest/lineaCaptura/consultaLineaCaptura</services.path.consulta.status.lc>
+				<services.path.genera.lc>/rest/lineaCaptura/generarLineaCaptura</services.path.genera.lc>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>qa</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<app.profile>qa</app.profile>
+				<app.git.version>${git.build.version}</app.git.version>
+				
+				<ejb.log>false</ejb.log>
+				<web.log>false</web.log>
+				<jsf.lifeCycle>false</jsf.lifeCycle>
+
+				<jpa.as.showsql>false</jpa.as.showsql>
+				<jpa.as.sql_comments>false</jpa.as.sql_comments>
+				<jpa.as.statistics>false</jpa.as.statistics>
+				<jpa.as.formatsql>false</jpa.as.formatsql>
+				<jpa.test.showsql>false</jpa.test.showsql>
+				<jpa.test.statistics>false</jpa.test.statistics>
+				<jpa.test.formatsql>false</jpa.test.formatsql>
+				 	
+				<!-- Valores para acceso con llave --> 	
+				<login.urlLoginCdmx>https://val-llave.infotec.mx/oauth.xhtml</login.urlLoginCdmx>
+				<services.cdmx.getToken>https://val-api-llave.infotec.mx/ws/rest/oauth/obtenerToken</services.cdmx.getToken>
+				<services.cdmx.getDatosUsuario>https://val-api-llave.infotec.mx/ws/rest/oauth/datosUsuario</services.cdmx.getDatosUsuario>
+				<services.cdmx.getRolesUsuario>https://val-api-llave.infotec.mx/ws/rest/oauth/getRolesUsuarioLogueado</services.cdmx.getRolesUsuario>
+				<services.cdmx.logout>https://val-api-llave.infotec.mx/ws/rest/oauth/cerrarSesion</services.cdmx.logout>
+				<services.cdmx.getSituacionRol>https://val-api-llave.infotec.mx/ws/rest/llave/roles/estatusNombreRol</services.cdmx.getSituacionRol>
+				<services.cdmx.getInformacionPersonaMoral>https://val-api-llave.infotec.mx/ws/rest/perfil/moral</services.cdmx.getInformacionPersonaMoral>
+				
+				<!-- Ruta para consulta del Estatus de QR -->
+				<url.consulta.tramite>/public/ConsultaEstatusTramite.xhtml?</url.consulta.tramite>
+				
+				<!-- Estás dos líneas se utilizan buscar imágenes y archivos de proyectos remplazando la ruta del archivos física 
+				 por la ruta en que los expone el servidor de archivos del wildfly del motor-->
+				<url.fileserver.motoradmin>https://val-motortrans-admin.infotec.mx/file-server/</url.fileserver.motoradmin>
+				<path.fileserver.motor>/data/proyectos/public/</path.fileserver.motor>
+				
+				<!-- Directorio en el que el intérprete registra los documentos que se adjuntan en el componente de carga de documentos -->
+				<path.documentos.cliente.motor>/data/wildfly/documentos/</path.documentos.cliente.motor>
+				
+				<!-- Directorio temporal para carga de documentos (Este directorio puede ser depurado, si contiene archivos estos no se encuentran
+					asociados a un registro en BD) -->
+				<path.archivos.temporal>/data/wildfly/tmp/</path.archivos.temporal>
+				
+				<!-- Directorio en el que el intérprete toma las plantillas para emitir comprobantes al finalizar registro de formulario  
+					 y el archivo captcha.properties-->
+				<path.plantillas.cliente.pdf>/data/wildfly/plantillaRegistro/</path.plantillas.cliente.pdf>
+
+				<!-- Credenciales para consumo de servicio de reinicio de bitácora  -->
+				<services.cdmx.motor.bitacora>https://val-motortrans-admin.infotec.mx/rest/bitacora/reiniciaMovimientos</services.cdmx.motor.bitacora>
+				<services.cdmx.motor.bitacora.user>cliente_motor</services.cdmx.motor.bitacora.user>
+				<services.cdmx.motor.bitacora.password>cl13nt3%M0t0R%d3V%</services.cdmx.motor.bitacora.password>
+				
+				<!-- Consumo de servicio de sincronización  -->
+				<services.cdmx.motor.sincronizar>https://val-motortrans-admin.infotec.mx/rest/proyecto/sincronizar</services.cdmx.motor.sincronizar>
+				<services.cdmx.motor.estatus>https://val-motortrans-admin.infotec.mx/rest/proyecto/estatus</services.cdmx.motor.estatus>
+				<services.cdmx.motor.validaSincronizacion>https://val-motortrans-admin.infotec.mx/rest/proyecto/validarSincronizacion</services.cdmx.motor.validaSincronizacion>
+				
+				<!-- Credenciales para consumo de servicio para registro de contadores de dashboard  -->
+				<services.cdmx.motor.dashboard>https://val-motortrans-admin.infotec.mx/rest/proyecto/reportes/actualizar</services.cdmx.motor.dashboard>
+				<services.cdmx.motor.dashboard.user>clienteDashboard</services.cdmx.motor.dashboard.user>
+				<services.cdmx.motor.dashboard.password>cL13nT3%D45B04rD%D3v</services.cdmx.motor.dashboard.password>
+				
+				<!-- URI para consumo de servicios para firmadado de trámites  -->
+				<services.cdmx.firma.registro>https://val-pasarela-efirma.infotec.mx/rest/firmado/registro</services.cdmx.firma.registro>
+				<services.cdmx.firma.consulta>https://val-pasarela-efirma.infotec.mx/rest/firmado/consultaFirmado</services.cdmx.firma.consulta>
+				
+				<!-- Configuracion de puente DPA LINEA DE CAPTURA  -->
+				<services.path.consulta.status.lc>/rest/lineaCaptura/consultaLineaCaptura</services.path.consulta.status.lc>
+				<services.path.genera.lc>/rest/lineaCaptura/generarLineaCaptura</services.path.genera.lc>
+			</properties>
+		</profile>
+		
+		<profile>
+			<id>staging</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<app.profile>staging</app.profile>
+				<app.git.version>${git.build.version}</app.git.version>
+
+				<ejb.log>false</ejb.log>
+				<web.log>false</web.log>
+				<jsf.lifeCycle>false</jsf.lifeCycle>
+
+				<jpa.as.showsql>false</jpa.as.showsql>
+				<jpa.as.sql_comments>false</jpa.as.sql_comments>
+				<jpa.as.statistics>false</jpa.as.statistics>
+				<jpa.as.formatsql>false</jpa.as.formatsql>
+				<jpa.test.showsql>false</jpa.test.showsql>
+				<jpa.test.statistics>false</jpa.test.statistics>
+				<jpa.test.formatsql>false</jpa.test.formatsql>
+				
+				<!-- Valores para acceso con llave -->				
+				<login.urlLoginCdmx>https://val-llave.infotec.mx/oauth.xhtml</login.urlLoginCdmx>
+				<services.cdmx.getToken>https://val-api-llave.infotec.mx/ws/rest/oauth/obtenerToken</services.cdmx.getToken>
+				<services.cdmx.getDatosUsuario>https://val-api-llave.infotec.mx/ws/rest/oauth/datosUsuario</services.cdmx.getDatosUsuario>
+				<services.cdmx.getRolesUsuario>https://val-api-llave.infotec.mx/ws/rest/oauth/getRolesUsuarioLogueado</services.cdmx.getRolesUsuario>
+				<services.cdmx.logout>https://val-api-llave.infotec.mx/ws/rest/oauth/cerrarSesion</services.cdmx.logout>
+				<services.cdmx.getSituacionRol>https://val-api-llave.infotec.mx/ws/rest/llave/roles/estatusNombreRol</services.cdmx.getSituacionRol>
+				<services.cdmx.getInformacionPersonaMoral>https://val-api-llave.infotec.mx/ws/rest/perfil/moral</services.cdmx.getInformacionPersonaMoral>		
+				
+				<!-- Ruta para consulta del Estatus de QR -->
+				<url.consulta.tramite>/public/ConsultaEstatusTramite.xhtml?</url.consulta.tramite>
+				
+				<!-- Estás dos líneas se utilizan buscar imágenes y archivos de proyectos remplazando la ruta del archivos física 
+				 por la ruta en que los expone el servidor de archivos del wildfly del motor-->
+				<url.fileserver.motoradmin>https://www.dev.motortransadmin.atdt.gob.mx/file-server/</url.fileserver.motoradmin>
+				<path.fileserver.motor>/srv/wildfly/proyectos/public/</path.fileserver.motor>
+								
+				<!-- Directorio en el que el intérprete registra los documentos que se adjuntan en el componente de carga de documentos -->
+				<path.documentos.cliente.motor>/srv/wildfly/documentos/</path.documentos.cliente.motor>
+				
+				<!-- Directorio temporal para carga de documentos (Este directorio puede ser depurado, si contiene archivos estos no se encuentran
+					asociados a un registro en BD) -->
+				<path.archivos.temporal>/srv/wildfly/tmp/</path.archivos.temporal>
+				
+				<!-- Directorio en el que el intérprete toma las plantillas para emitir comprobantes al finalizar registro de formulario  
+					 y el archivo captcha.properties-->
+				<path.plantillas.cliente.pdf>/srv/wildfly/plantillaRegistro/</path.plantillas.cliente.pdf>
+							
+				<!-- Credenciales para consumo de servicio de reinicio de bitácora  -->
+				<services.cdmx.motor.bitacora>https://www.dev.motortransadmin.atdt.gob.mx/rest/bitacora/reiniciaMovimientos</services.cdmx.motor.bitacora>
+				<services.cdmx.motor.bitacora.user>cliente_motor</services.cdmx.motor.bitacora.user>
+				<services.cdmx.motor.bitacora.password>cl13nt3%M0t0R%5t4g1ng%</services.cdmx.motor.bitacora.password>
+				
+				<!-- Consumo de servicio de sincronización  -->
+				<services.cdmx.motor.sincronizar>https://www.dev.motortransadmin.atdt.gob.mx/rest/proyecto/sincronizar</services.cdmx.motor.sincronizar>
+				<services.cdmx.motor.estatus>https://www.dev.motortransadmin.atdt.gob.mx/rest/proyecto/estatus</services.cdmx.motor.estatus>
+				<services.cdmx.motor.validaSincronizacion>https://www.dev.motortransadmin.atdt.gob.mx/rest/proyecto/validarSincronizacion</services.cdmx.motor.validaSincronizacion>
+								
+				<!-- Credenciales para consumo de servicio para registro de contadores de dashboard  -->
+				<services.cdmx.motor.dashboard>https://www.dev.motortransadmin.atdt.gob.mx/rest/proyecto/reportes/actualizar</services.cdmx.motor.dashboard>
+				<services.cdmx.motor.dashboard.user>clienteDashboard</services.cdmx.motor.dashboard.user>
+				<services.cdmx.motor.dashboard.password>cL13nT3%D45B04rD%5t4g1ng</services.cdmx.motor.dashboard.password>	
+				
+				<!-- URI para consumo de servicios para firmadado de trámites  -->
+				<services.cdmx.firma.registro>https://val-pasarela-efirma.infotec.mx/rest/firmado/registro</services.cdmx.firma.registro>
+				<services.cdmx.firma.consulta>https://val-pasarela-efirma.infotec.mx/rest/firmado/consultaFirmado</services.cdmx.firma.consulta>
+				
+				<!-- Configuracion de puente DPA LINEA DE CAPTURA  -->
+				<services.path.consulta.status.lc>/rest/lineaCaptura/consultaLineaCaptura</services.path.consulta.status.lc>
+				<services.path.genera.lc>/rest/lineaCaptura/generarLineaCaptura</services.path.genera.lc>
+			</properties>
+		</profile>
+
+		<profile>
+			<id>prod</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<app.profile>prod</app.profile>
+				<app.git.version>${git.build.version}</app.git.version>
+
+				<ejb.log>false</ejb.log>
+				<web.log>false</web.log>
+				<jsf.lifeCycle>false</jsf.lifeCycle>
+
+				<jpa.as.showsql>false</jpa.as.showsql>
+				<jpa.as.sql_comments>false</jpa.as.sql_comments>
+				<jpa.as.statistics>false</jpa.as.statistics>
+				<jpa.as.formatsql>false</jpa.as.formatsql>
+				<jpa.test.showsql>false</jpa.test.showsql>
+				<jpa.test.statistics>false</jpa.test.statistics>
+				<jpa.test.formatsql>false</jpa.test.formatsql>
+				
+				<!-- Solo para llave produccion se requiere anteponer www para que los servicios respondan de manera correcta -->
+				<login.urlLoginCdmx>https://www.llave.gob.mx/oauth.xhtml</login.urlLoginCdmx>
+				<services.cdmx.getToken>https://www.api.llave.gob.mx/ws/rest/oauth/obtenerToken</services.cdmx.getToken>
+				<services.cdmx.getDatosUsuario>https://www.api.llave.gob.mx/ws/rest/oauth/datosUsuario</services.cdmx.getDatosUsuario>
+				<services.cdmx.getRolesUsuario>https://www.api.llave.gob.mx/ws/rest/oauth/getRolesUsuarioLogueado</services.cdmx.getRolesUsuario>
+				<services.cdmx.logout>https://www.api.llave.gob.mx/ws/rest/oauth/cerrarSesion</services.cdmx.logout>
+				<services.cdmx.getSituacionRol>https://www.api.llave.gob.mx/ws/rest/llave/roles/estatusNombreRol</services.cdmx.getSituacionRol>
+				<services.cdmx.getInformacionPersonaMoral>https://www.api.llave.gob.mx/ws/rest/perfil/moral</services.cdmx.getInformacionPersonaMoral>
+				
+				<!-- Ruta para consulta del Estatus de QR -->				
+				<url.consulta.tramite>/public/ConsultaEstatusTramite.xhtml?</url.consulta.tramite>
+				
+				<!-- Estás dos líneas se utilizan buscar imágenes y archivos de proyectos remplazando la ruta del archivos física 
+				 por la ruta en que los expone el servidor de archivos del wildfly del motor-->
+				<url.fileserver.motoradmin>https://www.motortransaccional.atdt.gob.mx/file-server/</url.fileserver.motoradmin>
+				<path.fileserver.motor>/srv/wildfly/proyectos/public/</path.fileserver.motor>				
+			
+				<!-- Directorio en el que el intérprete registra los documentos que se adjuntan en el componente de carga de documentos -->
+				<path.documentos.cliente.motor>/srv/wildfly/documentos/</path.documentos.cliente.motor>
+				
+				<!-- Directorio temporal para carga de documentos (Este directorio puede ser depurado, si contiene archivos estos no se encuentran
+					asociados a un registro en BD) -->
+				<path.archivos.temporal>/srv/wildfly/tmp/</path.archivos.temporal>
+				
+				<!-- Directorio en el que el intérprete toma las plantillas para emitir comprobantes al finalizar registro de formulario -->
+				<path.plantillas.cliente.pdf>/srv/wildfly/plantillaRegistro/</path.plantillas.cliente.pdf>
+				
+				<!-- Credenciales para consumo de servicio de reinicio de bitácora  -->
+				<services.cdmx.motor.bitacora>https://www.motortransaccional.atdt.gob.mx/rest/bitacora/reiniciaMovimientos</services.cdmx.motor.bitacora>
+				<services.cdmx.motor.bitacora.user>cliente_motor</services.cdmx.motor.bitacora.user>
+				<services.cdmx.motor.bitacora.password>cl13nt3%M0t0R%tR4NS4cc1on4l%p%0d%02n0v2024</services.cdmx.motor.bitacora.password>
+				
+				<!-- Consumo de servicio de sincronización  -->
+				<services.cdmx.motor.sincronizar>https://www.motortransaccional.atdt.gob.mx/rest/proyecto/sincronizar</services.cdmx.motor.sincronizar>
+				<services.cdmx.motor.estatus>https://www.motortransaccional.atdt.gob.mx/rest/proyecto/estatus</services.cdmx.motor.estatus>
+				<services.cdmx.motor.validaSincronizacion>https://www.motortransaccional.atdt.gob.mx/rest/proyecto/validarSincronizacion</services.cdmx.motor.validaSincronizacion>
+				
+				<!-- Credenciales para consumo de servicio para registro de contadores de dashboard  -->
+				<services.cdmx.motor.dashboard>https://www.motortransaccional.atdt.gob.mx/rest/proyecto/reportes/actualizar</services.cdmx.motor.dashboard>
+				<services.cdmx.motor.dashboard.user>clienteDashboard</services.cdmx.motor.dashboard.user>
+				<services.cdmx.motor.dashboard.password>cl13nt3%d45B04rD%tR4NS4cc1on4l%p%0d%02n0v2024</services.cdmx.motor.dashboard.password>
+				
+				<!-- URI para consumo de servicios para firmadado de trámites  -->
+				<services.cdmx.firma.registro>https://www.firma.atdt.gob.mx/rest/firmado/registro</services.cdmx.firma.registro>
+				<services.cdmx.firma.consulta>https://www.firma.atdt.gob.mx/rest/firmado/consultaFirmado</services.cdmx.firma.consulta>									
+				
+				<!-- Configuracion de puente DPA LINEA DE CAPTURA  -->
+				<services.path.consulta.status.lc>/rest/lineaCaptura/consultaLineaCaptura</services.path.consulta.status.lc>
+				<services.path.genera.lc>/rest/lineaCaptura/generarLineaCaptura</services.path.genera.lc>
+				
+			</properties>
+		</profile>
+	</profiles>
+
+</project>

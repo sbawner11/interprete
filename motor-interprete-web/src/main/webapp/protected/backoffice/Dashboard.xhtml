@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+ 
+	<ui:define name="content">
+		<h:form id="ftmDashboard">
+			<p:outputPanel id="pnlDashboard" style="padding: 2% 0 2%; max-width: 1121px; margin: auto;">
+				<p:outputPanel id="pnlTotalesProyectos" style="padding: 2% 2%; background: #FFF; border-radius: 10px 10px 0 0">
+					<p:panelGrid id="pnlTitulo" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" 
+						styleClass="ui-panelgrid-blank ui-fluid" style="text-align: center;">
+						<p:column id="clmTitulo" >
+							<p:outputLabel value="#{msg.lbl_dashboard_titulo}" styleClass="font-titulo-bandeja" />
+						</p:column>						
+					</p:panelGrid>
+					
+					<p:panelGrid id="pnlFiltros" columns="3" style="padding: 0 0 2%;"
+						columnClasses="ui-g-12 ui-md-12 ui-lg-8, ui-g-6 ui-md-6 ui-lg-2, ui-g-6 ui-md-6 ui-lg-2"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+
+						<p:panelGrid layout="grid" columns="2" columnClasses="ui-g-12 ui-md-6 ui-lg-6, ui-g-12 ui-md-6 ui-lg-6"
+							styleClass="ui-panelgrid-blank ui-fluid" style="text-align: left;">
+												
+							<p:panelGrid id="pnlFechaDesde" layout="grid" columns="2" columnClasses="ui-g-12 ui-md-12 ui-lg-12, ui-g-12 ui-md-12 ui-lg-12" 
+								styleClass="ui-panelgrid-blank ui-fluid ui-panelgrid-sin-pading" style="text-align: left;">
+								<p:outputLabel id="lblDesde" value="Desde:" styleClass="font-filtros-bandeja" />
+								<p:datePicker id="inpFechDesde" value="#{reporteContadoresProyectosBean.tramiteBusqueda.fechaDesde}" autocomplete="off" styleClass="datepicker-interprete" pattern="dd/MM/yyyy" placeholder="DD/MM/AAAA"
+									maxdate="#{reporteContadoresProyectosBean.fechaMaxima}" onkeypress="return false;" locale="es_MX" monthNavigator="true" yearNavigator="true" />
+							</p:panelGrid>									
+							<p:panelGrid id="pnlFechaHasta" layout="grid" columns="2" columnClasses="ui-g-12 ui-md-12 ui-lg-12, ui-g-12 ui-md-12 ui-lg-12" 
+								styleClass="ui-panelgrid-blank ui-fluid ui-panelgrid-sin-pading" style="text-align: left;">
+								<p:outputLabel id="lblHasta" value="Hasta:" styleClass="font-filtros-bandeja" />
+								<p:datePicker id="inpFechHasta" value="#{reporteContadoresProyectosBean.tramiteBusqueda.fechaHasta}" autocomplete="off" styleClass="datepicker-interprete" pattern="dd/MM/yyyy" placeholder="DD/MM/AAAA"
+									maxdate="#{reporteContadoresProyectosBean.fechaMaxima}" onkeypress="return false;" locale="es_MX" monthNavigator="true" yearNavigator="true" />
+							</p:panelGrid>
+											
+						</p:panelGrid> 
+						
+						<p:column id="clmOpciones" style="display: flex; justify-content: flex-start; align-items: flex-end;margin: 1.5% auto 0;">
+							<p:commandButton value="#{msg.dashboard_filtrar}" action="#{reporteContadoresProyectosBean.filtrarTramites()}" styleClass="formularios-btn-green" 
+								update="dtbProyectos, messages" style="min-width: 100px !important; max-width: 180px !important;"/>
+							<p:commandButton value="#{msg.dashboard_limpiar}" styleClass="motor-btn-limpiar" 
+								action="#{reporteContadoresProyectosBean.limpiar()}" update="@form" style="width: auto;"/>
+						</p:column>
+						
+						<p:column id="clmFiltrar" style="display:flex;justify-content: right; align-items: flex-end;margin: 1.5% auto 0;">
+							<p:commandButton value="#{msg.lbl_dashboard_exportar}" disabled="#{reporteContadoresProyectosBean.lstContadoresProyectos == null}" styleClass="formularios-btn-green" update="pnlCifras, messages" style="min-width: 100px !important; width: auto;">
+								<p:dataExporter type="xls" target="dtbProyectos" fileName="ReporteContadoresProyectos"></p:dataExporter>
+							</p:commandButton>
+						</p:column>
+	
+					</p:panelGrid>					
+					
+					<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" >
+						<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" >
+							<p:outputLabel value="#{msg.lbl_dashboard_titulo_estatus}" escape="false" styleClass="font-filtros-bandeja" />
+							
+							<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid ui-panelgrid-sin-pading">						
+							
+								<p:outputLabel value="#{msg.lbl_dashboard_estatus_captura}" escape="false" styleClass="font-campos" />							
+								<p:outputLabel value="#{msg.lbl_dashboard_estatus_enviado}" escape="false" styleClass="font-campos" />														
+								<p:outputLabel value="#{msg.lbl_dashboard_estatus_correccion}" escape="false" styleClass="font-campos" />														
+								<p:outputLabel value="#{msg.lbl_dashboard_estatus_corregido}" escape="false" styleClass="font-campos" />							
+								<p:outputLabel value="#{msg.lbl_dashboard_estatus_revisado}" escape="false" styleClass="font-campos" />
+								<p:outputLabel value="#{msg.lbl_dashboard_estatus_rechazado}" escape="false" styleClass="font-campos" />							
+								<p:outputLabel value="#{msg.lbl_dashboard_estatus_aceptado}" escape="false" styleClass="font-campos" />	
+								<p:outputLabel value="#{msg.lbl_dashboard_estatus_firmado}" escape="false" styleClass="font-campos" />							
+								<p:outputLabel value="#{msg.lbl_dashboard_estatus_total}" escape="false" styleClass="font-campos" />
+														
+							</p:panelGrid>
+							
+						</p:panelGrid>
+					</p:panelGrid>
+					
+					<p:panelGrid id="pnlCifras" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:dataTable id="dtbProyectos" var="proyecto" value="#{reporteContadoresProyectosBean.lstContadoresProyectos}"
+							paginator="true" rows="10" reflow="true" paginatorPosition="bottom" draggableColumns="true"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							currentPageReportTemplate="Mostrando {endRecord} de {totalRecords} registros"
+							emptyMessage="#{msg.lbl_dashboard_no_resultados}">
+							
+							<p:column id="clmProyecto" sortBy="#{proyecto.proyectoDTO.nombreProyecto}" headerText="#{msg.col_dashboard_proyecto}"
+								styleClass="header-columna-tramites" colspan="2" style="overflow-wrap: break-word; height: 65px;">
+								<h:outputText value="#{proyecto.proyectoDTO.nombreProyecto}" styleClass="tbody-tramites" />
+							</p:column>
+							
+							<p:column id="clmFecha" sortBy="#{proyecto.fechaUltimaActualizacion}" headerText="#{msg.col_dashboard_fecha}"
+								styleClass="header-columna-tramites" colspan="2" style="overflow-wrap: break-word;">
+								<h:outputText value="#{proyecto.fechaUltimaActualizacion}" styleClass="tbody-tramites" >
+									<f:convertDateTime type="date" pattern="dd/MM/yyyy hh:mm:ss"/>
+								</h:outputText>
+							</p:column>
+							
+							<p:column id="clmEnCaptura" sortBy="#{proyecto.subtotalCaptura}" headerText="#{msg.col_dashboard_captura}"
+								styleClass="header-columna-tramites" style="overflow-wrap: break-word;">
+								<h:outputText value="#{proyecto.subtotalCaptura}" styleClass="tbody-tramites" />
+							</p:column>
+							
+							<p:column id="clmEnviado" sortBy="#{proyecto.subtotalEnviado}" headerText="#{msg.col_dashboard_enviado}"
+								styleClass="header-columna-tramites" style="overflow-wrap: break-word;">
+								<h:outputText value="#{proyecto.subtotalEnviado}" styleClass="tbody-tramites" />
+							</p:column>
+							
+							<p:column id="clmCorreccion" sortBy="#{proyecto.subtotalCorreccion}" headerText="#{msg.col_dashboard_correccion}"
+								styleClass="header-columna-tramites" style="overflow-wrap: break-word;">
+								<h:outputText value="#{proyecto.subtotalCorreccion}" styleClass="tbody-tramites" />
+							</p:column>
+
+							<p:column id="clmCorregido" sortBy="#{proyecto.subtotalCorregido}" headerText="#{msg.col_dashboard_corregido}"
+								styleClass="header-columna-tramites" style="overflow-wrap: break-word;">
+								<h:outputText value="#{proyecto.subtotalCorregido}" styleClass="tbody-tramites" />
+							</p:column>
+							
+							<p:column id="clmRevisado" sortBy="#{proyecto.subtotalRevisado}" headerText="#{msg.col_dashboard_revisado}"
+								styleClass="header-columna-tramites" style="overflow-wrap: break-word;">
+								<h:outputText value="#{proyecto.subtotalRevisado}" styleClass="tbody-tramites" />
+							</p:column>
+							
+							<p:column id="clmRechazado" sortBy="#{proyecto.subtotalRevisado}" 
+								headerText="#{seccionesProyectoBean.proyectoDTO.aviso ? msg.col_dashboard_revocado : msg.col_dashboard_rechazado}"
+								styleClass="header-columna-tramites" style="overflow-wrap: break-word;">
+								<h:outputText value="#{proyecto.subtotalRechazado}" styleClass="tbody-tramites" />
+							</p:column>
+
+							<p:column id="clmAceptado" sortBy="#{proyecto.subtotalAceptado}" 
+								headerText="#{seccionesProyectoBean.proyectoDTO.aviso ? msg.col_dashboard_expedido : msg.col_dashboard_aceptado}"
+								styleClass="header-columna-tramites" style="overflow-wrap: break-word;">
+								<h:outputText value="#{proyecto.subtotalAceptado}" styleClass="tbody-tramites" />
+							</p:column>
+
+							<p:column id="clmFirmado" sortBy="#{proyecto.subtotalFirmado}" headerText="#{msg.col_dashboard_firmado}"
+								styleClass="header-columna-tramites" style="overflow-wrap: break-word;">
+								<h:outputText value="#{proyecto.subtotalFirmado}" styleClass="tbody-tramites" />
+							</p:column>
+							
+							<p:column id="clmTotalRegistros" sortBy="#{proyecto.totalRegistros}" headerText="#{msg.col_dashboard_total}"
+								styleClass="header-columna-tramites" style="overflow-wrap: break-word;">
+								<h:outputText value="#{proyecto.totalRegistros}" styleClass="tbody-tramites" />
+							</p:column>							
+						</p:dataTable>
+					</p:panelGrid>
+				</p:outputPanel>
+				<p:outputPanel id="oplAcciones" styleClass="formularios-footer-content" style="padding: 2% 2%; background: #FFF; border-radius: 0 0 10px 10px;">
+	   				<p:panelGrid id="pnlAcciones" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" >
+		   				<p:commandButton value="#{msg.salir}" action="#{reporteContadoresProyectosBean.salir()}"  styleClass="formularios-btn-green" style="min-width: 120px;" immediate="true"/>   				
+		   			</p:panelGrid>	
+		   		</p:outputPanel>
+			</p:outputPanel>
+			
+			
+		</h:form>		
+	</ui:define>
+</ui:composition>

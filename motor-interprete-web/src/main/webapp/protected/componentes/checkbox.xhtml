@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+ 
+	<p:panelGrid id="pnlgcheck_#{checkbox.idComponente}" columns="1"
+		columnClasses="ui-xl-12 ui-lg-12 ui-g-12 ui-md-12 ui-sm-12"
+		layout="grid" styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading">
+		
+		<p:outputLabel for="checkbox_#{checkbox.idComponente}" value="#{checkbox.tituloCampo}" styleClass="lbl-checkbox-interprete" />
+		
+		<p:outputPanel>
+			<p:commandButton value="seleccionar todos" onclick="PF('checkbox_#{checkbox.idComponente}').selectAll()" update="cbxOpcion_#{checkbox.idComponente}"
+				rendered="#{checkbox.habilitaTodosNinguno}" styleClass="btn-checkbox-group-interprete" />
+				
+			<p:outputLabel value="/" rendered="#{checkbox.habilitaTodosNinguno}" 
+				styleClass="separadorCheckGrupo" />
+			
+			<p:commandButton value="limpiar" onclick="PF('checkbox_#{checkbox.idComponente}').unselectAll()" update="cbxOpcion_#{checkbox.idComponente}"
+				rendered="#{checkbox.habilitaTodosNinguno}" styleClass="btn-checkbox-group-interprete" />
+		</p:outputPanel>
+		
+		<p:selectManyMenu id="checkbox_#{checkbox.idComponente}" 
+			value="#{checkbox.lstOpcionesSeleccionadas}"
+			disabled="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 
+			    			or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) 
+			    			or (registrarFormularioBean.usuarioBack and registrarFormularioBean.validacionTramite == true)
+			    			or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}"
+			widgetVar="checkbox_#{checkbox.idComponente}"
+			showCheckbox="true" required="#{checkbox.requerido}" layout="pageDirection"
+			requiredMessage="#{msg.msj_campo_requerido}" styleClass="checkbox-interprete">
+			
+			<f:selectItems value="#{checkbox.detElementosCheckboxDTO}" var="elemento" itemLabel="#{elemento.descripcionElemento}"
+				itemValue="#{elemento}" itemDescription="#{checkbox.tooltip == true ? checkbox.descripcionTooltip : null}" />
+			<p:ajax process="@this" update="checkbox_#{checkbox.idComponente} cbxOpcion_#{checkbox.idComponente}" />
+		</p:selectManyMenu>
+			
+		<p:message for="checkbox_#{checkbox.idComponente}" styleClass="messages-obligatorios" display="text" />
+		
+		<p:panelGrid columns="1" style="display: none;">
+			<!-- Componente de apoyo para poder seterar al MAP las opciones seleccionadas en formato Json para su guardado en BD -->
+			<p:selectOneMenu id="cbxOpcion_#{checkbox.idComponente}" value="#{registrarFormularioBean.mapRespuestas[checkbox.respuestaComponente]}"  
+				style="padding: 0px !important;" >
+				<c:if test="${checkbox.lstOpcionesSeleccionadas.size() > 0}">
+					<f:selectItems value="#{checkBoxBean.obtenerOpcionSeleccionada(checkbox.lstOpcionesSeleccionadas)}"
+						var="opcion" itemLabel="#{opcion.description}" itemValue="#{opcion.value}" />
+				</c:if>
+			</p:selectOneMenu>		
+		</p:panelGrid>
+		<!-- 		<p:tooltip for="frmFormulario:componente_#{checkbox.idComponente}:checkbox_#{checkbox.idComponente}" rendered="#{checkbox.tooltip}" -->
+		<!-- 			value="#{checkbox.descripcionTooltip}" position="bottom" -->
+		<!-- 			showEvent="focus" hideEvent="blur" /> -->
+	</p:panelGrid>
+
+</ui:composition>

@@ -1,0 +1,2 @@
+--INSERT DE ESTATUS ERROR_CONEXION A SERVICIO DE SOLICITUD DE LINEAS DE CAPTURA
+INSERT INTO motor_interprete.cat_estatus_solicitud (id_estatus_solicitud, descripcion) VALUES (4,'Error de conexion a servicio');

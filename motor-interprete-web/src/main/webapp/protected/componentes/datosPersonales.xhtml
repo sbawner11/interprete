@@ -1,0 +1,113 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+ 	
+	<p:panelGrid id="pnlDatosPersonales_#{datosPersonales.idComponente}" columns="1" columnClasses="ui-g-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+		<p:outputLabel id="lblDatosPersonales_#{datosPersonales.idComponente}" for="@next" value="#{datosPersonales.tituloCampo}" styleClass="lbl-componente" />	
+		
+		<p:panelGrid id="pnlCurp_#{datosPersonales.idComponente}" columns="1" columnClasses="ui-g-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading" >
+			
+			<p:outputLabel value="#{msg.lbl_datos_personales_curp}" rendered="#{datosPersonales.habilitaCurp}" for="txtCurp_#{datosPersonales.idComponente}" />
+			
+			<p:inputText id="txtCurp_#{datosPersonales.idComponente}" value="#{registrarFormularioBean.mapRespuestas[datosPersonales.curp]}"
+				onkeyup="$(this).val($(this).val().toUpperCase());" 
+				readonly="#{(!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 or
+    			registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4)) or (registrarFormularioBean.usuarioBack == true and registrarFormularioBean.validacionTramite == true)
+    			or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}"
+				maxlength="18" styleClass="componente-campo-texto" required="#{datosPersonales.curpObligatorio}" requiredMessage="#{msg.msj_campo_requerido}"
+    		    rendered="#{datosPersonales.habilitaCurp}" placeholder="#{datosPersonales.textoInteriorCurp}" >
+    		    <f:validateLength disabled="#{datosPersonales.habilitaCurp == false}" minimum="18"/>
+    		    <c:if test="${datosPersonales.habilitaRenapo}">
+    				<p:ajax event="blur" listener="#{componenteDatosPersonalesBean.consultarCurp(registrarFormularioBean.mapRespuestas[datosPersonales.curp], datosPersonales)}" 
+    					update="pnlCurp_#{datosPersonales.idComponente} pnlNombre_#{datosPersonales.idComponente} pnlPrimerApellido_#{datosPersonales.idComponente} pnlSegundoApellido_#{datosPersonales.idComponente}"
+    		  			process="@this" />
+    			</c:if>    			
+    		</p:inputText>
+    		
+    		<p:message for="txtCurp_#{datosPersonales.idComponente}" styleClass="messages-obligatorios"  display="text"  />
+    	</p:panelGrid>
+    		
+    	<p:panelGrid id="pnlNombre_#{datosPersonales.idComponente}" columns="1" columnClasses="ui-g-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading" >
+    		
+    		<p:outputLabel value="#{msg.lbl_datos_personales_nombre}" for="txtNombreRenapo_#{datosPersonales.idComponente}" rendered="#{datosPersonales.habilitaNombre}" />
+    		
+    		<p:inputText id="txtNombreRenapo_#{datosPersonales.idComponente}" value="#{registrarFormularioBean.mapRespuestas[datosPersonales.nombre]}" styleClass="componente-campo-texto"
+    			onkeyup="$(this).val($(this).val().toUpperCase());"
+    			readonly="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 or
+    			registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) or datosPersonales.habilitaRenapo == true or (registrarFormularioBean.usuarioBack == true and registrarFormularioBean.validacionTramite == true)
+    			or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}"
+				required="#{datosPersonales.nombreObligatorio}" rendered="#{datosPersonales.habilitaNombre}"
+    			placeholder="#{datosPersonales.textoInteriorNombre}" requiredMessage="#{msg.msj_campo_requerido}" />
+    		
+    		<p:message for="txtNombreRenapo_#{datosPersonales.idComponente}" styleClass="messages-obligatorios" rendered="#{datosPersonales.habilitaNombre}" display="text" />
+    		   		
+    	</p:panelGrid>
+    		
+    	<p:panelGrid id="pnlPrimerApellido_#{datosPersonales.idComponente}" columns="1" columnClasses="ui-g-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading" >
+    		
+    		<p:outputLabel value="#{msg.lbl_datos_personales_primer_apellido}" rendered="#{datosPersonales.habilitaPrimerApellido}" for="txtPrimerApellidoRenapo_#{datosPersonales.idComponente}" />
+
+    		<p:inputText id="txtPrimerApellidoRenapo_#{datosPersonales.idComponente}" value="#{registrarFormularioBean.mapRespuestas[datosPersonales.pApellido]}" styleClass="componente-campo-texto"
+    			onkeyup="$(this).val($(this).val().toUpperCase());"
+    			readonly="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 or
+    			registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) or datosPersonales.habilitaRenapo == true or (registrarFormularioBean.usuarioBack == true and registrarFormularioBean.validacionTramite == true)
+    			or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}"
+		   		required="#{datosPersonales.nombreObligatorio}" rendered="#{datosPersonales.habilitaPrimerApellido}"
+    			placeholder="#{datosPersonales.textoInteriorPrimerApellido}" requiredMessage="#{msg.msj_campo_requerido}" />
+    		
+    		<p:message for="txtPrimerApellidoRenapo_#{datosPersonales.idComponente}" styleClass="messages-obligatorios" rendered="#{datosPersonales.habilitaPrimerApellido}" display="text" />
+  
+    	</p:panelGrid>
+    		
+    	<p:panelGrid id="pnlSegundoApellido_#{datosPersonales.idComponente}" columns="1" columnClasses="ui-g-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading" >
+    		
+    		<p:outputLabel value="#{msg.lbl_datos_personales_segundo_apellido}" rendered="#{datosPersonales.habilitaSegundoApellido}" for="txtSegundoApellidoRenapo_#{datosPersonales.idComponente}" />
+    		
+    		<p:inputText id="txtSegundoApellidoRenapo_#{datosPersonales.idComponente}" value="#{registrarFormularioBean.mapRespuestas[datosPersonales.sApellido]}" styleClass="componente-campo-texto"
+    			onkeyup="$(this).val($(this).val().toUpperCase());"
+    			readonly="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 or
+    			registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) or datosPersonales.habilitaRenapo == true or (registrarFormularioBean.usuarioBack == true and registrarFormularioBean.validacionTramite == true)
+    			or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}"
+		  		required="#{datosPersonales.segundoApellidoObligatorio}" rendered="#{datosPersonales.habilitaSegundoApellido}"
+	    		placeholder="#{datosPersonales.textoInteriorSegundoApellido}" requiredMessage="#{msg.msj_campo_requerido}" />
+    		
+    		<p:message for="txtSegundoApellidoRenapo_#{datosPersonales.idComponente}" styleClass="messages-obligatorios" rendered="#{datosPersonales.habilitaSegundoApellido}" display="text" />
+    
+    	</p:panelGrid>
+    		
+    	<p:panelGrid id="pnlTelefono_#{datosPersonales.idComponente}" columns="1" columnClasses="ui-g-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading" >
+    		
+    		<p:outputLabel value="#{msg.lbl_datos_personales_telefono}" rendered="#{datosPersonales.habilitaTelefono}" for="txtTelefono_#{datosPersonales.idComponente}" />
+			
+			<p:inputText id="txtTelefono_#{datosPersonales.idComponente}" value="#{registrarFormularioBean.mapRespuestas[datosPersonales.telefono]}" styleClass="componente-campo-texto"
+				readonly="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 or
+    			registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) or (registrarFormularioBean.usuarioBack == true and registrarFormularioBean.validacionTramite == true)
+    			or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}" 
+				validator="telefonoValidator" maxlength="10" minlength="10" onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));" requiredMessage="#{msg.msj_campo_requerido}"
+    			required="#{datosPersonales.telefonoObligatorio}" rendered="#{datosPersonales.habilitaTelefono}" placeholder="#{datosPersonales.textoInteriorTelefono}" >
+    		</p:inputText>
+    		
+    		<p:message for="txtTelefono_#{datosPersonales.idComponente}" styleClass="messages-obligatorios" rendered="#{datosPersonales.habilitaTelefono}" display="text" />
+    	</p:panelGrid>
+    	
+    	<p:panelGrid id="pnlCorreo_#{datosPersonales.idComponente}" columns="1" columnClasses="ui-g-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading" >
+    	
+    		<p:outputLabel value="#{msg.lbl_datos_personales_correo}" rendered="#{datosPersonales.habilitaCorreoElectronico}" for="txtCorreo_#{datosPersonales.idComponente}" />
+			
+			<p:inputText id="txtCorreo_#{datosPersonales.idComponente}" value="#{registrarFormularioBean.mapRespuestas[datosPersonales.email]}" styleClass="componente-campo-texto"
+				readonly="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 or
+    			registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) or (registrarFormularioBean.usuarioBack == true and registrarFormularioBean.validacionTramite == true)
+    			or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}" 
+				requiredMessage="#{msg.msj_campo_requerido}" validator="emailValidator" required="#{datosPersonales.correoElectronicoObligatorio}" 
+				rendered="#{datosPersonales.habilitaCorreoElectronico}" placeholder="#{datosPersonales.textoInteriorCorreoElectronico}" >
+    		</p:inputText>
+    		
+    		<p:message for="txtCorreo_#{datosPersonales.idComponente}" styleClass="messages-obligatorios" rendered="#{datosPersonales.habilitaCorreoElectronico}" display="text" />
+    	</p:panelGrid>
+
+	</p:panelGrid>
+
+</ui:composition>

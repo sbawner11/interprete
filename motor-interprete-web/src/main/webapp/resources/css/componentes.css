@@ -1,0 +1,667 @@
+/*
+ * JBoss, Home of Professional Open Source
+ * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * contributors by the @authors tag. See the copyright.txt in the
+ * distribution for a full listing of individual contributors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/* Core styles for the page */
+ 
+/* HOJA DE ESTILOS PARA LOS COMPONENTES MOTOR */
+
+.titulo-componente {
+	font-style: normal !important;
+	font-weight: 700 !important;
+	font-size: 33px !important;
+	line-height: 40px !important;
+	text-align: center !important;
+	letter-spacing: -0.5px !important;
+	color: #175E50 !important;
+}
+
+.lbl-subseccion {
+	font-style: normal !important;
+	font-weight: 700 !important;
+	font-size: 20px !important;
+	line-height: 25px !important;
+	color: #BC955C !important;
+}
+
+.lbl-componente {
+	font-style: normal !important;
+	font-weight: 400 !important;
+	font-size: 1.8rem !important;
+	line-height: 24px !important;
+	color: #646D6C !important;
+}
+
+.componente-campo-texto {
+	background: #FFFFFF !important;
+    border: 1px solid #CED4DA !important;
+    border-radius: 4px !important;
+    height: 38px;
+}
+
+.componente-text-area {
+	background: #FFFFFF !important;
+    border: 1px solid #CED4DA !important;
+    border-radius: 4px !important;    
+}
+
+.componente-campo-numero {
+	background: #FFFFFF !important;
+/*     border: 1px solid #CED4DA !important; */
+    border-radius: 4px !important;
+    height: 38px;
+}
+
+.componente-campo-numero .ui-inputfield.ui-state-hover {
+	border: 1px solid #CED4DA !important;
+}
+
+.componente-campo-numero .ui-state-default, .ui-widget-content .ui-state-default,
+	.ui-widget-header .ui-state-default {
+	background: none;
+}
+
+.lbl-titulo-seccion {
+    text-align: center;
+    font-weight: bold;
+    font-size: 33px !important;
+    line-height: 40px !important;
+    color: #175E50!important;
+}
+
+.lbl-seccion {
+	font-style: normal !important;
+	font-weight: 700 !important;
+	font-size: 17px !important;
+	line-height: 18px !important;
+	color: #B08F5C !important;
+	vertical-align: -webkit-baseline-middle;
+}
+
+.lbl-seccion-gris {
+	font-style: normal !important;
+	font-size: 17px !important;
+	line-height: 18px !important;
+	color: #646D6C !important;
+	vertical-align: -webkit-baseline-middle;
+}
+
+.recuadro-secciones {
+	width: 100% !important;
+	background: #EEEEEE !important;
+	box-shadow: 0px 16px 55px rgba(57, 57, 57, 0.04) !important;
+	border-radius: 6px !important;
+}
+
+.recuadro-comentarios {
+	width: 100% !important; 
+	border: 2px solid #0F4C42 !important; 
+	border-radius: 6px !important; 
+	box-shadow: 0px 16px 55px rgb(57 57 57 / 4%) !important;
+}
+
+.lbl-titulo-comentarios {
+	font-size: 16px !important; 
+	font-style: normal !important; 
+	line-height: 20px !important; 
+	font-weight: bold !important;
+}
+
+.lbl-comentarios {
+	font-size: 12px !important; 
+	font-style: normal !important; 
+	line-height: 18px !important; 
+	font-weight: 400 !important;
+}
+
+/*
+* A continuaci�n, se sobrescriben algunos estilos de Primefaces
+*/
+
+/* Se modifican margenes para etiquetas del componente p:selectManyCheckbox por default trae margin: 0 16px 0 8px;*/
+.checkbox-interprete.ui-selectmanycheckbox label {
+    margin: 10px 10px 10px 15px !important;
+}
+
+/* Se modifican estilo de etiquetas para el componente p:selectManyCheckbox*/
+.lbl-checkbox-interprete {
+	font-style: normal !important;
+    font-weight: 700 !important;
+    font-size: 18px !important;
+    line-height: 25px !important;
+    color: #6F7271 !important;
+}
+
+/**Estilos para los p:selectBooleanCheckbox del detalle de componentes**/
+
+.checkbox-interprete .ui-chkbox-box {
+	border: 1px solid #A0AEC0 !important;
+	border-width: 2px !important;
+	background: #ffffff !important;
+	width: 2.5rem !important;
+    height: 2rem !important;
+	text-align: center !important;
+	position: relative !important;
+	border-radius: 3px !important;
+	transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+		box-shadow 0.2s !important;
+}
+
+.checkbox-interprete .ui-chkbox-box.ui-state-hover {
+	border-color: #235B4E !important;
+	background: transparent !important;
+}
+
+.checkbox-interprete .ui-chkbox-box.ui-state-focus {
+	box-shadow: 0 0 0 0.2em #235B4E !important;
+	outline: 0 none !important;
+}
+
+.checkbox-interprete .ui-chkbox-box.ui-state-active {
+	border-color: #235B4E !important;
+	background: #235B4E !important;
+	color: #ffffff !important;
+}
+
+.checkbox-interprete.ui-selectmanymenu .ui-selectlistbox-listcontainer .ui-selectlistbox-list .ui-selectlistbox-item{
+	padding: 0.5rem 0;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1.8rem;
+	color: #6F7271 !important;
+}
+
+.checkbox-interprete .ui-chkbox-label > p > a {
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1rem;
+	line-height: 24px;
+	color: #BC955C;
+}
+
+.checkbox-interprete .ui-chkbox-label{
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1.8rem;
+	line-height: 24px;
+	color: #6F7271;
+	word-break: break-word !important;
+	width: 100%;
+	padding-top: 10px;
+}
+
+/* Alineación de checkboxes en selectManyMenu */
+.checkbox-interprete.ui-selectmanymenu .ui-selectlistbox-item {
+    display: flex !important;
+    align-items: center !important;
+    padding: 0.5rem 0 !important;
+}
+
+.checkbox-interprete.ui-selectmanymenu .ui-chkbox {
+    margin-right: 12px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+
+.checkbox-interprete.ui-selectmanymenu .ui-chkbox-box {
+    width: 2.5rem !important;
+    height: 2rem !important;
+    min-width: 20px !important; 
+    margin-right: 12px !important;
+}
+	
+
+/*Estilos que se agregan a los botones que tiene el 
+componente checkbox de grupo para que parezcan links*/
+.btn-checkbox-group-interprete{
+	background-color: inherit !important; 
+	width: auto !important;
+	font-style: normal;
+	font-weight: 700;
+	font-size: 1rem !important;
+	line-height: 18px;
+	text-align: left !important;
+	letter-spacing: -0.460643px;
+	color: #235B4E !important;
+}
+
+.btn-checkbox-group-interprete .ui-button-text{
+	text-align: left !important;
+}
+
+.btn-checkbox-group-interprete.ui-button.ui-state-focus {
+	box-shadow: none;
+	text-decoration: underline !important;
+}
+
+/*Estilo para los selecOneMenu del interprete*/
+.selectOneMenu-interprete.ui-selectonemenu .ui-selectonemenu-label {
+	background: #FFFFFF;
+    color: #646D6C !important;
+    font-weight: 700 !important;
+    font-size: 1.5rem !important;
+    line-height: 24px !important;
+    height: 38px !important;
+    border: 1px solid #CED4DA;
+	border-radius: 4px;
+    font-family: 'Inter' !important;
+    font-weight: bold;
+}
+
+/* ===== ESTILOS PARA DROPDOWN DE MÚLTIPLES LÍNEAS ===== */
+
+/* Panel del dropdown - multilinea */
+.ui-selectonemenu-panel.selectOneMenu-panel-wide {
+    max-width: 500px !important;
+    width: auto !important;
+    min-width: 250px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    border-radius: 6px !important;
+    z-index: 10000 !important; 
+}
+
+/* Contenedor de items */
+.ui-selectonemenu-panel.selectOneMenu-panel-wide .ui-selectonemenu-items-wrapper {
+    max-height: 350px !important;
+    overflow-y: auto !important;
+}
+
+/* Eliminar borde del último elemento */
+.ui-selectonemenu-panel.selectOneMenu-panel-wide .ui-selectonemenu-items .ui-selectonemenu-item:last-child {
+    border-bottom: none !important;
+}
+
+/* Efecto hover */
+.ui-selectonemenu-panel.selectOneMenu-panel-wide .ui-selectonemenu-items .ui-selectonemenu-item:hover {
+    background-color: #f8f9fa !important;
+}
+
+/* Item seleccionado en el dropdown */
+.ui-selectonemenu-panel.selectOneMenu-panel-wide .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-highlight {
+    background-color: #0F4C42 !important;
+    color: white !important;
+    border-color: #0F4C42 !important;
+}
+
+.ui-selectonemenu-panel.selectOneMenu-panel-wide .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-highlight:hover {
+    background-color: #0a352d !important;
+}
+
+/* Forzar que el contenedor del panel respete el ancho */
+.ui-selectonemenu-panel.selectOneMenu-panel-wide .ui-selectonemenu-items {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    display: block !important;
+}
+
+/* Estilos para el campo seleccionado ===== */
+.selectOneMenu-interprete.ui-selectonemenu {
+    height: auto !important;               
+    min-height: 38px !important;           
+    display: inline-flex !important;      
+    align-items: stretch !important;       
+    position: relative !important;
+}
+
+/* Contenedor del label (texto seleccionado) */
+.selectOneMenu-interprete .ui-selectonemenu-label {
+    white-space: normal !important;         
+    word-wrap: break-word !important;      
+    word-break: break-word !important;      
+    line-height: 1.4 !important;           
+    height: auto !important;                 
+    min-height: 38px !important;            
+    padding: 8px 12px !important;            
+    padding-right: 30px !important;         
+    overflow: visible !important;            
+    text-overflow: clip !important;           
+    background: transparent !important;
+    border: none !important;
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Ajuste del trigger (flecha) para que se mantenga a la derecha */
+.selectOneMenu-interprete .ui-selectonemenu-trigger {
+    height: auto !important;                
+    min-height: 38px !important;            
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 30px !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+
+.ui-selectonemenu .ui-selectonemenu-label.ui-inputfield {
+    padding: 8px 12px !important;
+    height: auto !important;
+    min-height: 38px !important;
+    line-height: 1.4 !important;
+}
+
+/* Estado focus del campo */
+.selectOneMenu-interprete.ui-state-focus {
+    border-color: #0F4C42 !important;
+    box-shadow: 0 0 0 0.2rem rgba(15, 76, 66, 0.25) !important;
+}
+
+/* Ajuste para cuando el dropdown está vacío o tiene placeholder */
+.selectOneMenu-interprete .ui-selectonemenu-label.ui-placeholder {
+    color: #999 !important;
+    white-space: nowrap !important;        
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Ajuste responsivo */
+@media screen and (max-width: 768px) {
+    .ui-selectonemenu-panel.selectOneMenu-panel-wide {
+        max-width: 95vw !important;
+        min-width: 280px !important;
+        left: 2.5vw !important; /* Centrar en móviles */
+    }
+    
+    .ui-selectonemenu-panel.selectOneMenu-panel-wide .ui-selectonemenu-items .ui-selectonemenu-item {
+        padding: 14px 15px !important;
+        font-size: 15px !important;
+    }
+    
+    .selectOneMenu-interprete .ui-selectonemenu-label {
+        font-size: 14px !important;
+        padding: 10px 12px !important;
+        padding-right: 30px !important;
+    }
+    
+    .modal-guinda {
+        width: 90vw !important;
+        max-width: 90vw !important;
+    }
+
+    .modal-guinda.ui-dialog {
+        width: 90vw !important;
+        max-width: 90vw !important;
+        top: 0vw !important;
+    }
+}
+
+
+/*Estilo para los fileupload o cargaDocumento del interprete*/
+.carga-documento-span.ui-fileupload .ui-button span{
+	margin: 0 0 0 25px;
+}
+
+.carga-documento-span .ui-button.ui-state-hover {
+	background: none;
+	border-color: #fff;
+	outline: none !important;
+}
+
+.carga-documento-span .ui-button.ui-state-focus {
+	box-shadow: none !important;
+	outline: none !important;
+}
+
+/*Estilos que se utilizan en el componente de domicilio*/
+.red-border{
+	border-color: red !important;	
+}
+
+.black-border{
+	border-color: #CED4DA !important;	
+}
+
+/*Estilo para los datePicker del interprete*/
+
+
+/*.ui-datepicker td a,.ui-datepicker td a.ui-state-default,.ui-datepicker td span,.ui-datepicker td span.ui-state-default {*/
+/*    display: contents !important;*/
+/*    width: auto !important;*/
+/*}*/
+
+.datepicker-interprete.ui-calendar input{
+	background: #FFFFFF;
+	border: 1px solid #CED4DA;
+	border-radius: 4px;
+	height: 38px;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 1rem;
+	line-height: 24px;
+	color: #646D6C;
+	background-image: url(/resources/img/ic_calendar.svg);
+    background-repeat: no-repeat;
+    background-position: 98% 50%;
+}
+
+.datepicker-xs input {
+    height: 24px !important;
+    min-height: 24px !important;
+
+    font-size: 11px !important;
+
+    padding: 1px 4px !important;
+
+    border-radius: 4px !important;
+}
+
+.datepicker-xs .ui-button {
+    width: 24px !important;
+    height: 24px !important;
+
+    min-height: 24px !important;
+}
+
+.datepicker-xs .ui-button .ui-icon {
+    font-size: 10px !important;
+}
+
+.datepicker-xs .ui-datepicker-trigger {
+    padding: 0 !important;
+}
+
+
+.datepicker-xs input {
+    height: 24px !important;
+    font-size: 11px !important;
+}
+
+.datepicker-xs-panel {
+    font-size: 11px !important;
+}
+
+.datepicker-xs-panel .ui-datepicker-calendar td {
+    padding: 0px !important;
+}
+
+.datepicker-xs-panel .ui-datepicker-calendar td > a.ui-state-default {
+    width: 28px !important;
+    height: 20px !important;
+    min-width: 25px !important;
+    min-height: 20px !important;
+    line-height: 20px !important;
+    font-size: 11px !important;
+    padding: 0px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.datepicker-xs-panel .ui-datepicker-calendar td > span.ui-state-default {
+    width: 28px !important;
+    height: 20px !important;
+    min-width: 25px !important;
+    min-height: 20px !important;
+    line-height: 20px !important;
+    font-size: 11px !important;
+    padding: 0px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.datepicker-xs-panel td.ui-datepicker-other-month a.ui-state-default {
+    opacity: 0.3 !important;
+    width: 28px !important;
+    height: 20px !important;
+    font-size: 11px !important;
+}
+
+
+/*Estilo para el * de los requeridos*/
+.ui-outputlabel .ui-outputlabel-rfi {
+    color: #3290ED;
+}
+
+/*Estilos para el componente radio bot�n*/
+.radioboton-label-interprete{
+	cursor: pointer; 
+	display: inline;
+	margin: 0 16px 0 8px;
+	vertical-align: middle;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 32px;
+	letter-spacing: -0.5px;
+	color: #6F7271;
+}
+
+.radioboton-interprete.ui-radiobutton .ui-radiobutton-box.ui-state-active .ui-icon-bullet {
+    background: #235B4E;
+}
+
+.radioboton-interprete.ui-radiobutton .ui-radiobutton-box.ui-state-active {
+    border-color: #235B4E !important;
+    background: none;
+    color: #ffffff;
+}
+.radioboton-interprete.ui-radiobutton .ui-radiobutton-box.ui-state-active.ui-state-hover {
+    background: none;
+    box-shadow: 0 0 0 0.2em #235B4E !important;
+}
+.radioboton-interprete.ui-radiobutton .ui-radiobutton-box.ui-state-focus {
+    box-shadow: 0 0 0 0.2em #235B4E !important;
+}
+.radioboton-interprete.ui-radiobutton .ui-radiobutton-box.ui-state-hover {
+    border-color: #235B4E !important;
+}
+.radioboton-interprete.ui-radiobutton .ui-radiobutton-box {
+    border: 1px solid #D6D9D9;
+}
+
+/* MEDIA QUERY PARA AJUSTAR LABEL EN UPLOADFILE */
+@media screen and (max-width: 40em){
+	.carga-documento-span.ui-fileupload .ui-button span {
+		margin: -12px 0px 0px 4px !important;
+	}	
+}
+
+
+/* Estilos para el panel de Información de la firma del Ciudadano*/
+.datos-firma-grid {
+    margin: 15px 0;
+    width: 100%;
+}
+
+.titulo-firma-ciudadano {
+    margin-bottom: 15px;
+    border-bottom: 2px solid #BC955C ;
+    padding-bottom: 5px;
+}
+
+.titulo-firma-ciudadano h3 {
+    color: #BC955C ;
+    font-size: 1.2em;
+    margin: 0;
+    font-weight: 500;
+}
+
+.alineacion-izquierda-datos-ciudadano td {
+    text-align: left !important;
+}
+
+
+.label-left {
+    padding-right: 20px;
+    vertical-align: top;
+}
+
+.value-left {
+    min-width: 300px;
+    word-break: break-word;
+}
+
+
+.label-text-ciudadano {
+    font-weight: bold;  
+    font-size: 0.8em !important; 
+    color: #2d3748;
+}
+
+.value-text-ciudadano {
+    font-size: 0.75em  !important;   
+    color: #4a5568;
+    line-height: 1.5;
+}
+
+.custom-warning-message {
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	background: #ffecb3;
+	border: 1px solid #ffca28;
+	color: #7f6003;
+	padding: 14px 16px;
+	border-radius: 6px;
+	margin-bottom: 15px;
+	font-size: 16px;
+    font-weight: 600;
+	border-width: 0 0 0 6px;
+	}
+
+.warning-icon{
+    font-family: "primeicons" !important;
+    font-style: normal;
+    font-weight: normal;
+    display: inline-block;
+    background: none;
+    font-size: 1.5rem !important;
+    margin: 0 0.5rem 0 0;
+    color: #7f6003;
+}
+
+.input-text-dynamic-table {
+    font-size: 16px !important;
+    font-style: normal !important;
+}
+
+.input-text-dynamic-table::placeholder {
+    font-size: 16px !important;
+    font-style: normal !important;
+}
+
+.modal-guinda .ui-dialog-title {
+    font-size: 17px !important;
+}
+

@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    JBoss, Home of Professional Open Source
+    Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+    contributors by the @authors tag. See the copyright.txt in the
+    distribution for a full listing of individual contributors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+	<ui:define name="content">
+
+		<f:metadata>
+			<f:event listener="#{authenticatorBean.actualizaContextCaptcha}" type="preRenderView"></f:event>
+		</f:metadata>
+			
+<!-- 		<p:outputPanel style="padding-top: 1rem;"> -->
+<!-- 			<p:panelGrid id="contenedorIndicadores" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12 ui-sm-12 adip-contenedor-widgets" layout="grid"  -->
+<!-- 				styleClass="ui-panelgrid-blank ui-fluid grecaFooterConsulta indicadoresAlto"  -->
+<!-- 	            style="max-width:1121px;margin:0 auto; width:100% !important;" rendered="true">  -->
+<!-- 	            style="padding: 8.74px 0;"  -->
+<!-- 	            <div id="widget" class="indicadoresAlto"> -->
+<!-- 	                 <iframe src="https://www.cdmx.gob.mx/widget/" title="indicadores CDMX" frameborder="0" framespacing="0" width="100%" ></iframe> -->
+<!-- 	            </div> -->
+<!-- 	        </p:panelGrid> -->
+<!--         </p:outputPanel> -->
+
+		<p:outputPanel id="Contenedor" style="max-width: 1121px; margin: auto;"
+			styleClass="#{indexBean.proyectoDTO eq null and seccionesProyectoBean.proyectoDTO.idProyecto eq null ? 'padding-cliente-vacio' : 'padding-cliente'}">
+
+			<!-- VALIDACIÓN PARA QUE SI NO HAY NINGUN PROYECTO SE MUESTRE UN MENSAJE  -->
+			<c:if test="${indexBean.proyectoDTO eq null}">
+				<p:outputPanel
+					style="padding: 10% 5%; background: #FFF; border-radius: 5px;">
+					<p:panelGrid id="pnlTitulo" columns="1"
+						columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+						styleClass="parrafo1 ui-panelgrid-blank ui-fluid"
+						style="padding-bottom: 35px;">
+						<p:outputLabel styleClass="titulo-home-tramite"
+							value="Sistema en mantenimiento" />
+					</p:panelGrid>
+					<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
+						style="text-align: center;">
+
+						<p:outputLabel styleClass="titulo-home-tramite"
+							value="El sistema se encuentra temporalmente inactivo, por favor intente ingresar más tarde."
+							style="font-size: 20px !important;" />
+						<p:outputLabel styleClass="titulo-home-tramite"
+							value="¡Lamentamos los inconvenientes presentados!"
+							style="font-size: 20px !important;" />
+					</p:panelGrid>
+				</p:outputPanel>
+			</c:if>
+
+			<c:if test="${indexBean.proyectoDTO ne null}">
+			<!-- VALIDACIÓN PARA HOME TRAMITE -->
+			<c:if
+				test="${indexBean.proyectoDTO.catTipoProyectoDTO.idTipoProyecto eq 1}">
+				<p:outputPanel
+					style="background: white;border-radius: 18px 18px 0px 0px;">
+					<p:outputPanel style="display: flex;justify-content: center;">
+						<p:graphicImage styleClass="first-section__image" width="1200" value="#{indexBean.homeTramiteDTO.rutaImagen}"
+							height="126" cache="false"/>
+					</p:outputPanel>
+					<p:outputPanel id="idPnlTituloHome">
+						<h2 class="titulo-home-tramite">#{indexBean.proyectoDTO.nombreProyecto}</h2>
+					</p:outputPanel>
+
+					<p:outputPanel
+						style="padding: 2% 0 2%; text-align: center; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px;">
+						<h:form id="frmIniciarSesion">
+
+							<p:panelGrid columns="1"
+								columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+								styleClass="ui-panel-sin-pading ">
+								<p:column id="colManifiesto"
+									style="display: flex;justify-content: center;margin-top:-40px;"
+									rendered="#{indexBean.homeTramiteDTO.legalesDTO.contieneManifiesto eq true}">
+									<p:selectBooleanCheckbox id="chkManifiesto"
+										value="#{authenticatorBean.aceptaManifiesto}"
+										styleClass="motor-check-box" style="text-align:center;">
+										<p:ajax process="@this chkManifiesto"
+											update="@form" />
+									</p:selectBooleanCheckbox>
+									<p:outputLabel value="He leído y acepto el"
+										style="margin-left: 10px;margin-top: 3px;">
+										<p:commandLink
+											value="Manifiesto bajo protesta de decir verdad."
+											onclick="PF('mdlManifiesto').show();"
+											style="margin-left: 5px;color: #007BFF;text-decoration-line: underline;" />
+									</p:outputLabel>
+
+								</p:column>
+							</p:panelGrid>
+
+							<p:panelGrid id="pnlBtnInicSes" columns="1"
+								columnClasses="ui-xl-12 ui-lg-12 ui-g-12 ui-md-12 ui-sm-12"
+								layout="grid">
+								<p:column
+									rendered="#{seccionesProyectoBean.accesoLlaveDTO.autenticacionCiudadano eq true}">
+									<p:commandButton id="btnIniciaSesionLlave"
+										value="#{!authenticatorBean.ingresaDesdeLlave and authenticatorBean.usuarioLogueado eq null ? msg.home_txt_ingresar_tramite_no_llave : msg.home_txt_continuar_tramite}"	
+										action="#{authenticatorBean.redirectUrlLoginCDMX(1,false)}"
+										disabled="#{indexBean.homeTramiteDTO.legalesDTO.contieneManifiesto eq true and authenticatorBean.aceptaManifiesto eq false or (indexBean.estadoSistemaDTO.catEstadosSistemaDTO.idEstadoSistema eq 5)}"
+										immediate="true"
+										rendered="#{!authenticatorBean.ingresaDesdeLlave}"
+										style="font-size: 14px !important; text-align: left !important;line-height: 10px !important;"
+										styleClass="boton-continuar-llave-home" escape="false" />
+
+									<p:commandButton id="btnContinuaConLlave"
+										value="#{authenticatorBean.ingresaDesdeLlave and authenticatorBean.usuarioLogueado eq null ? msg.home_txt_ingresar_tramite_llave : msg.home_txt_continuar_tramite}"
+										action="#{authenticatorBean.redirectUrlLoginCDMX(1,false)}"
+										immediate="true"
+										disabled="#{indexBean.estadoSistemaDTO.catEstadosSistemaDTO.idEstadoSistema eq 5}"
+										rendered="#{authenticatorBean.ingresaDesdeLlave}"
+										style="font-size: 14px !important; text-align: left !important;line-height: 10px !important;"
+										styleClass="boton-continuar-llave-home botonAncho "
+										escape="false" />
+								</p:column>
+								<p:column
+									rendered="#{seccionesProyectoBean.accesoLlaveDTO.autenticacionCiudadano eq false}">
+									<p:commandButton id="btnIngresaTramite"
+										action="#{generarFormularioApplication.iniciarCapturaFormulario()}"
+										value="Iniciar trámite"
+										disabled="#{indexBean.homeTramiteDTO.legalesDTO.contieneManifiesto eq true and authenticatorBean.aceptaManifiesto eq false or (indexBean.estadoSistemaDTO.catEstadosSistemaDTO.idEstadoSistema eq 5)}"
+										immediate="true"
+										style="font-size: 14px !important; text-align: left !important;line-height: 10px !important;"
+										styleClass="boton-continuar-llave-home" escape="false" />
+								</p:column>
+							</p:panelGrid>
+							
+							<p:panelGrid columns="1"
+								columnClasses="ui-xl-12 ui-lg-12 ui-g-12 ui-md-12 ui-sm-12"
+								layout="grid">
+								
+								<p:outputPanel style="margin-bottom:10px" 
+									rendered="#{indexBean.homeProgramaDTO.legalesDTO.contieneAvisoSimplificado == true or indexBean.homeTramiteDTO.legalesDTO.contieneAvisoSimplificado == true}">
+									<p:link styleClass="titulo-texto-footer"  style="letter-spacing: 0.05em; color: black;text-decoration: revert;font-size: 10px;" 
+										href="#{indexBean.incializarAvisoSimplificado()}" target="_blank" value="Aviso de privacidad">
+										<p:ajax event="click" update="@form" />
+									</p:link>	
+								</p:outputPanel>
+
+							</p:panelGrid>
+						</h:form>
+
+						<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+							layout="grid" styleClass="ui-panel-sin-pading caja-informativa">
+							<p:column style="display: flex;justify-content: center;"
+								rendered="#{indexBean.homeTramiteDTO.notificacion eq true}">
+								<p:graphicImage width="20" height="20"
+									value="/resources/img/informacion_home.png" cache="false"
+									style="margin-left: 25px;" />
+								<p:outputLabel style="margin-left: 10px;margin-right: 10px;"
+									value="#{indexBean.homeTramiteDTO.notificacionEmpezar}" />
+							</p:column>
+						</p:panelGrid>
+
+						<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+							layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading caja-divisora-cafe" />
+
+						<p:panelGrid columns="2"
+							columnClasses="ui-g-12 ui-md-6 ui-lg-6, ui-g-12 ui-md-6 ui-lg-6"
+							layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading"
+							style="margin-top: -5px;margin-left: 25px;">
+
+							<p:panelGrid id="pnlIzquierdo" columns="1" layout="grid"
+								style="background: #ffffff;justify-content: center;padding-right: 5px;word-wrap: break-word !important;"
+								styleClass="ui-panel-sin-pading">
+								<p:column id="colRequisitosTramite">
+									<p:outputLabel value="#{msg.home_txt_requisitos}" 
+										styleClass="lbl-requisitos-tramite" />
+								</p:column>
+								<ul id="idStepRequisitos" class="StepProgress">
+									<ui:repeat var="requisito"
+										value="#{indexBean.homeTramiteDTO.lstRequisitos}">
+										<li style="text-align: left; margin-left: 40px;"
+											class="StepProgress-item #{requisito.orden lt indexBean.homeTramiteDTO.lstRequisitos.size()-1 ? 'current' : 'last'}">
+											<p:outputLabel styleClass="lbl-step-progress label-lbl-step-progress"
+												value="#{requisito.descripcion}" />
+											<ul id="idUlEspecificaciones">
+												<ui:repeat var="esp" value="#{requisito.subLst}">
+													<li><p:outputLabel
+															styleClass="lbl-step-progress-especificaciones label-lbl-step-progress-especificaciones"
+															value="#{esp.descripcion}" /></li>
+												</ui:repeat>
+											</ul>
+										</li>
+									</ui:repeat>
+								</ul>
+							</p:panelGrid>
+
+							<p:panelGrid id="pnlDerecho" columns="1" layout="grid"
+								styleClass="ui-panel-sin-pading"
+								style="background: #F2F2F2;text-align: left;display: grid;justify-content: center;height: 100%;">
+
+								<p:column rendered="#{indexBean.homeTramiteDTO.costo eq true}">
+									<p:outputLabel value="Costo del trámite:"
+										styleClass="lbl-costo-tramite"/>
+									<ul id="idUlCosto">
+										<li><label class="lbl-descripcion-costo">#{indexBean.homeTramiteDTO.costoTramite}</label>
+										</li>
+									</ul>
+								</p:column>
+
+								<p:column rendered="#{indexBean.homeTramiteDTO.exepcion eq true}">
+									<p:outputLabel value="Este trámite no aplica para:"
+										styleClass="lbl-excepcion-tramite"/>
+									<ui:repeat var="excepcion"
+										value="#{indexBean.homeTramiteDTO.lstExepciones}">
+										<ul id="idUlExcepcion">
+											<li><label class="lbl-descripcion-excepcion">#{excepcion.descripcion}</label>
+											</li>
+										</ul>
+									</ui:repeat>
+								</p:column>
+
+							</p:panelGrid>
+
+						</p:panelGrid>
+						<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+							layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading caja-divisora-cafe"
+							style="margin-top: -5px;" />
+						<!-- 						</h:form> -->
+					</p:outputPanel>
+				</p:outputPanel>
+			</c:if>
+
+			<!-- VALIDACIÓN PARA HOME PROGRAMA SOCIAL -->
+			<c:if
+				test="${indexBean.proyectoDTO.catTipoProyectoDTO.idTipoProyecto eq 2}">
+				<p:outputPanel
+					style="background: white;border-radius: 18px 18px 0px 0px;">
+					<p:outputPanel style="display: flex;justify-content: center;">
+						<p:graphicImage styleClass="first-section__image" width="1200"  value="#{indexBean.homeProgramaDTO.rutaImagen}"
+							height="126" cache="false" />
+					</p:outputPanel>
+					<p:outputPanel style="margin-bottom: 45px;" id="idPnlTituloHome">
+						<h2 class="titulo-home-tramite">#{indexBean.proyectoDTO.nombreProyecto}</h2>
+						<h4 class="lbl-dependencia" style="padding-left: 15px;padding-right: 15px;">Dependencia:
+							#{indexBean.proyectoDTO.catDependenciaDTO.descripcion}</h4>
+					</p:outputPanel>
+
+					<p:outputPanel
+						style="padding: 2% 0 2%; text-align: center; border-bottom-right-radius: 8px; border-bottom-left-radius: 8px;">
+						<h:form id="frmIniciarSesion">
+
+							<p:panelGrid columns="1"
+								columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+								styleClass="ui-panel-sin-pading ">
+								<p:column
+									style="display: flex;justify-content: center;margin-top:-40px;"
+									rendered="#{indexBean.homeProgramaDTO.legalesDTO.contieneManifiesto eq true}">
+									<p:selectBooleanCheckbox id="chkManifiesto"
+										value="#{authenticatorBean.aceptaManifiesto}"
+										styleClass="motor-check-box" style="text-align:center;" >
+										<p:ajax process="@this chkManifiesto" event="change"
+											update="@form"/>
+									</p:selectBooleanCheckbox>
+									<p:outputLabel value="He leído y acepto el"
+										style="margin-left: 10px;margin-top: 3px;">
+										<p:commandLink
+											value="Manifiesto bajo protesta de decir verdad."
+											onclick="PF('mdlManifiesto').show();"
+											style="margin-left: 5px;color: #007BFF;text-decoration-line: underline;" />
+									</p:outputLabel>
+
+								</p:column>
+							</p:panelGrid>
+
+							<p:panelGrid id="pnlBtnInicSes" columns="1"
+								columnClasses="ui-xl-12 ui-lg-12 ui-g-12 ui-md-12 ui-sm-12"
+								layout="grid">
+								<p:column
+									rendered="#{seccionesProyectoBean.accesoLlaveDTO.autenticacionCiudadano eq true}">
+									<p:commandButton id="btnIniciaSesionLlave"
+										value="#{!authenticatorBean.ingresaDesdeLlave and authenticatorBean.usuarioLogueado eq null ? msg.home_txt_ingresar_programa_no_llave : msg.home_txt_continuar_programa}"
+										action="#{authenticatorBean.redirectUrlLoginCDMX(1,false)}"
+										disabled="#{indexBean.homeProgramaDTO.legalesDTO.contieneManifiesto eq true and authenticatorBean.aceptaManifiesto eq false or (indexBean.estadoSistemaDTO.catEstadosSistemaDTO.idEstadoSistema eq 5)}"
+										immediate="true"
+										rendered="#{!authenticatorBean.ingresaDesdeLlave}"
+										style="font-size: 14px !important; text-align: left !important;line-height: 10px !important;"
+										styleClass="boton-continuar-llave-home botonAncho "
+										escape="false" />
+
+									<p:commandButton id="btnContinuaConLlave"
+										value="#{authenticatorBean.ingresaDesdeLlave and authenticatorBean.usuarioLogueado eq null ? msg.home_txt_ingresar_programa_llave : msg.home_txt_continuar_programa}"
+										action="#{authenticatorBean.redirectUrlLoginCDMX(1,false)}"
+										immediate="true"
+										disabled="#{indexBean.estadoSistemaDTO.catEstadosSistemaDTO.idEstadoSistema eq 5}"
+										rendered="#{authenticatorBean.ingresaDesdeLlave}"
+										style="font-size: 14px !important; text-align: left !important;line-height: 10px !important;"
+										styleClass="boton-continuar-llave-home botonAncho "
+										escape="false" />
+								</p:column>
+								<p:column
+									rendered="#{seccionesProyectoBean.accesoLlaveDTO.autenticacionCiudadano eq false}">
+									<p:commandButton id="btnIngresaPrograma"
+										action="#{generarFormularioApplication.iniciarCapturaFormulario()}"
+										value="Iniciar programa"
+										disabled="#{indexBean.homeProgramaDTO.legalesDTO.contieneManifiesto eq true and authenticatorBean.aceptaManifiesto eq false or (indexBean.estadoSistemaDTO.catEstadosSistemaDTO.idEstadoSistema eq 5)}"
+										immediate="true"
+										style="font-size: 14px !important; text-align: left !important;line-height: 10px !important;"
+										styleClass="boton-continuar-llave-home" escape="false" />
+								</p:column>
+							</p:panelGrid>
+							
+							<p:panelGrid columns="1"
+								columnClasses="ui-xl-12 ui-lg-12 ui-g-12 ui-md-12 ui-sm-12"
+								layout="grid">
+								
+								<p:outputPanel style="margin-bottom:10px" 
+									rendered="#{indexBean.homeProgramaDTO.legalesDTO.contieneAvisoSimplificado == true or indexBean.homeTramiteDTO.legalesDTO.contieneAvisoSimplificado == true}">
+									<p:link styleClass="titulo-texto-footer"  style="letter-spacing: 0.05em; color: black;text-decoration: revert;font-size: 10px;" 
+										href="#{indexBean.incializarAvisoSimplificado()}" target="_blank" value="Aviso de privacidad">
+										<p:ajax event="click" update="@form" />
+									</p:link>	
+								</p:outputPanel>
+
+							</p:panelGrid>
+						</h:form>
+
+						<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+							layout="grid" styleClass="ui-panel-sin-pading caja-informativa">
+							<p:column style="display: flex;justify-content: center;"
+								rendered="#{indexBean.homeProgramaDTO.notificacion eq true}">
+								<p:graphicImage width="20" height="20"
+									value="/resources/img/informacion_home.png" cache="false"
+									style="margin-left: 25px;" />
+								<p:outputLabel style="margin-left: 10px;margin-right: 10px;"
+									value="#{indexBean.homeProgramaDTO.notificacionEmpezar}" />
+							</p:column>
+						</p:panelGrid>
+
+						<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+							layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading caja-divisora-cafe" />
+
+						<p:panelGrid columns="2"
+							columnClasses="ui-g-12 ui-md-6 ui-lg-6, ui-g-12 ui-md-6 ui-lg-6"
+							layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading"
+							style="margin-top: -5px;">
+
+							<p:panelGrid id="pnlIzquierdo" columns="4" layout="grid"
+								style="background: #ffffff;justify-content: center;padding-right: 5px;word-wrap: break-word !important;"
+								columnClasses="ui-g-12 ui-md-12 ui-lg-12, ui-g-12 ui-md-12 ui-lg-12, ui-g-12 ui-md-12 ui-lg-12, ui-g-12 ui-md-12 ui-lg-12">
+
+								<p:panelGrid columns="2" layout="grid"
+									styleClass="ui-panel-sin-pading"
+									columnClasses="ui-g-12 ui-md-12 ui-lg-12, ui-g-12 ui-md-12 ui-lg-12">
+									<p:column style="display: flex;align-items: center;">
+										<p:graphicImage width="30" height="30"
+											value="/resources/img/elipse-home.png" cache="false" />
+										<p:outputLabel value="Objetivo del Programa"
+											style="margin-left:15px;" styleClass="lbl-requisitos-tramite" />
+									</p:column>
+									<p:column style="margin-top: -20px;">
+										<ul>
+											<ui:repeat var="objetivo"
+												value="#{indexBean.homeProgramaDTO.lstObjetivos}">
+												<li style="text-align: left;"><p:outputLabel
+														value="#{objetivo.descripcion}"
+														styleClass="lbl-home-programa" /></li>
+											</ui:repeat>
+										</ul>
+									</p:column>
+								</p:panelGrid>
+
+								<p:panelGrid columns="2" layout="grid"
+									styleClass="ui-panel-sin-pading"
+									columnClasses="ui-g-12 ui-md-12 ui-lg-12, ui-g-12 ui-md-12 ui-lg-12">
+									<p:column style="display: flex;align-items: center;">
+										<p:graphicImage width="30" height="30"
+											value="/resources/img/elipse-home.png" cache="false" />
+										<p:outputLabel value="Población objetivo"
+											style="margin-left:15px;" styleClass="lbl-requisitos-tramite" />
+									</p:column>
+									<p:column style="margin-top: -20px;">
+										<ul>
+											<ui:repeat var="poblacion"
+												value="#{indexBean.homeProgramaDTO.lstPoblacion}">
+												<li style="text-align: left;"><p:outputLabel
+														value="#{poblacion.descripcion}"
+														styleClass="lbl-home-programa" /></li>
+											</ui:repeat>
+										</ul>
+									</p:column>
+								</p:panelGrid>
+
+								<p:panelGrid columns="2" layout="grid"
+									styleClass="ui-panel-sin-pading"
+									columnClasses="ui-g-12 ui-md-12 ui-lg-12, ui-g-12 ui-md-12 ui-lg-12"
+									rendered="#{indexBean.homeProgramaDTO.cicloPrograma eq true}">
+									<p:column style="display: flex;align-items: center;">
+										<p:graphicImage width="30" height="30"
+											value="/resources/img/elipse-home.png" cache="false" />
+										<p:outputLabel value="Ciclo del programa"
+											style="margin-left:15px;" styleClass="lbl-requisitos-tramite" />
+									</p:column>
+									<p:column style="text-align: left;margin-top: -20px;">
+										<ul>
+											<li><p:outputLabel
+													value="#{indexBean.homeProgramaDTO.ciclo}"
+													styleClass="lbl-home-programa" /></li>
+										</ul>
+									</p:column>
+								</p:panelGrid>
+
+								<p:panelGrid columns="2" layout="grid"
+									styleClass="ui-panel-sin-pading"
+									columnClasses="ui-g-12 ui-md-12 ui-lg-12, ui-g-12 ui-md-12 ui-lg-12">
+									<p:column style="display: flex;align-items: center;">
+										<p:graphicImage width="30" height="30"
+											value="/resources/img/elipse-home.png" cache="false" />
+										<p:outputLabel value="Requisitos de acceso"
+											style="margin-left:15px;" styleClass="lbl-requisitos-tramite" />
+									</p:column>
+									<p:column style="margin-top: -20px;">
+										<ul id="idUlRequisito">
+											<ui:repeat var="requisito"
+												value="#{indexBean.homeProgramaDTO.lstRequisitos}">
+												<li style="text-align: left;"><label
+													class="lbl-home-programa">#{requisito.descripcion}</label>
+													<ul id="idUlEspecificaciones">
+														<ui:repeat var="esp" value="#{requisito.subLst}">
+															<li><p:outputLabel
+																	styleClass="lbl-step-progress-especificaciones label-lbl-step-progress-especificaciones"
+																	value="#{esp.descripcion}" /></li>
+														</ui:repeat>
+													</ul></li>
+											</ui:repeat>
+										</ul>
+									</p:column>
+								</p:panelGrid>
+
+							</p:panelGrid>
+
+							<p:panelGrid id="pnlDerechoPS" columns="4" layout="grid"
+								style="background: #F2F2F2;text-align: left;display: grid;justify-content: center;height: 100%;"
+								styleClass="ui-panel-sin-pading"
+								columnClasses="ui-g-12 ui-md-12 ui-lg-12, ui-g-12 ui-md-12 ui-lg-12, ui-g-12 ui-md-12 ui-lg-12, ui-g-12 ui-md-12 ui-lg-12">
+
+								<p:panelGrid columns="2" layout="grid"
+									styleClass="ui-panel-sin-pading"
+									columnClasses="ui-g-12 ui-md-12 ui-lg-12, ui-g-12 ui-md-12 ui-lg-12">
+									<p:column style="margin-left: 40px;">
+										<p:outputLabel value="Apoyo Otorgado"
+											styleClass="lbl-apoyo-otorgado" />
+									</p:column>
+									<p:column
+										style="text-align: left;margin-top: -10px;margin-left: 40px;">
+										<p:outputLabel value="#{indexBean.homeProgramaDTO.tipoApoyo}"
+											styleClass="lbl-home-programa-pnl-derecho" />
+									</p:column>
+								</p:panelGrid>
+
+								<p:panelGrid columns="1" layout="grid"
+									styleClass="ui-panel-sin-pading"
+									columnClasses="ui-g-12 ui-md-12 ui-lg-12">
+									<ui:repeat var="apoyo"
+										value="#{indexBean.homeProgramaDTO.lstApoyos}">
+										<ul id="idApoyos">
+											<li><label class="lbl-descripcion-excepcion label-lbl-descripcion-excepcion">#{apoyo.descripcion}</label>
+											</li>
+										</ul>
+									</ui:repeat>
+								</p:panelGrid>
+
+								<p:panelGrid columns="2" layout="grid"
+									styleClass="ui-panel-sin-pading"
+									columnClasses="ui-g-12 ui-md-12 ui-lg-12, ui-g-12 ui-md-12 ui-lg-12">
+									<p:column style="margin-left: 40px;">
+										<p:outputLabel value="Duración del apoyo"
+											styleClass="lbl-apoyo-otorgado" />
+									</p:column>
+									<p:column
+										style="text-align: left;margin-top: -10px;margin-left: 40px;">
+										<p:outputLabel
+											value="#{indexBean.homeProgramaDTO.duracionApoyo}"
+											styleClass="lbl-home-programa-pnl-derecho" />
+									</p:column>
+								</p:panelGrid>
+
+								<p:panelGrid columns="2" layout="grid"
+									styleClass="ui-panel-sin-pading"
+									columnClasses="ui-g-12 ui-md-12 ui-lg-12, ui-g-12 ui-md-12 ui-lg-12"
+									rendered="#{indexBean.homeProgramaDTO.accesoPrograma eq true}">
+									<p:column style="margin-left: 40px;">
+										<p:outputLabel
+											value="¿Puedo acceder a este y otro programa sumultáneamente?"
+											styleClass="lbl-apoyo-otorgado" />
+									</p:column>
+									<p:column
+										style="text-align: left;margin-top: -10px;margin-left: 40px;">
+										<p:outputLabel
+											value="#{indexBean.homeProgramaDTO.accesoPrograma eq true ? 'Sí' : 'No'}"
+											styleClass="lbl-home-programa-pnl-derecho" />
+									</p:column>
+								</p:panelGrid>
+
+							</p:panelGrid>
+
+						</p:panelGrid>
+						<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+							layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading caja-divisora-cafe"
+							style="margin-top: -5px;" />
+
+						<!-- 						</h:form> -->
+					</p:outputPanel>
+				</p:outputPanel>
+			</c:if>
+			</c:if>
+		</p:outputPanel>
+		
+		<!-- ACTUALIZACION AUTOMATICA CADA 2 MINUTOS-->
+		<h:form id="frmUpdate">
+			<p:poll interval="120" listener="#{indexBean.refrescarIndex()}" update="Contenedor"/>
+		</h:form>
+		
+		<!-- INICIA MODAL MANIFIESTO -->
+		<p:dialog id="mdlManifiestoProtesta"
+		          widgetVar="mdlManifiesto"
+		          showEffect="fade" responsive="true" modal="true"
+		          draggable="false" closable="false" resizable="false"
+		          width="629" styleClass="modal-responsivo" style="border-radius:10px;">
+		    <h:form id="frmModal">
+		        <p:panelGrid columns="2" columnClasses="ui-g-6 ui-md-6 ui-lg-6, ui-g-6 ui-md-6 ui-lg-6" layout="grid"
+		                     styleClass="ui-panelgrid-blank ui-fluid" style="padding:10px; align-items:center;">
+		            <p:column>
+		                <p:outputLabel value="Manifiesto" styleClass="lbl-titulo-modal" escape="false"/>
+		            </p:column>
+		            <p:column style="display:flex; justify-content:flex-end;">
+		                <p:graphicImage width="20" height="20"
+		                                value="/resources/img/close2.svg"
+		                                cache="false" style="cursor:pointer;"
+		                                onclick="PF('mdlManifiesto').hide();" />
+		            </p:column>		
+		        </p:panelGrid>
+		        <div style="padding:10px; max-height:300px; overflow-y:auto;">
+		            <p:outputLabel rendered="#{indexBean.proyectoDTO.catTipoProyectoDTO.idTipoProyecto eq 1}"
+		                value="#{indexBean.homeTramiteDTO.legalesDTO.cuerpoManifiesto}"
+		                styleClass="lbl-cuerpo-manifiesto" escape="false"/>
+		            <p:outputLabel value="#{indexBean.homeProgramaDTO.legalesDTO.cuerpoManifiesto}"
+		                rendered="#{indexBean.proyectoDTO.catTipoProyectoDTO.idTipoProyecto eq 2}"
+		                styleClass="lbl-cuerpo-manifiesto" escape="false"/>
+		        </div>
+		    </h:form>
+		</p:dialog>
+		<!-- FIN MODAL -->
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,3 @@
+--SE AGREGA NUEVA OPCION PARA MAXIMO PERMITIDO PARA CARGA DE ARCHIVOS
+
+INSERT INTO motor_interprete.cat_tamanio_archivos VALUES(5, '15 MB', true);

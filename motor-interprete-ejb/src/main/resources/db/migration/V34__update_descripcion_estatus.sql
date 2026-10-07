@@ -1,0 +1,1 @@
+UPDATE motor_interprete.cat_estatus_tramite SET descripcion_aviso='Presentado' WHERE id_estatus_tramite=7;

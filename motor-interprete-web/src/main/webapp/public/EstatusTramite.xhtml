@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	template="/WEB-INF/templates/default.xhtml">
+ 
+	<ui:define name="content">
+		
+		<h:form id="frmEstatusTramite">
+			<p:outputPanel style="padding: 5% 5%; max-width: 1121px; margin: auto;" >
+				<p:outputPanel id="oplEstatusTramite" style="background: #FFFFFF;border-radius: 8px;padding: 20px 20px;">
+					<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" style="text-align: center;padding-top: 30px;">
+						<p:outputLabel value="#{seccionesProyectoBean.proyectoDTO.nombreProyecto}" styleClass="lbl-nombre-proyecto" escape="false"/>
+					</p:panelGrid>
+				
+					<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" style="margin-top: 30px;">
+						<p:outputLabel value="#{msg.lbl_consulta_estatus_tramite_informacion}" styleClass="lbl-texto-estatus"/>
+					</p:panelGrid>
+					
+					<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" style="margin-top: 15px;">
+						<p:column style="display:flex;">
+							<p:outputLabel value="#{msg.lbl_consulta_estatus_tramite_no_solicitud}" styleClass="lbl-texto-estatus-negritas"/>
+							<p:outputLabel value="#{consultaEstatusTramiteBean.tramiteConsulta.folioSeguimiento}" styleClass="lbl-texto-estatus" style="margin-left: 15px;"/>
+						</p:column>
+					</p:panelGrid>
+					
+					<c:if test="${seccionesProyectoBean.accesoLlaveDTO.autenticacionCiudadano eq true}">
+						<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:column style="display:flex;">							
+								<p:outputLabel value="#{msg.lbl_consulta_estatus_tramite_nombre}" styleClass="lbl-texto-estatus-negritas"/>
+								<p:outputLabel value="#{consultaEstatusTramiteBean.usuarioTramite.nombre} #{consultaEstatusTramiteBean.usuarioTramite.primerApellido} #{consultaEstatusTramiteBean.usuarioTramite.segundoApellido}" styleClass="lbl-texto-estatus" style="margin-left: 15px;"/>
+							</p:column>
+						</p:panelGrid>
+					</c:if>
+					
+					<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:column style="display:flex;">						
+							<p:outputLabel value="#{msg.lbl_consulta_estatus_tramite_fecha}" styleClass="lbl-texto-estatus-negritas"/>
+							<p:outputLabel value="#{consultaEstatusTramiteBean.fecha}" styleClass="lbl-texto-estatus" style="margin-left: 15px;"/>
+						</p:column>
+					</p:panelGrid>
+					
+					<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:column style="display:flex;">						
+							<p:outputLabel value="#{msg.lbl_consulta_estatus_tramite_estatus}" styleClass="lbl-texto-estatus-negritas"/>
+							<p:outputLabel value="#{consultaEstatusTramiteBean.tramiteConsulta.catEstatusTramiteDTO.descripcion}" styleClass="lbl-texto-estatus" style="margin-left: 15px;"/>
+						</p:column>
+					</p:panelGrid>
+					
+					<c:if test="${seccionesProyectoBean.habilitarFirmadoTramites eq true}">
+						<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:column style="display:flex;">						
+								<p:outputLabel value="#{msg.lbl_consulta_estatus_cadena_firma}" styleClass="lbl-texto-estatus-negritas"/>
+							</p:column>
+						</p:panelGrid>
+						
+						<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:column style="display:flex;">						
+								<p:outputLabel value="#{consultaEstatusTramiteBean.firmaDTO.cadenaFirmada}" styleClass="lbl-texto-estatus"
+									style="float: right;display: flex;align-items: center;word-break: break-all;"/>
+							</p:column>
+						</p:panelGrid>
+						
+						<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:column style="display:flex;">						
+								<p:outputLabel value="#{msg.lbl_consulta_estatus_fecha_firma}" styleClass="lbl-texto-estatus-negritas"/>
+								<p:outputLabel value="#{consultaEstatusTramiteBean.fechaFirma}" styleClass="lbl-texto-estatus" style="margin-left: 15px;"/>
+							</p:column>
+						</p:panelGrid>					
+					</c:if>
+					
+					<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" style="margin-top: 20px;padding-bottom: 65px;">
+						<p:outputLabel value="#{seccionesProyectoBean.proyectoDTO.catDependenciaDTO.descripcion}" styleClass="lbl-texto-estatus-negritas"/>
+						<p:outputLabel value="#{msg.lbl_consulta_estatus_tramite_cdmx}" styleClass="lbl-texto-estatus-negritas"/>
+					</p:panelGrid>
+					
+				</p:outputPanel>
+			</p:outputPanel>
+		</h:form>
+	</ui:define>
+</ui:composition>

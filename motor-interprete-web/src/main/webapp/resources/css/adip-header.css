@@ -1,0 +1,268 @@
+@charset "UTF-8";
+ 
+/*@media screen and (max-width: 355px) {*/
+/*  .img-header {*/
+/*    width: 55%;*/
+/*  }*/
+/*  .header-sedeco{*/
+/*	font-size: 22px !important;*/
+/*  }*/
+/*  .header-siapem{*/
+/*	font-size: 8px !important;*/
+/*  }*/
+/*}*/
+
+/*
+body{
+	margin: 0 0;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    
+}
+/* Esta hoja de estilos es utilizada por el header de la aplicacion para que el header permanezca presente en la pagina en la parte superior cuando
+   en la pantalla se hace un scroll. El style .header es utilizado en el div del default.xhtml y el style .sticky es utilizado en el javascript onScrollHeader.js  */
+
+
+ /* Style the header */
+/*.header {*/
+/*  	height: auto !important;*/
+/*    background: #FFFFFF;*/
+/*    color: #f1f1f1;*/
+/*    text-align: left;*/
+/*    max-width: 1200px;*/
+/*    margin: 0 auto;*/
+/*}*/
+
+/*.line {*/
+/*  float: left;*/
+/*  width: 0.3px !important;*/
+/*  height: 34.6px;*/
+/*  border-right: solid 2px #898d8d;*/
+/*  margin: 10px auto !important;*/
+/*  padding-left: 10px !important;*/
+  
+/*}*/
+
+/*.header-sedeco{*/
+/*	font-family: sans-serif;*/
+/*	font-size: 12px;*/
+/*	font-weight: bold;*/
+/*	font-stretch: normal;*/
+/*	font-style: normal;*/
+/*	line-height: 1.17;*/
+/*	letter-spacing: normal;*/
+/*	color: #898d8d;*/
+/*	margin: 15px auto !important;*/
+/*	padding: 6px 5px 2px 10px;*/
+/*}*/
+
+/*.header-siapem{*/
+/*	font-family: sans-serif;*/
+/*	font-size: 10px;*/
+/*	font-weight: bold;*/
+/*	font-stretch: normal;*/
+/*	font-style: normal;*/
+/*	line-height: 1.17;*/
+/*	letter-spacing: normal;*/
+/*	color: #898d8d;*/
+/*	margin: 10px auto !important;*/
+/*	padding: 6px 5px 8px 5px;*/
+/*}*/
+
+/*.divicion {*/
+/*	margin: 0 auto;*/
+/*	width: 100%;*/
+/*	height: 32px !important;*/
+/*	background: #f8f8f8;*/
+/*}*/
+
+/* Page content */
+/*.content {*/
+/*  padding: 0px;*/
+/*  width: 100%;*/
+/*  height: 90%;*/
+/*  flex: 0 0 auto;*/
+/*}*/
+/*.contenido{*/
+/*	width: 100%;*/
+/*	height: 90%;*/
+/*	flex: 0 0 auto;*/
+	
+/*}*/
+
+/*.bajarContenido{*/
+/*	padding-top: 5rem !important;*/
+/*} */
+
+/* The sticky class is added to the header with JS when it reaches its scroll position */
+/*.sticky {*/
+/*  position: fixed;*/
+/*  top: 0;*/
+/*  width: 100%*/
+/*}*/
+
+/* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
+/*.sticky + .content {*/
+/*  padding-top: 102px;*/
+/*} */
+
+/* Estilo para Opción de expediente en Menú de usuario*/
+/*.adip-divider-menu {*/
+/*	width: 90% !important;*/
+/*	margin: auto !important;*/
+/*}*/
+
+/*.adip-divider-menu.ui-divider-solid.ui-divider-horizontal:before {*/
+/*	border-top-style: solid !important;*/
+/*}*/
+
+/*.adip-divider-menu.ui-divider-horizontal:before {*/
+/*	border-top: 1px rgba(148, 130, 163, 0.20) !important;*/
+/*}*/
+
+/*.adip-menu-output-01 {*/
+/*	color: #88185b !important;*/
+/*	font-size: 15px !important;*/
+/*	font-family: 'Montserrat' !important;*/
+/*	font-weight: 500 !important;*/
+/*	line-height: 15px !important;*/
+/*}*/
+
+/*.adip-menu-output-02 {*/
+/*	color: #88185b;*/
+/*	font-size: 15px;*/
+/*	font-family: 'Montserrat' !important;*/
+/*	font-weight: 900;*/
+/*	line-height: 15px;*/
+/*}*/
+
+/*.adip-menu-output-03 {*/
+/*	font-family: 'Montserrat' !important;*/
+/*	color: #9482A3;*/
+/*	font-size: 15.767px !important;*/
+/*	font-weight: 500;*/
+/*	line-height: 14.719px;*/
+/*}*/
+
+
+
+/*.adty-mobile {*/
+/*  display: none !important;*/
+/*}*/
+
+/*.adty-menu-btn-user .ui-button.ui-state-focus {*/
+/*  background: transparent !important;*/
+/*  border-color: transparent !important;*/
+/*  box-shadow: none !important;*/
+/*}*/
+
+/*#frmMenuMobile\:menuBtn_button span[class*="ui-button-text ui-c"] {*/
+/*  display: none !important;*/
+/*}*/
+
+/*#frmMenuMobile\:menuBtn_button {*/
+/*  border: 0 !important;*/
+/*}*/
+
+/*#frmMenuMobile\:menuBtn_menu {*/
+/*  left: calc(100% - 145px) !important;*/
+/*}*/
+
+/*@media screen and (max-width: 767px) {*/
+/*  .adty-mobile {*/
+/*    display: block !important;*/
+/*  }*/
+/*  .adty-menu-btn-user-menu.ui-shadow {*/
+/*    top: 120px !important;*/
+/*  }*/
+/*  .adty-menu-btn-user {*/
+/*    width: 49px;*/
+/*    vertical-align: super;*/
+/*    right: 2rem;*/
+/*    height: 32px !important;*/
+/*  }*/
+/*  .adty-menu-btn-user .ui-button-icon-only .ui-icon {*/
+/*    background-repeat: no-repeat;*/
+/*    width: 49px;*/
+/*    height: 24px;*/
+/*    top: 18% !important;*/
+/*    left: 42% !important;*/
+/*    margin-top: 0rem !important;*/
+/*    margin-left: 0rem !important;*/
+/*  }*/
+/*  .adty-icon-user {*/
+/*    background-image: url(/resources/img/mx/ic-usuario-login.svg) !important;*/
+/*    background-size: contain;*/
+/*  }*/
+/*}*/
+
+/*@media ( max-width : 480px) {*/
+/*  .adty-mobile {*/
+/*    display: block !important;*/
+/*  }*/
+/*  .adty-menu-btn-user-menu.ui-shadow {*/
+/*    top: 120px !important;*/
+/*  }*/
+/*  .adty-menu-btn-user .ui-button-icon-only .ui-icon {*/
+/*    background-repeat: no-repeat;*/
+/*    width: 49px;*/
+/*    height: 24px;*/
+/*    top: 18% !important;*/
+/*    left: 42% !important;*/
+/*  }*/
+/*  .adty-icon-user {*/
+/*    background-image: url(/resources/img/mx/ic-usuario-login.svg) !important;*/
+/*    background-size: contain;*/
+/*  }*/
+/*}*/
+
+.adty-mobile {
+  display: none !important;
+}
+
+.adty-menu-btn-user .ui-button.ui-state-focus {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+#frmMenuMobile\:menuBtn_button span[class*="ui-button-text ui-c"] {
+  display: none !important;
+}
+
+#frmMenuMobile\:menuBtn_button {
+  border: 0 !important;
+}
+
+#frmMenuMobile\:menuBtn_menu {
+  left: calc(100% - 145px) !important;
+}
+
+@media screen and (max-width: 767px) {
+  .adty-mobile {
+    display: block !important;
+  }
+  .adty-menu-btn-user-menu.ui-shadow {
+    top: 120px !important;
+  }
+  .adty-menu-btn-user {
+    width: 49px;
+    vertical-align: super;
+    right: 2rem;
+    height: 32px !important;
+  }
+  .adty-menu-btn-user .ui-button-icon-only .ui-icon {
+    background-repeat: no-repeat;
+    width: 49px;
+    height: 24px;
+    top: 18% !important;
+    left: 42% !important;
+    margin-top: 0rem !important;
+    margin-left: 0rem !important;
+  }
+  .adty-icon-user {
+    background-image: url(/resources/img/mx/ic-usuario-login.svg) !important;
+    background-size: contain;
+  }
+}

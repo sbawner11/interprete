@@ -1,0 +1,735 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/defaultBack.xhtml">
+ 
+	<ui:define name="content">
+		<f:event type="preRenderView" listener="#{bandejaValidacionTramitesBean.cargaMsgErrorFirmante}" />
+		<h:form id="frmTramites">
+			<p:outputPanel id="pnlContenedor" style="padding: 2% 0 2%; max-width: 1121px; margin: auto;">
+				<p:outputPanel id="pnlMisTramites" style="padding: 2% 2%; background: #FFF; border-radius: 10px">
+					<p:panelGrid id="pnlTitulo" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:column id="clmTitulo" style="text-align: center !important;">
+							<p:outputLabel value="Bandeja de Solicitudes #{seccionesProyectoBean.proyectoDTO.nombreProyecto}" styleClass="font-titulo-bandeja" />
+						</p:column>
+					</p:panelGrid>
+					
+					<p:panelGrid id="pnlLblPeriodos" columns="1" columnClasses="ui-g-12 ui-md-6 ui-lg-3" layout="grid" styleClass="ui-panelgrid-blank ui-fluid mt-5">
+						<p:outputLabel value="Mostrar folios del período:" styleClass="font-titulo-bandeja" style="font-size: 16px !important;"/>
+					</p:panelGrid>
+					
+					<p:panelGrid id="pnlFiltros" columns="#{seccionesProyectoBean.authenticacionCiudadano == true ? '5' : '4'}" 
+						columnClasses="#{seccionesProyectoBean.authenticacionCiudadano == true ? 'ui-g-12 ui-md-4 ui-lg-3, 
+							ui-g-12 ui-md-4 ui-lg-3, 
+							ui-g-12 ui-md-4 ui-lg-2, 
+							ui-g-12 ui-md-4 ui-lg-2, 
+							ui-g-12 ui-md-4 ui-lg-2' : 
+							'ui-g-12 ui-md-4 ui-lg-3, 
+							ui-g-12 ui-md-4 ui-lg-3, 
+							ui-g-12 ui-md-4 ui-lg-3, 
+							ui-g-12 ui-md-4 ui-lg-3'}"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						
+						<p:column id="cmlFolio">
+							<p:outputLabel value="#{msg.bandeja_ciudadano_folio}" styleClass="font-campos" />
+							<p:inputText id="txtFolio" onkeyup="$(this).val(($(this).val().replace(/[^A-Za-z0-9\-]/g, '')).toUpperCase());"
+								value="#{bandejaValidacionTramitesBean.tramiteBusqueda.folioSeguimiento}" maxlength="25"
+								placeholder="#{msg.bandeja_ciudadano_folio_placeholder}" styleClass="inputText-motor"
+								style="margin-top: 2px; font-size: 16px !important;">
+								<p:keyFilter regEx="/[A-Za-z0-9\-]/i" preventPaste="false" />
+							</p:inputText>
+						</p:column>
+						
+						<!-- Columna que solo se habilita si el proyecto tiene habilitada la opción para que el ciudadano ingrese con llave-->													
+						<p:column id="cmlCurp" rendered="#{seccionesProyectoBean.authenticacionCiudadano == true}">
+							<p:outputLabel value="#{msg.bandeja_ciudadano_curp}" styleClass="font-campos" />
+							<p:inputText id="txtCurp" onkeyup="$(this).val($(this).val().toUpperCase());"
+								value="#{bandejaValidacionTramitesBean.tramiteBusqueda.usuario.curp}" maxlength="18"
+								placeholder="#{msg.bandeja_ciudadano_curp_placeholder}" styleClass="inputText-motor"
+								style="margin-top: 2px; font-size: 16px !important;" >
+								<p:keyFilter regEx="/[A-Z0-9]/i" preventPaste="false" />
+							</p:inputText>
+						</p:column>
+						
+						<p:column id="cmlDesde">
+							<p:outputLabel value="Desde" styleClass="font-campos" />
+							<p:datePicker id="dpkDesde" autocomplete="off" maxdate="#{bandejaValidacionTramitesBean.fechaActual}"
+								value="#{bandejaValidacionTramitesBean.tramiteBusqueda.fechaDesde}"
+								pattern="dd/MM/yyyy" placeholder="DD/MM/AAAA"
+								onkeypress="return false;" locale="es_MX"
+								monthNavigator="true" yearNavigator="true">
+								<p:ajax process="@this" update="@this" />
+								<p:ajax event="dateSelect" listener="#{bandejaValidacionTramitesBean.listenerFechaInicial()}" update="dpkHasta messages"/>
+							</p:datePicker>
+						</p:column>
+						
+						<p:column id="cmlHasta">
+							<p:outputLabel value="Hasta" styleClass="font-campos" />
+							<p:datePicker id="dpkHasta" autocomplete="off" maxdate="#{bandejaValidacionTramitesBean.fechaMaxima}"
+								mindate="#{bandejaValidacionTramitesBean.fechaMinima}"
+								value="#{bandejaValidacionTramitesBean.tramiteBusqueda.fechaHasta}"
+								pattern="dd/MM/yyyy" placeholder="DD/MM/AAAA"
+								onkeypress="return false;" locale="es_MX"
+								monthNavigator="true" yearNavigator="true">
+								<p:ajax process="@this" update="@this" />
+								<p:ajax event="dateSelect" listener="#{bandejaValidacionTramitesBean.listenerFechaFinal()}" update="dpkHasta messages"/>
+							</p:datePicker>
+						</p:column>
+												
+						<p:column id="clmEstatus" style="padding-top: 0px;" >
+							<p:outputLabel value="#{msg.bandeja_ciudadano_estatus}" styleClass="font-filtros-bandeja" />
+							<p:selectOneMenu id="selEstatus" value="#{bandejaValidacionTramitesBean.tramiteBusqueda.catEstatusTramiteDTO.idEstatusTramite}" 
+								styleClass="tramites-selectOneMenu-admin"
+								style="width: 100% !important">
+								<f:selectItem itemLabel="#{msg.opc_todos}" />
+								<f:selectItems value="#{bandejaValidacionTramitesBean.lstEstatusTramite}" var="estatus"
+									itemValue="#{estatus.idEstatusTramite}" 
+									itemLabel="#{seccionesProyectoBean.proyectoDTO.aviso ? estatus.descripcionAviso : estatus.descripcion}"/>
+								<p:ajax event="itemSelect" process="@this selEstatus" />
+							</p:selectOneMenu>
+						</p:column>
+						
+					</p:panelGrid>
+					
+					<p:panelGrid columns="1" style="text-align: left;"
+						columnClasses="ui-g-12 ui-md-12 ui-lg-12" 
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						
+						<p:column id="clmFiltrar" style="display:flex;justify-content: right;align-items: flex-end;margin: 1% auto 0;">
+							<p:commandButton value="#{msg.bandeja_ciudadano_filtrar}" styleClass="formularios-btn-green" update="pnlFiltros, pnlTabla, messages" 
+								style="max-width: 180px !important;"
+								action="#{bandejaValidacionTramitesBean.filtrarTramites()}"/>
+							<p:commandButton value="#{msg.limpiar}" styleClass="motor-btn-limpiar" 
+								action="#{bandejaValidacionTramitesBean.limpiarFiltros()}" update="@form" style="width: auto;"/>
+						</p:column>
+						
+					</p:panelGrid>
+					
+				   	<p:panelGrid id="pnlAsignarOperador" columns="#{authenticatorBean.rolSupervisor == true ? '3' : '1'}" columnClasses="#{authenticatorBean.rolSupervisor  ? 
+				   		'ui-g-6 ui-md-8 ui-lg-4, ui-g-6 ui-md-8 ui-lg-6, ui-g-12 ui-md-12 ui-lg-2' : 'ui-g-12 ui-md-12 ui-lg-12'}" 
+				   		layout="grid" styleClass="ui-panelgrid-blank ui-fluid" style="text-align: left;">
+				   		<p:outputPanel rendered="#{authenticatorBean.rolSupervisor}">
+				   			<p:outputLabel value="Operador" styleClass="font-titulo-bandeja" style="font-size: 16px !important;" />
+				   			<p:selectOneMenu id="somUsuariosOperadoresActivos" value="#{bandejaValidacionTramitesBean.usuarioOperadorDTO.idUsuarioLlaveCdmx}"
+				   				styleClass="tramites-selectOneMenu-admin"
+				   				style="width: 100% !important" >
+				   				<f:selectItem itemLabel="#{msg.seleccione}" itemValue="#{null}" />
+				   				<f:selectItems value="#{bandejaValidacionTramitesBean.lstUsuariosOperadoresActivos}" 
+				   					var="operador" itemLabel="#{operador.nombreCompleto}" itemValue="#{operador.idUsuarioLlaveCdmx}" />
+				   				<p:ajax event="valueChange" 
+				                	listener="#{bandejaValidacionTramitesBean.listenerUsuarioOperador()}" />
+				   			</p:selectOneMenu>
+				   		</p:outputPanel>
+				   		
+				   		<p:outputPanel rendered="#{authenticatorBean.rolSupervisor}" style="margin: 30px 0 0;">
+				   			<p:panelGrid layout="grid" columns="2" columnClasses="ui-g-12 ui-md-6 ui-lg-4, ui-g-12 ui-md-6 ui-lg-8" 
+								styleClass="ui-panelgrid-blank ui-fluid">
+								
+								<p:panelGrid layout="grid" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" 
+									styleClass="ui-panelgrid-blank ui-fluid ui-panelgrid-sin-pading">
+						   			<p:commandButton id="btnAsignarOperadores" value="Asignar Operador" 
+						   				rendered="#{authenticatorBean.rolSupervisor}" action="#{bandejaValidacionTramitesBean.asignarOperadorTramites()}"
+						   				update="somUsuariosOperadoresActivos frmTramites dtTramites pnlTabla" 
+						   				styleClass="formularios-btn-green" style="width:165px; height: 36px !important;" />
+				   				</p:panelGrid>
+				   				
+				   				<p:panelGrid layout="grid" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" 
+									styleClass="ui-panelgrid-blank ui-fluid ui-panelgrid-sin-pading">
+				   				
+					   				<p:commandButton value="Firmar trámites" action="#{bandejaValidacionTramitesBean.iniciarModalFirmadoTramites()}"				   				
+					   					rendered="#{bandejaValidacionTramitesBean.validaPermisosFirmado() == true}" update="mdlFirmaTramites, messages" 
+					   					styleClass="formularios-btn-green" style="max-width:165px; height: 36px !important;" />
+					   			</p:panelGrid>
+				   			</p:panelGrid>
+				   		</p:outputPanel>
+				   		
+				   		<p:panelGrid layout="grid" rendered="#{authenticatorBean.rolOperador}" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" styleClass="ui-panelgrid-blank ui-fluid ui-panelgrid-sin-pading">
+				   				
+					   		<p:commandButton action="#{bandejaValidacionTramitesBean.iniciarModalFirmadoTramites()}" 
+					   			value="Firmar trámites" update="mdlFirmaTramites, messages" 
+					   			rendered="#{bandejaValidacionTramitesBean.validaPermisosFirmado() == true}" styleClass="formularios-btn-green" 				   				
+					   			style="margin: 0px !important; max-width:174px; height: 36px !important;" />
+					   			
+				   		</p:panelGrid>		
+				   		
+				   		<p:outputPanel style="margin: 40px 0 0; text-align: right !important;">
+				   			<p:panelGrid layout="grid" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" styleClass="ui-panelgrid-blank ui-fluid">
+						   		<p:panelGrid layout="grid" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" styleClass="ui-panelgrid-blank ui-fluid ui-panelgrid-sin-pading">
+							   		<p:commandButton value="#{msg.lbl_dashboard_exportar}" action="#{bandejaValidacionTramitesBean.listenergenerarExcel(bandejaValidacionTramitesBean.lstTramites)}" styleClass="formularios-btn-green" update="messages" 
+										style="margin: 0px !important; max-width:120px; height: 36px !important;" >
+										<!-- <p:dataExporter type="xls" target="dtTramites" fileName="ReporteTramites"></p:dataExporter> -->
+									</p:commandButton>								   			
+							   	</p:panelGrid>				   		
+				   			</p:panelGrid>
+				   		</p:outputPanel>
+				   						   						   						   		
+				   	</p:panelGrid>
+	
+					<p:panelGrid id="pnlTabla" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:dataTable id="dtTramites" 
+							var="tramite" value="#{bandejaValidacionTramitesBean.lstTramites}"
+							paginator="true" rows="10" reflow="true" paginatorPosition="bottom"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							currentPageReportTemplate="Mostrando {endRecord} de {totalRecords} resultados"
+							emptyMessage="#{msg.bandeja_ciudadano_vacia}"
+							widgetVar="dtbTramites"
+							selection="#{bandejaValidacionTramitesBean.lstTramitesSeleccionados}" 
+							rowKey="#{tramite.idTramite}">
+							
+							<p:column selectionMode="multiple" width="40" rendered="#{authenticatorBean.rolSupervisor}" style="padding-left: 10px!important;"/>
+							
+							<p:column id="clmFolio" exportable="true"
+								sortBy="#{tramite.folioSeguimiento}"
+								styleClass="header-columna-tramites" colspan="1" style="height: 65px;">
+								<f:facet name="header"> Folio del<br/>trámite </f:facet>
+								<h:outputText value="#{tramite.folioSeguimiento}" styleClass="tbody-tramites" />
+							</p:column>
+							
+							<p:column id="clmFecEnv" headerText="Fecha de envío"
+								sortBy="#{bandejaValidacionTramitesBean.buscarFechaEnvio(tramite.idTramite)}"
+								rendered="#{!seccionesProyectoBean.proyectoDTO.aviso}"
+								styleClass="header-columna-tramites" colspan="1" style="height: 65px;">
+								<p:commandLink
+							        value="#{bandejaValidacionTramitesBean.buscarFechaEnvio(tramite.idTramite)}"
+							        rendered="#{!seccionesProyectoBean.proyectoDTO.aviso}"
+							        actionListener="#{bandejaValidacionTramitesBean.cargarHistoricoEstatus(tramite.idTramite)}"
+							        update="dlgHistoricoEstatus"
+							        oncomplete="PF('dlgHistoricoEstatus').show()"
+							        styleClass="tbody-tramites"/>
+							</p:column>
+							
+							<!-- Columna que solo se habilita si el proyecto tiene habilitada la opción para que el ciudadano ingrese con llave-->
+							<p:column id="clmCurp" rendered="#{seccionesProyectoBean.authenticacionCiudadano == true}"
+								sortBy="#{tramite.usuario.curp}" 
+								colspan="2" headerText="Curp" styleClass="header-columna-tramites">
+								<h:outputText value="#{tramite.usuario.curp}" styleClass="tbody-tramites" />
+							</p:column>
+															
+							<p:column id="clmFecSol" headerText="#{msg.bandeja_ciudadano_columna_fecha}"
+								sortBy="#{tramite.fechaCreacion}"
+								styleClass="header-columna-tramites" colspan="1">
+								<h:outputText value="#{tramite.fechaCreacion}" styleClass="tbody-tramites" >
+									<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+								</h:outputText>
+							</p:column>
+							
+							<p:column headerText="Operador" rendered="#{authenticatorBean.rolSupervisor}"
+								styleClass="header-columna-tramites" colspan="1">
+								<h:outputText value="#{tramite.usuarioOperador.nombre} #{tramite.usuarioOperador.primerApellido} #{tramite.usuarioOperador.segundoApellido}" 
+									styleClass="tbody-tramites" >
+								</h:outputText>
+							</p:column>
+							
+							<!-- Columna que solo se habilita si el proyecto tiene habilitada la opción para firmar archivos de respuesta de trámites y si el rol puede hacerlo-->
+							<!-- rendered="#{seccionesProyectoBean.habilitarFirmadoTramites == true and bandejaValidacionTramitesBean.validaPermisosFirmado() == true}" -->
+							<p:column id="clmAcciones" rendered="#{!seccionesProyectoBean.proyectoDTO.aviso and ((seccionesProyectoBean.lstRespuesta ne null) or 
+								bandejaValidacionTramitesBean.mostrarColumnaAcciones())}" colspan="1" headerText="Acciones" styleClass="header-columna-tramites">
+								
+								<!-- La opción para realizar el firmado estará habilitada para trámites que aún no han sido firmados -->	
+								<p:outputPanel rendered="#{tramite.tramiteFirmado == false}" 
+									style="display: flex; align-items: center; justify-content: space-evenly;">
+									<p:commandButton id="btnFirmar" action="#{registrarFormularioBean.iniciarFirmaTramiteBandeja()}"
+										rendered="#{bandejaValidacionTramitesBean.validaPermisosFirmado() == true and 
+										(tramite.catEstatusTramiteDTO.idEstatusTramite == 6 or tramite.catEstatusTramiteDTO.idEstatusTramite == 7)}"
+										styleClass="acciones-firma" icon="icono-firmar-archivo">
+										<f:setPropertyActionListener value="#{tramite}" target="#{registrarFormularioBean.tramiteActual}" />
+									</p:commandButton>		
+									
+									<!-- BOTON PARA REVERTIR ESTATUS DE TRAMITES -->									
+									<p:commandButton action="#{bandejaValidacionTramitesBean.mostrarModalRevertirEstatus(tramite)}" 
+										styleClass="boton-gray-revertir-estatus" icon="icono-revertir-estatus"
+										rendered="#{bandejaValidacionTramitesBean.mostrarOpcionRevertir() and (tramite.catEstatusTramiteDTO.idEstatusTramite == 4 
+											or tramite.catEstatusTramiteDTO.idEstatusTramite == 6 or tramite.catEstatusTramiteDTO.idEstatusTramite == 7)}"
+										style="max-width: 100px !important;" immediate="true" update="modalRevertirEstatus" />		
+								</p:outputPanel>	
+								
+								<!-- La opción para descargar el documento estará habilitada para los trámites que fueron firmados -->	
+								<p:outputPanel rendered="#{tramite.tramiteFirmado == true
+									and bandejaValidacionTramitesBean.validaPermisosDescargaArchivo() == true}" 
+									style="display: flex; align-items: center; justify-content: space-evenly;">
+
+									<!-- BOTON PARA FIRMADO -->
+									<p:commandButton action="#{bandejaValidacionTramitesBean.generarArchivo(tramite)}"
+										styleClass="acciones-firma" icon="icono-decargar-archivo"
+										rendered="#{(tramite.catEstatusTramiteDTO.idEstatusTramite == 6 or tramite.catEstatusTramiteDTO.idEstatusTramite == 7) and seccionesProyectoBean.lstRespuesta != null and seccionesProyectoBean.habilitarFirmadoTramites eq true}"
+										style="max-width: 100px !important;" immediate="true" update="messages" ajax="false"
+										disabled="#{tramite.tramiteFirmado eq false}"/>
+									
+									<!-- BOTON PARA CUANDO NO HAY FIRMA -->
+									<p:commandButton action="#{bandejaValidacionTramitesBean.generarArchivo(tramite)}" styleClass="formularios-btn-green"
+										value="Descargar"
+										rendered="#{(tramite.catEstatusTramiteDTO.idEstatusTramite == 6 or tramite.catEstatusTramiteDTO.idEstatusTramite == 7) and seccionesProyectoBean.lstRespuesta != null and seccionesProyectoBean.habilitarFirmadoTramites eq false}"
+										style="max-width: 100px !important;" immediate="true" update="messages" ajax="false"/>
+
+									<!-- BOTON PARA REVERTIR ESTATUS DE TRAMITES -->
+									<p:commandButton action="#{bandejaValidacionTramitesBean.mostrarModalRevertirEstatus(tramite)}" 
+										styleClass="boton-gray-revertir-estatus" icon="icono-revertir-estatus"
+										rendered="#{bandejaValidacionTramitesBean.mostrarOpcionRevertir() and (tramite.catEstatusTramiteDTO.idEstatusTramite == 4 
+											or tramite.catEstatusTramiteDTO.idEstatusTramite == 6 or tramite.catEstatusTramiteDTO.idEstatusTramite == 7)}"
+										style="max-width: 100px !important;" immediate="true" update="modalRevertirEstatus" />
+								</p:outputPanel>							
+									
+							</p:column>
+							
+							<p:column id="clmEstatus" colspan="1" exportable="false" headerText="#{msg.bandeja_ciudadano_columna_estatus}"
+								sortBy="#{tramite.catEstatusTramiteDTO.idEstatusTramite}" 
+								styleClass="header-columna-tramites">
+								<div class="#{tramite.estiloEstatus} header-movil estatus-completo"> 
+									<p:commandLink value="#{seccionesProyectoBean.proyectoDTO.aviso ? tramite.catEstatusTramiteDTO.descripcionAviso : tramite.catEstatusTramiteDTO.descripcion}"
+										action="#{registrarFormularioBean.iniciarEdicionFormulario(tramite, true)}"   
+										styleClass="#{tramite.estiloTxtEstatus}"  
+										style="text-decoration: none;" />
+								</div> 
+							</p:column>
+							
+							<p:column id="clmDescargaResolucion"
+					          headerText="#{msg.bandeja_ciudadano_columna_descargar}"
+					          styleClass="header-columna-tramites"> 
+					          	<p:commandButton id="btnDescargaResolucion" icon="icono-decargar-resolucion"
+					          		styleClass="acciones-firma" style="max-width: 100px !important;"
+					          		rendered="#{(tramite.catEstatusTramiteDTO.idEstatusTramite == 9 and not empty tramite.rutaDocumentoResolucionPositiva)
+					          			or (tramite.catEstatusTramiteDTO.idEstatusTramite == 10 and not empty tramite.rutaDocumentoResolucionNegativa)}"
+					          		actionListener="#{bandejaValidacionTramitesBean.generarResolucion(tramite)}"
+					          		ajax="false" process="@this" />
+					          	<p:tooltip for="btnDescargaResolucion" value="Descargar resolución" position="top" />
+					         </p:column>
+							
+							<p:column id="clmRevocacion" colspan="1" styleClass="header-columna-tramites"
+								headerText="Revocar aviso" 
+								rendered="#{seccionesProyectoBean.proyectoDTO.aviso 
+									and seccionesProyectoBean.proyectoDTO.habilitaRevocacionAviso}" >
+								<!-- BOTON PARA REVOCAR AVISOS -->									
+								<p:outputPanel style="display: flex; align-items: center; justify-content: center;">
+									<p:commandButton action="#{bandejaValidacionTramitesBean.mostrarModalRevocarAviso(tramite)}" 
+										styleClass="boton-gray-revertir-estatus" icon="icono-revertir-estatus"
+										rendered="#{tramite.catEstatusTramiteDTO.idEstatusTramite == 7 and bandejaValidacionTramitesBean.mostrarOpcionRevocarAviso()}"
+										style="max-width: 100px !important;" immediate="true" update="modalRevocarAviso" />	
+								</p:outputPanel>
+								<!-- BOTON PARA VISUALIZAR EL MOTIVO DE RECHAZO Y EL DOCUMENTO DE RECHAZO -->
+								<p:outputPanel
+									style="display: flex; align-items: center; justify-content: center;">
+									<p:commandButton id="btnverMotivoRevocacion" action="#{bandejaValidacionTramitesBean.mostrarModalVerRevocacion(tramite)}" 
+										styleClass="boton-gray-revertir-estatus" icon="icono-info-red"
+										style="max-width: 100px !important;background: none !important;" immediate="true" update="modalVerRevocacion" 
+										rendered="#{tramite.catEstatusTramiteDTO.idEstatusTramite == 6 and seccionesProyectoBean.proyectoDTO.aviso}"/>
+									<p:tooltip for="btnverMotivoRevocacion" value="Ver motivo revocación"  position="top"/>
+								</p:outputPanel>
+							</p:column>
+							
+							<!-- la columna Estatus Pago solo esta disponible para proyectos habilitado para pago en linea-->
+							<p:column id="clmEstatusLC" headerText="#{msg.bandeja_ciudadano_columna_estatus_pago}" 
+								rendered="#{seccionesProyectoBean.proyectoDTO.proyectoLineaCaptura}"
+								styleClass="header-columna-tramites" colspan="1">
+								<div class="#{tramite.estiloLCEstatus} header-movil estatus-completo" > 
+									<p:commandLink value="#{tramite.lineaCapturaDTO.catEstatusLineaCaptura.descripcion}"
+										action="#{bandejaValidacionTramitesBean.mostrarModalEstatusLC(tramite)}"   
+										styleClass="#{tramite.estiloLCTxtEstatus}" update="frmModalEstatusLC messages frmTramites:pnlTabla"
+										style="text-decoration: none;" />
+								</div>
+								<!-- la opcion de descargar el formato de linea de captura solo esta disponible para estatus pago == PENDIENTE-->
+								<p:commandButton id="btnDescargaFormatoLC" icon="icono-decargar-archivo" styleClass="acciones-firma"
+						          		action="#{generaLineaCapturaBean.generarComprobanteLC(tramite)}"
+							          	rendered="#{tramite.catEstatusTramiteDTO.idEstatusTramite eq 2 and tramite.lineaCapturaDTO != null and tramite.lineaCapturaDTO.catEstatusLineaCaptura.idEstatusLineaCaptura != 2}"  ajax="false" process="@this"/>
+					          		<p:tooltip for="btnDescargaFormatoLC" value="Descargar Línea de Captura" position="top" />
+							</p:column>
+							
+							
+						</p:dataTable>
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:outputPanel>
+			
+			<p:commandLink id="descargaReporte"  immediate="true">
+            	<p:fileDownload value="#{bandejaValidacionTramitesBean.reporteTramites}" />
+            </p:commandLink>
+                
+		</h:form>
+		
+			<!-- INICIA MODAL PARA FIRMADO-->
+		<p:dialog id="mdlFirmaTramites" widgetVar="mdlFirmaTramites" showEffect="fade" responsive="true" modal="true" draggable="false" closable="false" 
+			resizable="false" styleClass="pagos, scroll-modal" width="800" style="max-width: 80% !important; max-height: 95% !important; border-radius: 10px">
+			
+			<h:form id="frmModalTramites">					
+				<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
+						style="text-align: center !important;">
+						<p:outputLabel value="Seleccione los trámites a firmar" style="padding-left: 10px;" styleClass="lbl-subseccion" escape="false"/>
+					</p:panelGrid>
+				</p:panelGrid> 		
+				<p:panelGrid id="pnlComentariosFirma" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+					styleClass="ui-panelgrid-blank ui-fluid" style="padding-left: 10px;padding-right: 10px;">
+											
+					<p:panelGrid id="pnlTablaFirma" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:dataTable id="dtTramitesFirma" lazy="true"
+							var="tramiteFirma" value="#{bandejaValidacionTramitesBean.lstTramitesFirma}"
+							paginator="true" rows="5" reflow="true" paginatorPosition="bottom"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							currentPageReportTemplate="Mostrando {endRecord} de {totalRecords} resultados"
+							emptyMessage="#{msg.bandeja_ciudadano_vacia}"
+							widgetVar="dtbTramitesFirma"
+							selection="#{bandejaValidacionTramitesBean.lstTramitesSelFirma}" 
+							rowKey="#{tramiteFirma.idTramite}" >
+							
+							<p:column selectionMode="multiple" width="40" style="padding-left: 10px!important;"/>
+							
+							<p:column id="clmFolioTramite" headerText="Folio del trámite"
+								styleClass="header-columna-tramites" colspan="1" style="padding: 0px !important; height: 10px;">
+								<h:outputText value="#{tramiteFirma.folioSeguimiento}" styleClass="tbody-tramites" style="font-size: 14px !important;" />
+							</p:column>
+															
+							<p:column id="clmFechaTramite" headerText="#{msg.bandeja_ciudadano_columna_fecha}"
+								styleClass="header-columna-tramites" colspan="2">
+								<h:outputText value="#{tramiteFirma.fechaCreacion}" styleClass="tbody-tramites" style="font-size: 14px !important;">
+									<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+								</h:outputText>
+							</p:column>
+							
+							<p:column id="clmEstatusTramite" colspan="1" headerText="#{msg.bandeja_ciudadano_columna_estatus}" styleClass="header-columna-tramites">
+								<div class="#{tramiteFirma.estiloEstatus} header-movil"> 
+									<p:commandLink value="#{tramiteFirma.catEstatusTramiteDTO.descripcion}"										   
+										styleClass="#{tramiteFirma.estiloTxtEstatus}"  
+										style="text-decoration: none;" />
+								</div>
+								
+							</p:column>
+						</p:dataTable>
+					</p:panelGrid>
+					
+				</p:panelGrid>
+							
+				<p:outputPanel id="pnlAccionesModalFirma" columns="1" layout="grid" columnClasses="ui-g-12 ui-md-12 ui-lg-12" styleClass="formularios-footer-content" style="padding: 0 !important;">
+			
+					<p:commandButton value="#{msg.cancelar}" styleClass="formularios-btn-prevencion" 
+						oncomplete="PF('mdlFirmaTramites').hide();"
+						process="@form" 
+						update="messages frmModalTramites" 
+						immediate="true"						
+						style="max-width: 140px !important;"/>
+					
+					<p:commandButton value="Firmar trámites" styleClass="formularios-btn-green"
+						action="#{bandejaValidacionTramitesBean.iniciarFirmadoTramites()}" 
+						update="messages @form" 
+						process="@form"						
+						style="max-width: 170px !important;" />
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+		<!-- FIN MODAL -->		
+		
+		<!-- INICIA MODAL REVERTIR ESTATUS -->			
+		<p:dialog id="modalRevertirEstatus" widgetVar="modalRevertirEstatus" showEffect="fade" responsive="true" modal="true" draggable="false"
+			closable="false" resizable="false" styleClass="pagos" width="577" style="border-radius: 10px">
+			<h:form id="frmRevertirEstatus">
+				<p:panelGrid id="pnlTituloRevertirEstatus" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="1" style="display: flex; align-items: center;">
+						<p:outputLabel value="#{msg.bandeja_validacion_titulo_revertir}" 
+							style="padding-bottom: 10px !important;font-size: 22px !important;line-height: 27px !important;" 
+							styleClass="lbl-subseccion" escape="false"/>
+					</p:panelGrid>
+					
+					<p:panelGrid id="pnlPregunta" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:outputLabel value="#{msg.bandeja_validacion_pregunta}" style="font-style: normal;line-height: 18px;font-weight: 400; font-size: 16px;" />				
+					</p:panelGrid>					
+				</p:panelGrid>
+				
+				<p:outputPanel id="pnlAccionesModalRevertir" columns="1" layout="grid" columnClasses="ui-g-12 ui-md-12 ui-lg-12" styleClass="formularios-footer-content" style="padding: 0 !important;">
+					<p:commandButton value="#{msg.cancelar}" action="#{bandejaValidacionTramitesBean.cerrarModalRevertirEstatus()}"  
+						immediate="true" style="width: auto;" styleClass="formularios-btn-prevencion" update="frmTramites" >
+					</p:commandButton>
+					<p:commandButton value="#{msg.continuar}" action="#{bandejaValidacionTramitesBean.revertirEstatusTramite()}"
+						process="@form" update="frmTramites, messages" styleClass="formularios-btn-green" style="width:auto;">
+					</p:commandButton>						
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+		<!-- FIN MODAL -->	
+		
+		<!-- INICIA MODAL REVERTIR ESTATUS -->			
+		<p:dialog id="modalRevocarAviso" widgetVar="modalRevocarAviso" showEffect="fade" responsive="true" modal="true" draggable="false"
+			closable="false" resizable="false" styleClass="pagos" width="577" style="border-radius: 10px">
+			<h:form id="frmRevocarAviso">
+				<p:panelGrid id="pnlTituloRevocarAviso" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="1" style="display: flex; align-items: center;">
+						<p:outputLabel value="Realizar revocación del aviso" 
+							style="padding-bottom: 10px !important;font-size: 22px !important;line-height: 27px !important;" 
+							styleClass="lbl-subseccion" escape="false"/>
+					</p:panelGrid>
+					
+					<p:panelGrid id="pnlObservacionesRechazo" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel value="Motivo de la revocación del aviso" style="font-style: normal;line-height: 18px;font-weight: 400;" 
+							for="@next"/>
+						<p:inputTextarea id="idTxtObservacionesRevocacion" placeholder="Escribe tus comentarios" 
+							value="#{bandejaValidacionTramitesBean.tramiteSeleccionado.motivoRechazo}"
+							cols="5" autoResize="false" style="border-radius: 8px;" 
+							required="true" 
+							requiredMessage="#{msg.msj_campo_requerido}"/>	
+					</p:panelGrid>	
+				</p:panelGrid>
+				<p:outputPanel id="opnlCargaArchivo">
+					<p:outputPanel rendered="#{bandejaValidacionTramitesBean.tramiteSeleccionado.rutaDocumentoRevocado != null}" style="padding: 0 4%;">
+						<p:outputLabel value="#{msg.lbl_archivo_cargado}" 
+				    		style="font-style: normal;font-weight: 400;font-size: 15px;line-height: 18px;color: #2D3748;"/>
+						<p:panelGrid columns="2" 
+			    			columnClasses="ui-xl-10 ui-lg-10 ui-g-10 ui-md-10 ui-sm-12, ui-xl-2 ui-lg-2 ui-g-2 ui-md-2 ui-sm-12" 
+			    			layout="grid"
+			    			styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading">
+			    			<p:column style="display: inline-grid;">
+				    			<p:outputLabel value="#{bandejaValidacionTramitesBean.obtenerFileName(bandejaValidacionTramitesBean.tramiteSeleccionado.rutaDocumentoRevocado)}" 
+				    				style="font-style: normal;font-weight: 700;font-size: 15px;line-height: 22px;color: #BC955C;"/>
+			    			</p:column>
+			    			<p:commandLink action="#{bandejaValidacionTramitesBean.eliminarArchivoCargado(bandejaValidacionTramitesBean.tramiteSeleccionado.rutaDocumentoRevocado)}" 
+			    				immediate="true" 
+			    				update="frmRevocarAviso"> 
+			    				<p:graphicImage value="/resources/img/ic_eliminar.svg" style="max-width: 20px;height: -webkit-fill-available;"/>
+			    			</p:commandLink>
+			    		</p:panelGrid>
+			    	</p:outputPanel>
+					<p:panelGrid id="pnlCargaArchivoRevocacion" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid" style="padding-left: 10px;padding-right: 10px;">
+						<p:outputLabel value="Cargar archivo complementario" style="font-style: normal;line-height: 18px;font-weight: 400;"
+							for="cdoc_revocacion"/>
+							<p:fileUpload id="cdoc_revocacion"
+						    	auto="true"
+						    	mode="advanced"
+						    	label="#{msg.ful_lbl_adjuntar_archivo}"
+						    	listener="#{bandejaValidacionTramitesBean.subirArchivo}"
+						    	required="true"
+						    	invalidSizeMessage="#{msg.msj_invalid_size_document}"
+						    	styleClass="carga-documento-span"
+						    	update="@this, opnlCargaArchivo"
+						    	allowTypes="/(\.|\/)(pdf)$/"
+						    	accept=".pdf"
+						    	sizeLimit="10485760"
+						    	style="background: #1A6058;border: 1px solid #1A6058;border-radius: 4px;max-width: 216px;height: 38px;background-image: url(/resources/img/clip.svg);background-repeat: no-repeat;background-position-x: 8%; background-position-y: 7px;"> 
+						    </p:fileUpload>
+						    <p:outputLabel
+	    						value="Sube un archivo no mayor a 10 MB" 
+	    						style="font-style: normal;font-weight: 400;font-size: 12px;line-height: 16px;color: #343A40;"/>
+	    					<p:message for="cdoc_revocacion" display="text"/>
+					</p:panelGrid>
+				</p:outputPanel>	
+				
+				<p:outputPanel id="pnlAccionesModalRevocarAviso" columns="1" layout="grid" columnClasses="ui-g-12 ui-md-12 ui-lg-12" styleClass="formularios-footer-content" 
+					style="padding: 0 !important;">
+					<p:commandButton value="#{msg.cancelar}" action="#{bandejaValidacionTramitesBean.cerrarModalRevocarAviso()}"  
+						immediate="true" style="width: auto;" styleClass="formularios-btn-prevencion" update="frmTramites" >
+					</p:commandButton>
+					<p:commandButton value="#{msg.continuar}" action="#{bandejaValidacionTramitesBean.revocarAviso()}"
+						process="@form" update="frmRevocarAviso, frmTramites, messages" styleClass="formularios-btn-green" style="width:auto;">
+					</p:commandButton>						
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+		<!-- FIN MODAL -->	
+		
+		<!-- INICIA MODAL VISUALIZAR RECHAZO -->			
+		<p:dialog id="modalVerRevocacion" widgetVar="modalVerRevocacion" showEffect="fade" responsive="true" modal="true" draggable="false"
+			closable="false" resizable="false" styleClass="pagos" width="577" style="border-radius: 10px">
+			<h:form id="frmVerRevocacion">
+				<p:panelGrid id="pnlTituloVerRevocacion" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="1" style="display: flex; align-items: center;">
+						<p:outputLabel value="#{msg.bandeja_mdl_ver_revocacion_titulo}" 
+							style="padding-bottom: 10px !important;font-size: 22px !important;line-height: 27px !important;" 
+							styleClass="lbl-subseccion" escape="false"/>
+					</p:panelGrid>
+					
+					<p:panelGrid id="pnlMotivo" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel value="#{msg.bandeja_mdl_ver_revocacion_motivo}" style="font-style: normal;line-height: 18px;font-weight: 400; font-size: 16px;" />
+						<p:inputTextarea id="idTxtObservacionesRevocacion" placeholder="Escribe tus comentarios" 
+							value="#{bandejaValidacionTramitesBean.tramiteSeleccionado.motivoRechazo}"
+							cols="5" autoResize="false" style="border-radius: 8px;"
+							readonly="true" 
+							requiredMessage="#{msg.msj_campo_requerido}"/>	
+							
+						<p:outputPanel rendered="#{bandejaValidacionTramitesBean.tramiteSeleccionado.rutaDocumentoRevocado != null}" style="padding: 0;">
+							<p:outputLabel value="#{msg.lbl_archivo_cargado}" 
+					    		style="font-style: normal;font-weight: 400;font-size: 15px;line-height: 18px;color: #2D3748;"/>
+							<p:panelGrid columns="2" 
+				    			columnClasses="ui-xl-10 ui-lg-10 ui-g-10 ui-md-10 ui-sm-12, ui-xl-2 ui-lg-2 ui-g-2 ui-md-2 ui-sm-12" 
+				    			layout="grid"
+				    			styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading">
+				    			<p:column style="display: inline-grid;">
+					    			<p:outputLabel value="#{bandejaValidacionTramitesBean.obtenerFileName(bandejaValidacionTramitesBean.tramiteSeleccionado.rutaDocumentoRevocado)}" 
+					    				style="font-style: normal;font-weight: 700;font-size: 15px;line-height: 22px;color: #BC955C;"/>
+				    			</p:column>
+				    			<p:commandLink action="#{bandejaValidacionTramitesBean.generarArchivoMotivoRevocacion()}" 
+				    				immediate="true" ajax="false"> 
+				    				<p:graphicImage value="/resources/img/ic_ver.svg" style="max-width: 40px;height: -webkit-fill-available;"/>
+				    			</p:commandLink>
+				    		</p:panelGrid>
+				    	</p:outputPanel>
+					</p:panelGrid>	
+									
+				</p:panelGrid>
+				
+				<p:outputPanel id="pnlAccionesModalVerRevocacion" columns="1" layout="grid" columnClasses="ui-g-12 ui-md-12 ui-lg-12" styleClass="formularios-footer-content" style="padding: 0 !important;">
+					<p:commandButton value="Cerrar" action="#{bandejaValidacionTramitesBean.cerrarModalVerRevocacion()}"  
+						immediate="true" style="width: auto;" styleClass="formularios-btn-prevencion" update="frmTramites" >
+					</p:commandButton>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+		<!-- FIN MODAL -->
+		
+		<!-- INICIA MODAL ESTATUS LINEA DE CAPTURA -->			
+		<p:dialog id="modalEstatusLC" widgetVar="modalEstatusLC" showEffect="fade" responsive="true" modal="true" draggable="false"
+			closable="false" resizable="false" styleClass="pagos" width="700" style="  border-radius: 10px;">
+			<h:form id="frmModalEstatusLC" >
+				<p:outputPanel style="overflow-y: auto;">
+					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+					<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel value="#{msg.lbl_modal_lc_titulo}" 
+							style="padding-bottom: 10px !important;font-size: 22px !important;line-height: 27px !important;" 
+							styleClass="lbl-subseccion" escape="false"/>
+					</p:panelGrid>
+				
+					<p:panelGrid layout="grid" columns="2" columnClasses="ui-g-12 ui-md-6 ui-lg-6, ui-g-12 ui-md-6 ui-lg-6"
+							styleClass="ui-panelgrid-blank ui-fluid" style="text-align: left;">
+							<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel value="#{msg.lbl_modal_lc_linea_captura}" style="font-style: normal;line-height: 18px;font-weight: 400;"/>
+							</p:panelGrid>
+							<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel id="idLineaCaptura" 
+								value="#{bandejaValidacionTramitesBean.tramiteSeleccionado.lineaCapturaDTO.lineaCaptura}"/>
+							</p:panelGrid>
+							<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel value="#{msg.lbl_modal_lc_estatus}" style="font-style: normal;line-height: 18px;font-weight: 400;"/>
+							</p:panelGrid>
+							<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel id="idEstatusPago" 
+									value="#{bandejaValidacionTramitesBean.tramiteSeleccionado.lineaCapturaDTO.catEstatusLineaCaptura.descripcion}"/>
+							</p:panelGrid>
+							<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel value="#{msg.lbl_modal_lc_fecha_pago}" style="font-style: normal;line-height: 18px;font-weight: 400;"/>
+							</p:panelGrid>
+							<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel id="idFechaPago" 
+									value="#{bandejaValidacionTramitesBean.tramiteSeleccionado.lineaCapturaDTO.fechaPagoLc == null ?'N/A':bandejaValidacionTramitesBean.tramiteSeleccionado.lineaCapturaDTO.fechaPagoLc}">
+									<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+								</p:outputLabel>
+							</p:panelGrid>
+							<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel value="#{msg.lbl_modal_lc_monto_pago}" style="font-style: normal;line-height: 18px;font-weight: 400;"/>
+							</p:panelGrid>
+							<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+								<p:outputLabel id="idMontoPago" value="$ #{bandejaValidacionTramitesBean.tramiteSeleccionado.lineaCapturaDTO.monto}"/>
+							</p:panelGrid>
+					</p:panelGrid>
+				</p:outputPanel>
+				<p:outputPanel id="pnlAccionesModalEstatusLC" columns="1" layout="grid" columnClasses="ui-g-12 ui-md-12 ui-lg-12" 
+						styleClass="formularios-footer-content" style="padding: 0 !important;">
+						<p:commandButton value="#{msg.salir}" action="#{bandejaValidacionTramitesBean.cerrarModalEstatusLC()}"  
+							immediate="true" style="width: auto;" styleClass="formularios-btn-prevencion">
+						</p:commandButton>					
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+		<!-- FIN MODAL -->
+
+		<!-- INICIA MODAL MOSTRAR HISTORICO DE ESTATUS DEL TRAMITE -->			
+		<p:dialog id="dlgHistoricoEstatus" widgetVar="dlgHistoricoEstatus" 
+			showEffect="fade" responsive="true" modal="true" draggable="false"
+			closable="false" resizable="false" styleClass="pagos" width="800" style="  border-radius: 10px;">
+			<h:form id="frmDlgHistorico" >
+				<p:outputPanel style="overflow-y: auto;">
+					<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+					<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel value="#{msg.lbl_historico_titulo}" 
+							style="padding-bottom: 10px !important;font-size: 22px !important;line-height: 27px !important;" 
+							styleClass="lbl-subseccion" escape="false"/>
+					</p:panelGrid>
+				</p:outputPanel>
+
+					<p:panelGrid id="pnlHistoricoEstatus" 
+						columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" 
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:dataTable id="dtbHistoricoEstatus" lazy="true"
+							var="historico" value="#{bandejaValidacionTramitesBean.lstHistorico}"
+							paginator="true" paginatorAlwaysVisible="false"
+							rows="3" reflow="true" paginatorPosition="bottom"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							emptyMessage="#{msg.bandeja_ciudadano_vacia}"
+							widgetVar="dtbHistoricoEstatus"
+							rowKey="#{historico.idMovimientoTramite}" >
+							
+							<p:panelGrid columns="1" style="display: flex; align-items: center;">
+								<p:outputLabel value="#{msg.lbl_historico_titulo}" 
+									style="padding-bottom: 10px !important;font-size: 22px !important;line-height: 27px !important;" 
+									styleClass="lbl-subseccion" escape="false"/>
+							</p:panelGrid>
+							
+							<p:column id="clmFechaHistorico" headerText="Fecha"
+								styleClass="header-columna-tramites" colspan="1">
+								<h:outputText value="#{historico.fechaMovimiento}" 
+									styleClass="tbody-tramites" style="font-size: 14px !important;">
+									<f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+								</h:outputText>
+							</p:column>
+							
+							<p:column id="clmEstatusHistorico" colspan="1" headerText="Estatus"
+								styleClass="header-columna-tramites">
+								<h:outputText value = "#{bandejaValidacionTramitesBean.descripcionEstatus(historico.idEstatus)}" 
+									styleClass="tbody-tramites" style="font-size: 14px !important;" />
+							</p:column>
+
+							<p:column id="clmObservacionesHistorico" colspan="2" headerText="Observaciones"
+								styleClass="header-columna-tramites">
+								<h:outputText value = "#{historico.observaciones}" 
+									styleClass="tbody-tramites" style="font-size: 14px !important;" />
+							</p:column>
+
+							<p:column id="clmUsuarioHistorico" colspan="2" headerText="Movimiento realizado por"
+								styleClass="header-columna-tramites">
+								<h:outputText value = "#{bandejaValidacionTramitesBean.nombreCompletoUsuario(historico.usuarioDTO.idUsuarioLlaveCdmx)}" 
+									styleClass="tbody-tramites" style="font-size: 14px !important;" />
+							</p:column>
+
+						</p:dataTable>
+					</p:panelGrid>
+				
+				<p:outputPanel id="pnlAccionesDlgHistorico" columns="1" layout="grid" columnClasses="ui-g-12 ui-md-12 ui-lg-12" 
+						styleClass="formularios-footer-content" style="padding: 0 !important;">
+						<p:commandButton value="#{msg.salir}"
+							action="#{bandejaValidacionTramitesBean.cerrarDlgHistoricoEstatus()}"  
+							immediate="true" style="width: auto;" styleClass="formularios-btn-prevencion">
+						</p:commandButton>					
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+		<!-- FIN MODAL -->
+		
+		 <!-- INICIA MODAL FALLO CONEXION FIRMA MX-->
+        <p:dialog id="mdlFirmaMx" widgetVar="mdlFirmaMx" showEffect="fade" responsive="true" modal="true" draggable="false"
+            closable="false" resizable="false" styleClass="pagos" width="577" style="border-radius: 10px">
+            <h:form id="frmModalFirmaMx">                    
+                <p:panelGrid id="pnlTituloModal" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                    <p:panelGrid columns="1" style="display: flex; align-items: center;">
+                        <p:outputLabel value="#{msg.lbl_titulo_mdlFirma}" 
+                            style="padding-bottom: 10px !important;font-size: 22px !important;line-height: 27px !important;" 
+                            styleClass="lbl-subseccion" escape="false"/>
+                    </p:panelGrid>
+                </p:panelGrid>      
+                <p:panelGrid id="pnlMensaje" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+                    styleClass="ui-panelgrid-blank ui-fluid" style="padding-left: 10px;padding-right: 10px;">
+                    <p:outputLabel value="#{msg.lbl_error_timeout}" style="font-style: normal;line-height: 18px;font-weight: 400;"/>
+                    
+                </p:panelGrid>                
+                <p:outputPanel id="pnlAccionesModal" columns="1" layout="grid" columnClasses="ui-g-12 ui-md-12 ui-lg-12" 
+                	styleClass="formularios-footer-content" style="padding: 0 !important;">
+                    <p:commandButton value="#{msg.aceptar}"
+                             styleClass="formularios-btn-green"
+                             process="@this"
+                             ajax="false"
+                             action="#{registrarFormularioBean.inicializarBandejaPostFirma(true)}"
+                             style="max-width: 140px !important;" />
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+        <!-- FIN MODAL -->
+		
+	</ui:define>
+</ui:composition>

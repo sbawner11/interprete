@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+ 	
+    <p:panelGrid columns="1" 
+    	columnClasses="ui-xl-12 ui-lg-12 ui-g-12 ui-md-12 ui-sm-12" 
+    	layout="grid" 
+    	styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading">
+    	<p:outputLabel for="@next" 
+    		value="#{menuDesplegable.tituloCampo}" 
+    		styleClass="lbl-componente"/>
+    	
+    	<p:selectOneMenu id="som_#{menuDesplegable.idComponente}"
+    		value="#{registrarFormularioBean.mapRespuestas[menuDesplegable.respuestaComponente]}"
+    		disabled="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 
+			    			or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) 
+			    			or (registrarFormularioBean.usuarioBack and registrarFormularioBean.validacionTramite == true)
+			    			or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}"
+    		required="#{menuDesplegable.requerido}"
+    		style="width: 100%;" 
+    		styleClass="selectOneMenu-interprete"   		
+    		requiredMessage="#{msg.msj_campo_requerido}"
+    		filter="true"
+            filterMatchMode="contains"
+            filterPlaceholder="Buscar..."
+            panelStyleClass="selectOneMenu-panel-wide">
+    		<f:selectItem itemLabel="#{(menuDesplegable.textoInteriorOtro == null or empty menuDesplegable.textoInteriorOtro) ? msg.seleccione : menuDesplegable.textoInteriorOtro}" itemValue=""/>
+    		<f:selectItems value="#{menuDesplegable.detElementosMenuDTO}" 
+    			var="opcion"
+    			itemLabel="#{opcion.descripcionElemento}"
+    			itemValue="#{opcion.idElementoMenu}"/>
+<!--     		<p:ajax process="@this" update="som_#{menuDesplegable.idComponente}" /> -->
+    	</p:selectOneMenu>
+    	
+    	<p:message for="frmFormulario:componente_#{menuDesplegable.idComponente}:som_#{menuDesplegable.idComponente}" display="text"/>
+    	<p:tooltip rendered="#{menuDesplegable.tooltip}" 
+    		for="frmFormulario:componente_#{menuDesplegable.idComponente}:som_#{menuDesplegable.idComponente}"
+    		value="#{menuDesplegable.descripcionTooltip}"
+    		position="bottom" />
+    </p:panelGrid>
+</ui:composition>

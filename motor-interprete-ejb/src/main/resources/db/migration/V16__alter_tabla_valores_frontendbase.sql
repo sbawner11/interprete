@@ -1,0 +1,2 @@
+--SE ELIMINA COLUMNA url_resources_footer
+ALTER TABLE motor_interprete.det_valores_frontendbase DROP COLUMN url_resources_footer;

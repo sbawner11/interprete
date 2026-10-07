@@ -1,0 +1,263 @@
+<!--
+    JBoss, Home of Professional Open Source
+    Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+    contributors by the @authors tag. See the copyright.txt in the
+    distribution for a full listing of individual contributors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+--> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head>
+
+	<title>#{seccionesProyectoBean.proyectoDTO.nombreProyecto != null ? seccionesProyectoBean.proyectoDTO.nombreProyecto : 'Sistema en mantenimiento'}</title>
+	<meta name="description" content="#{seccionesProyectoBean.analyticsDTO.descripcionBusqueda}" />
+  	<meta name="keywords" content="#{seccionesProyectoBean.analyticsDTO.palabraClaveBusqueda}" />
+	
+	<!-- Indica a los bots de google que se tiene que indexar el sistema dependiendo el ambiente -->
+	<meta name="robots"
+		content="#{authenticatorBean.parametroMetaRobots()}" />
+
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<!-- La vista de compatibilidad le permite al usuario o al navegador establecer el modo de compatibilidad, por defecto  -->
+	<!-- IE=edge significa que IE debe usar la última versión (edge) de su motor de renderizado -->
+	<!-- chrome=1 significa que IE debe usar el motor de renderizado Chrome si está instalado -->
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+
+	<!-- Indica al servidor que el contenido de la pagina es codigo HTML y su codificacion de caracteres es UTF-8 -->
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<!--  Con la siguiente línea se renderiza la pantalla de acuerdo al tamaño del dispositivo que la abra -->
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+	<!-- Agrega el ícono con el cual se identifica el sistema en las pestañas de los navegadores web -->
+<!-- 	<link rel="shortcut icon" type="image/svg" -->
+<!-- 		href="#{request.contextPath}/resources/img/favicon_adip.ico" /> -->
+<!-- 	<link rel="shortcut icon" type="image/svg" href="#{seccionesProyectoBean.detValoresFrontendbaseDTO ne null ? seccionesProyectoBean.detValoresFrontendbaseDTO.urlFavicon : 'resources/img/favicon_adip.ico'}"/> -->
+
+	<meta property="og:image" content="#{seccionesProyectoBean.analyticsDTO.rutaImagenGrap}" />
+	<meta property="og:image:type" content="image/png" />
+	<meta property="og:image:width" content="762" />
+	<meta property="og:image:height" content="600" />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="#{seccionesProyectoBean.analyticsDTO.tituloGrap}" />
+	<meta property="og:description" content="#{seccionesProyectoBean.analyticsDTO.descripcionGrap}" />
+	<meta property="og:url" content="#{seccionesProyectoBean.analyticsDTO.urlGrap}" />
+
+	<!-- Twitter Meta Tags -->
+	<meta property="twitter:url" content="#{seccionesProyectoBean.analyticsDTO.urlGrap}"/>
+	<meta name="twitter:title" content="#{seccionesProyectoBean.analyticsDTO.tituloGrap}"/>
+	<meta name="twitter:description" content="#{seccionesProyectoBean.analyticsDTO.descripcionGrap}"/>
+	<meta name="twitter:image" content="#{seccionesProyectoBean.analyticsDTO.rutaImagenGrap}"/>
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async="async" src="https://www.googletagmanager.com/gtag/js?id=#{seccionesProyectoBean.analyticsDTO.identificadorAnalytics}"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		
+		gtag('config', '${seccionesProyectoBean.analyticsDTO.identificadorAnalytics}');
+	</script>
+
+	<!--  Se agrega fuente Montserrat e Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" /> 
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true"/> 
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet"/>
+
+	<!-- El proyecto de grafica base requiere JQuery para cargar header y footer, pero dado que en este proyecto ocupamos 
+ 	primefaces debemos de reutilizar la que ya trae embebida (v.3.2.1) sino puede causar conflictos -->
+	<h:outputScript library="primefaces" name="jquery/jquery.js"
+		target="head" />
+	<!--  	No se puede agregar una versión especifica de JQuery porque primefaces ya incluye una y se tendrían problemas   -->
+	<!--    	<script src="https://code.jquery.com/jquery-3.3.1.js" -->
+	<!-- 			  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" -->
+	<!-- 			  crossorigin="anonymous"> -->
+	<!-- 	</script> -->
+
+	<!-- Se agrega el javascript que carga las leyendas de Primefaces en el idioma español de México es_MX. Busca el archivo indicado dentro de resources la carpeta js. -->
+	<h:outputScript library="js" name="primefaces_locale.js" />
+
+	<!-- Se agrega el javascript que contiene las funciones para validar el tipo de caracteres de entrada-->
+	<h:outputScript library="js" name="validacion_caracteres.js" />
+
+	<!-- Javascript que bloquea al usuario el poder utilizar el botón atrás del navegador web -->
+	<h:outputScript library="js" name="noBack.js" target="head" />
+
+	<!-- Javascript que hace que el header se mantenga visible cuando se hace un scroll hacia abajo. Depende del DIV con ID Header y de la hoja de estilos adip-header.css-->
+	<!-- 	<h:outputScript library="js" name="onScrollHeader.js" target="body" /> -->
+
+	<!-- Estilos para iconos de font-awesome -->
+	<h:outputStylesheet library="webjars"
+		name="font-awesome/5.15.4/css/solid.min-jsf.css" />
+	<h:outputStylesheet library="webjars"
+		name="font-awesome/5.15.4/css/fontawesome.min-jsf.css" />
+	<h:outputStylesheet library="webjars"
+		name="font-awesome/5.15.4/css/v4-shims.min-jsf.css" />
+
+	<h:outputStylesheet name="css/adip-header.css" />
+
+	<h:outputStylesheet name="css/adip-footer.css" />
+
+	<h:outputStylesheet name="css/adip-componentes.css" />
+
+	<h:outputStylesheet name="css/indicadores.css" />
+
+	<h:outputStylesheet name="css/primeflex.css" />
+
+	<h:outputStylesheet name="css/primefaces-personalizado.css" />
+
+	<h:outputStylesheet name="css/stepper-home-ul.css" />
+	
+	<h:outputStylesheet name="css/componentes.css" />
+	
+	<h:outputStylesheet name="css/stepper-secciones.css" />
+
+	<f:view locale="#{localeBean.locale}" />
+
+	<!-- Se agrega CSS para Header y Footer gob.mx -->
+	<link href="https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css" rel="stylesheet"/>
+	<link href="https://framework-gb.cdn.gob.mx/gm/accesibilidad/css/gobmx-accesibilidad.min.css" rel="stylesheet"/>	
+	
+</h:head>
+<h:body>
+<!-- 	<ui:include src="/public/seccionesHome/VentanaInfo.xhtml" /> -->
+	<div id="wrapper" style="background-color: white !important;">
+	
+		<!-- Se agrega un header volador (On Scroll Header), es decir, cuando se haga scroll en la pagina el header permanece en la parte superior
+		Para hacer este header, se define un div, el cual tiene el style 'header' en la hoja de estilos y por ultimo necesita el javascript onScrollHeader.js -->
+		
+		<c:if test="${indexBean.proyectoDTO ne null}">
+			<div id="header" style="z-index:9990;" class="espacio-superior">
+				<ui:insert name="header" >
+					<!-- Aquí cualquier XHTML podría insertar su propio header con ui:define, si no lo hace, por default se mostraría el que aparece en el ui:include -->
+					<ui:include src="/WEB-INF/templates/header.xhtml" />
+				</ui:insert>
+			</div> 		
+		</c:if>
+		
+		<div id="container" class="content"
+			style="width: 100%; height: 90%; background-color: #f3f8fb !important;">			
+
+			<div id="messages_div" style="text-align: left;">
+				<p:messages id="messages" showDetail="false" closable="true"
+					globalOnly="true">
+					<p:autoUpdate />
+				</p:messages>
+			</div>
+			<div id="content" class="contenido" style="width: 100%; height: 90%;">
+				<ui:insert name="content">
+                    [Template content will be inserted here]
+         </ui:insert>
+			</div>
+		</div>
+		
+	</div>
+	
+	<c:if test="${indexBean.proyectoDTO != null and indexBean.estadoSistemaDTO.catEstadosSistemaDTO.idEstadoSistema eq 5}">
+		<!-- INICIA MODAL PROYECTO EN PAUSA-->
+		<p:dialog id="mdlPausa" widgetVar="mdlPausaProyect"
+			showEffect="fade" responsive="true" modal="true" draggable="false"
+			closable="false" resizable="true"
+			visible="#{indexBean.estadoSistemaDTO.catEstadosSistemaDTO.idEstadoSistema eq 5}"
+			style="border-radius: 5px; max-width: 629px; max-height:405;">
+			<h:form id="frmModalPausa">
+			<!-- pausa por defecto -->
+				<p:panelGrid columns="1"
+					columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
+					style="padding: 0px 10px 0px 10px;text-align: center;">
+				<p:column>
+					<p:outputLabel  rendered="#{not (indexBean.homeTramiteDTO.detalleHomeDTO.personalizaPausa or indexBean.homeProgramaDTO.detalleHomeDTO.personalizaPausa)}"
+						value="#{indexBean.proyectoDTO.catTipoProyectoDTO.idTipoProyecto eq 1 ? 'Trámite o servicio' : 'Programa social'} no disponible" 
+						styleClass="lbl-titulo-modal"
+						style="font-size: 1.5rem !important;"
+						escape="false" />
+					</p:column> 					
+			</p:panelGrid>
+			
+				<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
+					style="margin-top: 0px;">
+					<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+						layout="grid"
+						style="padding: 0px !impoortant; justify-content: center !important;text-align:center;"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel
+							value="¡Lo sentimos!"
+							style="font-size: 1.4rem !important; font-weight: 600 !important;line-height: 30px !important;"
+							styleClass="lbl-cuerpo-manifiesto" escape="false"
+							rendered="#{not (indexBean.homeTramiteDTO.detalleHomeDTO.personalizaPausa or indexBean.homeProgramaDTO.detalleHomeDTO.personalizaPausa)}" />
+						<p:outputLabel
+							rendered="#{indexBean.proyectoDTO.catTipoProyectoDTO.idTipoProyecto eq 1 and not indexBean.homeTramiteDTO.detalleHomeDTO.personalizaPausa}"
+							value="Este trámite o servicio no se encuentra disponible por el momento."
+							style="font-size: 1.4rem !important; font-weight: 600 !important;line-height: 30px !important;"
+							styleClass="lbl-cuerpo-manifiesto" escape="false"/>
+						<p:outputLabel
+							rendered="#{indexBean.proyectoDTO.catTipoProyectoDTO.idTipoProyecto eq 2 and not indexBean.homeProgramaDTO.detalleHomeDTO.personalizaPausa}"
+							value="Este programa social no se encuentra disponible por el momento."
+							style="font-size: 1.4rem !important; font-weight: 600 !important;line-height: 30px !important;"
+							styleClass="lbl-cuerpo-manifiesto" escape="false" />
+					</p:panelGrid>
+				</p:panelGrid>
+				
+				<!-- FIn de pausa por defecto-->
+				<p:panelGrid columns="1"
+					columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
+					style="padding: 0px 15px 0px 15px;text-align: center;">
+					<p:column>
+						<p:outputLabel
+							rendered="#{indexBean.homeTramiteDTO.detalleHomeDTO.personalizaPausa or indexBean.homeProgramaDTO.detalleHomeDTO.personalizaPausa}"
+							value= "#{indexBean.homeTramiteDTO.detalleHomeDTO.personalizaPausa 
+								       ? indexBean.homeTramiteDTO.detalleHomeDTO.tituloPausa 
+								       : indexBean.homeProgramaDTO.detalleHomeDTO.tituloPausa}"
+							style="font-size: 1.5rem !important; font-weight: 600 !important;line-height: 10px !important;"
+							styleClass="lbl-titulo-modal" escape="false" />					
+					</p:column> 					
+				</p:panelGrid>	
+				<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+					layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
+					style="margin-top: 10px;">
+					<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+						layout="grid"
+						style="padding: 0px !important; justify-content: center !important;text-align:center;"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel
+							rendered="#{indexBean.proyectoDTO.catTipoProyectoDTO.idTipoProyecto eq 1 and indexBean.homeTramiteDTO.detalleHomeDTO.personalizaPausa}"
+							value="#{indexBean.homeTramiteDTO.detalleHomeDTO.descripcionPausa}"
+							style="font-size: 1.2em !important; line-height: 1.4em !important;"
+							styleClass="lbl-cuerpo-manifiesto" escape="false" />
+						<p:outputLabel
+							rendered="#{indexBean.proyectoDTO.catTipoProyectoDTO.idTipoProyecto eq 2 and indexBean.homeProgramaDTO.detalleHomeDTO.personalizaPausa}"
+							value="#{indexBean.homeProgramaDTO.detalleHomeDTO.descripcionPausa}"
+							style="font-size: 1.2em !important; line-height: 1.4em !important;"
+							styleClass="lbl-cuerpo-manifiesto" escape="false" />
+					</p:panelGrid>
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+		<!-- FIN MODAL -->
+	</c:if>
+	
+	<!-- Se inyecta JS para Header y Footer -->
+	<script src="https://framework-gb.cdn.gob.mx/gm/v3/assets/js/gobmx.js"></script> <!-- V3 -->
+	<script src="https://framework-gb.cdn.gob.mx/gm/accesibilidad/js/gobmx-accesibilidad.min.js"></script>
+</h:body>
+</html>

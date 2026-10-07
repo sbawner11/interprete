@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+ 	
+    <p:panelGrid columns="1" 
+    	columnClasses="ui-xl-12 ui-lg-12 ui-g-12 ui-md-12 ui-sm-12" 
+    	layout="grid" 
+    	styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading" >
+    	<p:outputLabel for="@next" value="#{areaTexto.tituloCampo}" styleClass="lbl-componente"/>
+    	
+		<p:inputTextarea id="txt_#{areaTexto.idComponente}"
+    		value="#{registrarFormularioBean.mapRespuestas[areaTexto.respuestaComponente]}"
+    		readonly="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 
+			    	or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) 
+			    	or (registrarFormularioBean.usuarioBack and registrarFormularioBean.validacionTramite == true)
+			    	or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}"
+    		maxlength="2000"
+    		rows="#{areaTexto.lineasAltura}" autoResize="false"
+    		counter="contador_#{areaTexto.idComponente}"
+    		counterTemplate="{0} caracteres restantes"
+    		placeholder="#{areaTexto.habilitaTextoInterior ? areaTexto.textoInterior : '' }"
+    		required="#{areaTexto.requerido}" 
+    		requiredMessage="#{msg.msj_campo_requerido}"
+    		>
+    		<f:attribute name="detSecurityDomainCurpDTO" value="#{seccionSecurityCurpApplication.detSecurityDomainCurpDTO}"/>    			
+	    	<p:keyFilter regEx="/[^\x00-\x1F]/" preventPaste="false" />
+    		
+    	</p:inputTextarea>
+
+    		<h:outputText id="contador_#{areaTexto.idComponente}" 
+    			    rendered="#{(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 
+			    		or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) }"
+    			/>	
+
+		<p:message 
+			rendered="#{areaTexto.requerido}"
+			for="frmFormulario:componente_#{areaTexto.idComponente}:txt_#{areaTexto.idComponente}" 
+			display="text"/>
+	
+    	<p:tooltip rendered="#{areaTexto.tooltip}" 
+    		for="frmFormulario:componente_#{areaTexto.idComponente}:txt_#{areaTexto.idComponente}"
+    		value="#{areaTexto.descripcionTooltip}"
+    		position="bottom" showEvent="mouseover" hideEvent="mouseout"/>
+    </p:panelGrid>
+    
+</ui:composition>

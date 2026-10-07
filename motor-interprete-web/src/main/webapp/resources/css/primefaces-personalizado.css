@@ -1,0 +1,1813 @@
+@charset "UTF-8";
+ 
+/* MEDIA QUERY PARA LOS HOME */
+@media ( max-width : 768px) {
+	.img-header {
+		height: 50px !important;
+	}
+	.first-section__image {
+		width: -webkit-fill-available !important;
+		height: 90px !important;
+	}
+	#idPnlTituloHome .titulo-home-tramite {
+		font-size: 35px !important;
+		line-height: 35px !important;
+	}	
+}
+
+@media ( max-width : 425px) {
+	.img-header {
+		height: 50px !important;
+	}
+	.first-section__image {
+		width: -webkit-fill-available !important;
+		height: 90px !important;
+	}
+	#idPnlTituloHome .titulo-home-tramite {
+		font-size: 31px !important;
+		line-height: 30px !important;
+	}
+	#frmIniciarSesion\:colManifiesto {
+		margin-top: -20px !important;
+		padding: 0 10px !important;
+	}
+	#frmIniciarSesion\:pnlBtnInicSes {
+		margin-top: 10px !important;
+		margin-bottom: 10px !important;
+	}	
+	#pnlDerecho {
+		margin-left: -65px !important;
+	}
+	#pnlDerecho .lbl-costo-tramite {
+		font-size: 22px !important;
+		line-height: 30px !important;
+	}
+	#pnlDerecho .lbl-excepcion-tramite {
+		font-size: 22px !important;
+		line-height: 30px !important;
+	}
+	#idUlCosto .lbl-descripcion-costo {
+		font-size: 17px !important;
+	}
+	#idUlExcepcion .lbl-descripcion-excepcion {
+		font-size: 17px !important;
+	}
+	#frmPermisosBD\:btnAsignarPermisos {
+	    min-width: 165px !important;
+	}
+	.font-titulo-donacion {
+		font-size: 25px !important;
+	}
+	.font-texto-donacion {
+		font-size: 22px !important;
+	}
+	.formularios-btn-donacion .ui-button-text {
+		font-size: 20px !important;
+	}
+}
+
+@media ( max-width : 375px) {
+	.img-header {
+		height: 50px !important;
+	}
+	.first-section__image {
+		width: -webkit-fill-available !important;
+		height: 90px !important;
+	}
+	#idPnlTituloHome .titulo-home-tramite {
+		font-size: 28px !important;
+		line-height: 30px !important;
+	}
+	#frmIniciarSesion\:colManifiesto {
+		margin-top: -20px !important;
+		padding: 0 10px !important;
+	}
+	#frmIniciarSesion\:pnlBtnInicSes {
+		margin-top: 10px !important;
+		margin-bottom: 10px !important;
+	}
+	.idStepRequisitos {
+		margin-top: -20px !important;
+	}
+	#colRequisitosTramite {
+		margin-bottom: -20px !important;
+	}
+	.StepProgress-item .lbl-step-progress {
+		font-size: 15px !important;
+	}
+	#pnlDerecho {
+		margin-left: -65px !important;
+	}
+	#pnlDerecho .lbl-costo-tramite {
+		font-size: 22px !important;
+		line-height: 30px !important;
+	}
+	#pnlDerecho .lbl-excepcion-tramite {
+		font-size: 22px !important;
+		line-height: 30px !important;
+	}
+	#idUlCosto .lbl-descripcion-costo {
+		font-size: 15px !important;
+	}
+	#idUlExcepcion .lbl-descripcion-excepcion {
+		font-size: 15px !important;
+	}
+	#frmPermisosBD\:btnAsignarPermisos {
+	    min-width: 140px !important;
+	}	
+}
+
+/* Resolución 320px */
+@media ( max-width : 320px) {
+	.img-header {
+		width: 150px !important;
+		height: 50px !important;
+	}
+	.first-section__image {
+		width: -webkit-fill-available !important;
+		height: 90px !important;
+	}
+	#idPnlTituloHome .titulo-home-tramite {
+		font-size: 22px !important;
+		line-height: 30px !important;
+	}
+	#frmIniciarSesion\:colManifiesto {
+		margin-top: -20px !important;
+		padding: 0 10px !important;
+	}
+	#frmIniciarSesion\:pnlBtnInicSes {
+		margin-top: 10px !important;
+		margin-bottom: 10px !important;
+	}
+	#pnlIzquierdo .lbl-requisitos-tramite {
+		font-size: 20px !important;
+		line-height: 30px !important;
+	}
+	.idStepRequisitos {
+		margin-top: -20px !important;
+	}
+	#colRequisitosTramite {
+		margin-bottom: -20px !important;
+	}
+	.StepProgress-item .lbl-step-progress {
+		font-size: 14px !important;
+	}
+	#pnlDerecho {
+		margin-left: -30px !important;
+	}
+	#pnlDerecho .lbl-costo-tramite {
+		font-size: 20px !important;
+		line-height: 30px !important;
+	}
+	#pnlDerecho .lbl-excepcion-tramite {
+		font-size: 20px !important;
+		line-height: 30px !important;
+	}
+	#idUlCosto .lbl-descripcion-costo {
+		font-size: 14px !important;
+	}
+	#idUlExcepcion .lbl-descripcion-excepcion {
+		font-size: 14px !important;
+	}
+	#frmPermisosBD\:btnAsignarPermisos {
+	    min-width: 110px !important;
+	}
+}
+
+/** {*/
+/*	font-family: 'Inter' !important;*/
+/*}*/
+
+/*
+* A continuación, se sobrescriben algunos estilos de Primefaces
+*/
+
+/* Estilo para los renglones y columnas del p:panelGrid por default trae border-top: 1px solid #bcc7cf*/
+.ui-panelgrid .ui-grid-responsive .ui-grid-row {
+	border-top: none !important;
+}
+
+/* Estilo para los renglones y columnas del p:panelGrid */
+.ui-grid-row .ui-grid-col-4 {
+	padding: 0.5em 0;
+}
+
+.ui-widget .ui-widget {
+	font-size: 14px;
+}
+
+/* Estilo para que los p:outputlabel aparezcan en negritas, por default no son negritas */
+.ui-outputlabel {
+	font-weight: bold;
+	font-family: 'Inter' !important;
+	font-style: normal;
+	font-stretch: normal;
+	letter-spacing: normal;
+}
+
+.ui-outputlabel2 {
+	font-weight: normal;
+	font-size: 22px;
+}
+
+/* Estilo sobresscrito para que el área de mensajes no aparezca con margen, por default trae margen de 10px */
+.ui-messages-info, .ui-messages-warn, .ui-messages-error,
+	.ui-messages-fatal {
+	margin: 0px 0;
+}
+
+/* Estilo sobresscrito para que el p:menubar no aparezca con espacio de relleno, por default trae .3m
+   También se sobrescribe el tamaño de la letra ya que por default trae 1m
+    */
+.ui-menu {
+	width: 13.5em;
+	padding: 0;
+	font-size: 12px;
+}
+
+.ui-fluid .ui-inputtext, .ui-fluid .ui-password {
+	border-radius: 6px;
+	border: solid 1px #898d8d;
+}
+
+/* Estilo sobreescrito para que el fondo de legend del componente p:fieldset sea transparente, por default es de color gris*/
+.ui-fieldset .ui-fieldset-legend {
+	background-color: transparent;
+	border-color: transparent;
+	padding: 1;
+}
+
+/*Estilo sobreescrito para el relleno de las columnas, por default tienen el valor de 4px 10px*/
+.ui-panelgrid .ui-panelgrid-cell {
+	padding-bottom: 5px;
+	padding-left: 10px;
+	padding-right: 15px;
+	padding-top: 5px;
+}
+
+/*Estilo sobreescrito para el color de fondo del panelGrid, por default es blanco así como el padding, por default es padding: 1rem;*/
+body .ui-panelgrid .ui-panelgrid-cell {
+	background: none;
+	color: #495057;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	padding-right: 15px;
+	padding-top: 5px;
+}
+
+/*Estilo sobreescrito para quitar el padding de los botones, por defaul trae padding: 0.5rem 1rem*/
+body .ui-button.ui-button-text-only .ui-button-text {
+	padding: 0;
+}
+
+/*Estilo sobreescrito para quitar el borde de los botones, por defaul trae 1px solid #2196F3;*/
+body .ui-button {
+	border: none;
+}
+
+/*Estilo sobreescrito para quitar el icono + en el componente fileupload*/
+body .ui-fileupload .ui-fileupload-buttonbar .ui-button.ui-fileupload-choose .ui-icon:before
+	{
+	/* content: ""; */
+	display: none;
+}
+
+/*Estilo sobreescrito para quitar el padding en el componente fileupload, por default trae 1rem*/
+body .ui-fileupload .ui-fileupload-buttonbar {
+	padding: 0;
+}
+
+/*Estilo sobreescrito para quitar el padding en el componente fileupload, por default trae 1rem*/
+body .ui-fileupload .ui-fileupload-content {
+	padding: 0;
+}
+
+/*Estilo sobreescrito para alinear el icono de cerrar de los mensajes, por default trae right: -1rem;*/
+body .ui-messages .ui-messages-close {
+	right: 0rem;
+}
+
+/*Estilo sobreescrito para reducir el padding de los mensajes, por default trae padding: 1.5rem;*/
+body .ui-messages>div {
+	padding: 1rem !important;
+}
+
+/*Estilo sobreescrito para reducir el padding en los selectonemenu, por default trae padding: 0.5rem 0.5rem;;*/
+body .ui-fluid .ui-selectonemenu-label {
+	/* 	padding: 0.1rem 0.5rem !important; */
+	/* font-size: 16px !important; */
+	
+}
+
+/*Estilo sobreescrito para alinear la X de cierre al centro, y cambiar el color, por default trae #B71C1C y sin padding*/
+body .ui-messages .ui-messages-error .ui-messages-close, body .ui-messages .ui-messages-fatal .ui-messages-close
+	{
+	background: #FFCDD2;
+	color: #000000;
+	padding-right: 18px;
+}
+
+/*Estilo sobreescrito para alinear la X de cierre al centro, y cambiar el color, por default trae #01579B y sin padding*/
+body .ui-messages .ui-messages-info .ui-messages-close {
+	background: #B3E5FC;
+	color: #01579B;
+	padding-right: 18px;
+}
+
+/* Estilo para el menu de inicio de sesión*/
+/*body .ui-menu .ui-menu-list .ui-menuitem .ui-menuitem-link.ui-state-hover {*/
+/*    background: #FFFFFF !important;*/
+/*}*/
+/* Estilo para opciones de link de header del index*/
+.ui-menu-item-personalizado.ui-menu .ui-menuitem-text {
+	font-family: 'Inter' !important;
+	font-size: 18px !important;
+	font-weight: 400;
+	font-style: normal !important;
+	line-height: 21.78px !important;
+	color: #104C42;
+}
+
+.ui-menu-item-personalizado .ui-state-hover {
+	border-bottom: 2px solid #235B4E !important;
+	border-radius: 0 !important;
+	box-sizing: content-box !important;
+	text-decoration: underline !important;
+	background: none;
+	font-weight: 600 !important;
+	padding: 18px 20px 0 0px !important;
+}
+
+.ui-menu-item-personalizado .ui-state-active {
+	text-decoration: underline !important;
+}
+
+.ui-menu-item-personalizado.ui-menubar .ui-menuitem-link {
+	line-height: 30px !important;
+	font-size: 1rem !important;
+	font-weight: 400 !important;
+}
+
+/* Estilo para opciones de menu de usuario */
+.ui-menu-item-personalizado {
+	border: none;
+	background: none !important;
+	border-radius: 0;
+	height: 35px;
+	text-align: right !important;
+}
+
+.ui-menu-item-personalizado-seleccionado .ui-menuitem-text {
+	font-weight: bold !important;
+	border-bottom: 2px solid #104C42;
+	color: #104C42 !important;
+}
+
+/* Habilitar los iconos del menú de usuario */
+.fa {
+	left: 130px;
+	font-family: 'Font Awesome 5 Free' !important;
+}
+
+.ui-menu-logeo .ui-button-icon-only .ui-icon {
+	margin-left: -20px !important;
+	margin-top: 0.2rem !important;
+}
+
+/* Quitar el fondo azul al tener el foco el menú de usuario */
+.ui-menu-logeo .ui-button.ui-state-focus{
+	box-shadow: none !important; 
+}
+
+
+
+body .ui-messages .ui-messages-close {
+	position: inherit;
+	right: -1rem;
+	top: -1rem;
+	width: 5rem;
+	height: 1rem;
+	background: transparent;
+	color: #6c757d;
+	transition: background-color 0.2s, color 0.2s, border-color 0.2s,
+		box-shadow 0.2s;
+	border-radius: 50%;
+	border: 0 none;
+	text-align: center;
+	line-height: 1.3rem;
+	padding: 2px;
+	user-select: none;
+	text-align: center;
+	transition: background-color 0.2s;
+}
+
+.ui-button {
+	border-radius: 6px;
+	width: 180px;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default,
+	.ui-widget-header .ui-state-default {
+	text-shadow: none;
+}
+
+.ui-button .ui-button-text {
+	line-height: 2;
+	text-align: center;
+}
+
+.ui-state-default {
+	box-shadow: none;
+}
+
+.ui-button-text-only .ui-button-text {
+	padding: 0;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default,
+	.ui-widget-header .ui-state-default {
+	background: none;
+}
+
+.header-columna {
+	color: #ffffff !important;
+}
+
+.value {
+	font-weight: bold;
+	background: #ffffff !important;
+}
+
+.table {
+	display: table;
+	border-collapse: collapse;
+	border-spacing: 0;
+	border-bottom-color: grey !important;
+	background: #009288 !important;
+}
+
+.ui-tabla {
+	text-align: center;
+	border: none !important;
+	width: 100%;
+	border: none !important;
+}
+
+.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td,
+	.ui-datatable tfoot th {
+	/* border-width: 1px; */
+	/* border-style: none !important; */
+	border-bottom: 1px solid #a8a8a8;
+	padding: 6px 2px !important;
+}
+
+.ui-datatable thead th {
+	text-align: center;
+	background-color: #009288 !important;
+	border: none !important;
+}
+
+.ui-modal {
+	border-radius: 10px !important;
+	background: #ffffff !important;
+	text-decoration: none;
+}
+
+.ui-widget-content {
+	border: none !important;
+}
+
+.ui-widget-header {
+	background: none !important;
+}
+
+.ui-icon-closethick {
+	background-repeat: no-repeat;
+	width: 20px !important;
+	height: 20px !important;
+	background-position: -95px -125px !important;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+	padding: 1px !important;
+}
+
+.ui-dialog .ui-dialog-content {
+	padding: 0 !important;
+}
+
+.ui-panelgrid .ui-panelgrid-cell .regla {
+	padding-top: 0 !important;
+}
+
+.ui-fluid .ui-selectonemenu {
+	width: 100%;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	/*border-radius: 6px !important;*/
+}
+
+/* .ui-button-text-icon-left .ui-button-text { */
+/* 	padding: 0 .4em .0 2.1em !important; */
+/* 	text-align: center !important; */
+/* 	font-weight: normal !important; */
+/* } */
+.contenido-general {
+	padding: 1% 2%;
+}
+
+.stilo-fila {
+	color: #5d5d5d;
+}
+
+.ui-widget .ui-widget {
+	font-size: 17px;
+}
+
+.ui-outputlabel.ui-state-error {
+	border: 0 none;
+}
+
+.ui-outputlabel.ui-state-error {
+	border: none !important;
+	background: none !important;
+	color: #cd0a0a !important;
+}
+
+.ui-state-error, .ui-widget-content .ui-state-error, .ui-widget-header .ui-state-error
+	{
+	background: #fef1ec
+		url(/javax.faces.resource/images/ui-bg_inset-soft_95_fef1ec_1x100.png.xhtml?ln=primefaces-aristo)
+		50% bottom repeat-x;
+	background: #fef1ec linear-gradient(top, rgba(255, 255, 255, 0.8),
+		rgba(255, 255, 255, 0));
+	background: #fef1ec
+		-webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255,
+		0.8)), to(rgba(255, 255, 255, 0)));
+	background: #fef1ec -moz-linear-gradient(top, rgba(255, 255, 255, 0.8),
+		rgba(255, 255, 255, 0));
+	background: none !important;
+	border-color: #cd0a0a !important;
+}
+
+.ui-fluid .ui-selectonemenu .ui-selectonemenu-trigger {
+	width: 32px;
+	padding: 0 6px;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	border: none !important;
+}
+
+.ui-selectonemenu .ui-selectonemenu-label {
+	display: block;
+	border: 0 !important;
+	white-space: nowrap;
+	overflow: hidden;
+	font-weight: normal;
+	width: 100%;
+	text-align: left;
+	border-radius: 7px;
+}
+
+/* Estilos para que un texto largo de un selectoOneMenu sea mostrado completo*/
+.ui-selectonemenu-list, .ui-selectonemenu-panel {
+	max-width: 100% !important;
+}
+
+.ui-selectonemenu-items-wrapper {
+	overflow: auto !important;
+}
+
+.ui-selectonemenu-list {
+	max-width: 100% !important;
+}
+
+/* Indica que se ajuste el texto al espacio*/
+.ui-selectonemenu-panel .ui-selectonemenu-items-wrapper {
+	/* overflow: inherit !important; */
+	overflow: auto !important;
+	max-width: 100% !important;
+}
+
+/*sobreescrito el estilo del p:selectOneMenu para que se ajuste el texto a largo de pantalla */
+body .ui-selectonemenu-panel .ui-selectonemenu-items .ui-selectonemenu-item.ui-state-highlight
+	{
+	overflow-wrap: anywhere !important;
+}
+
+/*sobreescrito el estilo del p:selectOneMenu para texto extenso */
+.ui-selectonemenu-panel .ui-selectonemenu-list-item {
+	white-space: normal !important;
+	overflow: auto !important;
+}
+
+/*sobreescrito el estilo del inputmask */
+.ui-fluid .ui-inputmask {
+	width: 100%;
+	border-radius: 6px !important;
+}
+
+/*Stilo que sobreescribe el menu-item */
+.ui-menu.ui-menu-dynamic {
+	position: absolute;
+	display: none;
+	z-index: 100000;
+	background: #ffffff;
+	box-shadow: none !important;
+	border: none !important;
+}
+
+.ui-menubutton .ui-button {
+	margin: 4px auto;
+	border: none !important;
+	width: 40px !important;
+	height: 0;
+}
+
+.ui-menu .ui-menu-list .ui-menuitem {
+	border: none;
+	background: none !important;
+	border-radius: 0;
+	/* height: 35px; */
+	float: right !important;
+	/* padding-right: 25px; */
+	/* 	padding-left: 10px; */
+	/* background-color: #ffffff !important; */
+}
+
+.ui-state-hover {
+	border: solid .5px;
+	background: rgb(255, 255, 255, 0);
+	box-shadow: none !important;
+}
+
+.ui-widget :active {
+	outline: none !important
+}
+
+.ui-state-focus {
+	border: none !important;
+}
+
+:focus {
+	outline: -webkit-focus-ring-color auto 0 !important;
+}
+
+.ui-icon-triangle-1-s {
+	background-position: -60px -1px;
+}
+
+.ui-icono-salir {
+	left: 115px;
+	background-position-x: -95px;
+	background-position-y: -368px;
+}
+
+.ui-menu .ui-menuitem-text {
+	float: left !important;
+	color: #9F2241;
+	font-size: 14px !important;
+	font-family: 'Inter' !important;
+	font-weight: 700;
+}
+
+.ui-menu.ui-shadow {
+	border: 1px solid #c8c8c8 !important;
+	padding: 0px;
+}
+
+.etiqueta-logueo {
+	width: 81px;
+	height: 20px;
+	font-family: sans-serif;
+	font-size: 0.9rem !important;
+	font-weight: bold;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 12px;
+	letter-spacing: normal;
+	text-align: right;
+	color: #9F2241;
+}
+
+.icono-login {
+	vertical-align: middle;
+}
+
+.ui-datatable .ui-datatable-data tr.ui-state-hover {
+	background: rgb(0, 146, 136, 0.1) !important;
+}
+
+.ui-datatable tr.ui-state-highlight {
+	text-shadow: none;
+	width: 95% !important;
+	box-shadow: 1px 5px 10px #a8a8a8 !important;
+}
+
+.ui-datatable-tablewrapper {
+	padding-bottom: 0.3em !important;
+	overflow: auto !important;
+	/*  border-bottom: 1px solid #a8a8a8 !important; */
+}
+
+.ui-dialog-content-items {
+	padding: 0 50px;
+}
+
+/*establece la altura máxima para su navegador de una manera que responde 
+  a la altura del navegador de los usuarios y luego le da un desplazamiento 
+  cuando lo necesita, estilo que se utiliza para el p:sidebar */
+.WhateverYourNavIs {
+	max-height: calc(100vh - 9rem);
+	overflow-y: auto;
+}
+
+.ui-grid-column-3 {
+	width: 25% !important;
+	padding: 0 !important;
+	float: left;
+	box-sizing: border-box;
+}
+
+.ui-fluid .ui-calendar input {
+	background-image: url(/resources/img/calendar.png);
+	background-repeat: no-repeat;
+	background-position: right;
+}
+
+.ui-menu .ui-menu-parent .ui-menu-child {
+	width: 10em !important;
+	background: #ffffff;
+	box-shadow: none;
+	border: 1px solid #c4c4c4 !important;
+}
+
+.ui-menu-item-submenupersonalizado {
+	border: none;
+	background: none !important;
+	border-radius: 0;
+	height: 35px;
+	padding-left: 40px !important;
+	padding-right: 10px !important;
+}
+
+.ui-panelgrid-sin-pading .ui-panelgrid-cell {
+	padding: 0 !important;
+}
+
+.contenido-central {
+	position: relative !important;
+	bottom: 50px !important;
+	padding-top: 1% !important;
+	background-color: #FFFFFF !important;
+	border-radius: 15px !important;
+	height: auto !important;
+}
+
+.alinea-icono-centro {
+	padding: 5px 5px !important;
+	height: 70px;
+}
+
+@media screen and (min-width: 100px) and (max-width: 630px) {
+	.alinea-icono-centro {
+		padding: 5px 5px !important;
+		height: 110px;
+	}
+}
+
+.ui-button-text-icon-left .ui-button-text {
+	padding: 0 0 0 20px !important;
+	text-align: right;
+	font-weight: bold !important;
+	color: white !important;
+	display: inherit !important;
+}
+
+.ui-fileupload-buttonbar {
+	border: none !important;
+}
+
+/**INICIO PERSONALIZAR PANEL DE BARRA DE PROGRESO DE CARGA DE ARCHIVOS EN FILEUPLOAD**/
+
+/**Estilo sobrescrito para darle tamaño y color de borde a la barra de progreso que se muestra al cargar un archivo **/
+.ui-fileupload-content .ui-progressbar {
+    width: 150px !important;
+    border: 1px solid #e9ecef !important;
+}
+
+/**Estilo sobrescrito para que no sea mostrado el nombre del archivo que se está cargando 
+   (Si se muestra el nombre lo colocará sobre el componente ocupando espacio de manera vertícal o alargada)**/
+.ui-fileupload-row>.ui-fileupload-filename {
+    display: none !important;
+}
+
+/**Estilo sobrescrito para posicionar panel de progreso de carga de archivo**/
+.ui-fileupload-row>div {
+    padding: 8px 0px !important;
+}
+
+/**Estilo sobrescrito para no dar salto de linea en texto de peso de archivo**/
+.ui-fileupload-files {
+    white-space: nowrap !important;
+}
+/**FIN PERSONALIZAR PANEL DE BARRA DE PROGRESO DE CARGA DE ARCHIVOS EN FILEUPLOAD**/
+
+.ui-datatable thead th {
+	background-color: #0F4C42 !important;
+}
+
+.titPrinc {
+	font-weight: 700 !important;
+	font-size: 17px !important;
+	line-height: 2 !important;
+}
+
+#calendario .ui-fluid .ui-calendar, .ui-fluid .ui-calendar input {
+	height: 40px;
+	width: 100%;
+	border-radius: 6px;
+	color: #898d8d;
+/*	font-size: 1rem;*/
+}
+
+
+
+
+.ui-fluid .ui-calendar, .ui-fluid .ui-calendar input {
+	background-position: 96% 50%;
+}
+
+.ui-fluid .ui-fileupload .ui-button span {
+	line-height: 2 !important;
+}
+
+body .ui-dialog .ui-dialog-titlebar {
+	background: #ffffff !important;
+}
+
+body .ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-icon {
+	padding-right: 17px !important;
+}
+
+.separador {
+	border: 1px solid #CBD5E0 !important;
+	background: #CBD5E0 !important;
+}
+
+.font-titulo-requerido {
+	font-style: normal !important;
+	font-weight: normal !important;
+	font-size: 15px !important;
+	line-height: 18px !important;
+	color: #0066FF !important;
+	text-align: right !important;
+}
+
+.ta-r {
+	text-align: right !important;
+}
+
+body .ui-inputfield.ui-state-error {
+	border-color: #f44336 !important;
+}
+
+body .ui-message.ui-message-error, body .ui-message.ui-message-fatal {
+	background: #FFCDD2 !important;
+	border: 1px solid #EF5350 !important;
+	border-width: 0 0 0 3px !important;
+	color: #B71C1C !important;
+	padding: 0.5rem 0.5rem !important;
+	margin: 0px !important;
+	display: block !important;
+}
+
+/* Boton regresar */
+.btn-regresar-green {
+	background: #0F4C42 !important;
+	border-radius: 6px !important;
+	width: auto !important;
+	height: 44px !important;
+	margin: 10px !important;
+	padding: 0px 12px !important;
+}
+
+.btn-regresar-green .ui-button-text {
+	font-style: normal !important;
+	font-weight: 600 !important;
+	font-size: 17px !important;
+	line-height: 21px !important;
+	text-align: center !important;
+	letter-spacing: -0.03em !important;
+	color: #FFFFFF !important;
+}
+
+.icono-regresar {
+	background-image: url(/resources/img/ic_arrow_back.svg) !important;
+	width: 40px !important;
+	height: 40px !important;
+	top: 50% !important;
+}
+
+/* Boton Nuevo trámite */
+.btn-nuevo-tramite {
+	background: #B18147 !important;
+	border: 1px solid #B18147 !important;
+	border-radius: 6px !important;
+	width: 232px !important;
+	height: 44px !important;
+	margin: 10px !important;
+	padding: 0px 12px !important;
+}
+
+.ui-button-text {
+	font-style: normal !important;
+	font-weight: 600 !important;
+	font-size: 17px !important;
+	line-height: 21px !important;
+	text-align: center !important;
+	letter-spacing: -0.03em !important;
+	/* 	color: #FFFFFF !important; */
+}
+
+.icono-agregar {
+	background-image: url(/resources/img/agregar.png) !important;
+	width: 25px !important;
+	height: 25px !important;
+	margin-top: -11px !important;
+	margin-left: 11px !important;
+}
+
+/* Tabla tramites */
+.header-columna-tramites {
+	text-align: center !important;
+	font-style: normal !important;
+	font-weight: bold !important;
+	font-size: 15px !important;
+	line-height: 18px !important;
+	color: #FFFFFF !important;
+}
+
+.tbody-tramites {
+	text-align: left !important;
+	font-style: normal !important;
+	font-weight: normal !important;
+	font-size: 15px !important;
+	line-height: 18px !important;
+	color: #1A202C !important;
+}
+
+.btn-vista-formulario {
+	position: unset !important;
+	width: 46.2px !important;
+	height: 44px !important;
+	left: 1201px !important;
+	top: 538px !important;
+	background: #CBD5E0 !important;
+	border-radius: 6px !important;
+}
+
+.font-doc-green {
+	font-style: normal !important;
+	font-weight: bold !important;
+	font-size: 18px !important;
+	line-height: 22px !important;
+	color: #00AE42 !important;
+	/*Se agregan lineas para que el texto de un salto de linea 
+	  y se vea el nombre completo del archivo adjunto en 
+	  resoluciones móviles */
+	max-width: 100%;
+	overflow-wrap: anywhere;
+}
+
+.info-icon {
+	width: auto !important;
+}
+
+.font-green-archivos-info {
+	font-style: normal !important;
+	font-weight: normal !important;
+	font-size: 15px !important;
+	line-height: 18px !important;
+	color: #00AE42 !important;
+}
+
+.sac-item-center {
+	display: flex !important;
+	align-items: center !important;
+}
+
+.link-publicar {
+	font-style: normal !important;
+	font-weight: bold !important;
+	font-size: 15px !important;
+	line-height: 18px !important;
+	text-decoration-line: underline !important;
+	color: #0F4C42 !important;
+}
+
+/****************************************/
+/* Estilos Proyecto Motor Interprete */
+/****************************************/
+
+.label-lbl-step-progress {
+	display: contents !important;
+}
+
+
+.lbl-step-progress {
+	font-size: 17px !important;
+	letter-spacing: -0.5px !important;
+	color: #475058 !important;
+}
+
+.label-lbl-step-progress-especificaciones {
+	display: contents !important;
+}
+
+.lbl-step-progress-especificaciones {
+	font-weight: 400 !important;
+	font-size: 17px !important;
+	line-height: 23px !important;
+	letter-spacing: -0.5px !important;
+	color: #4C5566 !important;
+}
+
+.lbl-costo-tramite {
+	font-style: normal !important;
+	font-weight: 700 !important;
+	font-size: 22px !important;
+	line-height: 45px !important;
+	letter-spacing: -0.5px !important;
+	color: #4C5566 !important;
+	margin-left: 30px !important;
+}
+
+.lbl-descripcion-costo {
+	font-style: normal !important;
+	font-weight: 400 !important;
+	font-size: 17px !important;
+	line-height: 21px !important;
+	letter-spacing: -0.5px !important;
+	color: #4C5566 !important;
+}
+
+.lbl-excepcion-tramite {
+	font-style: normal !important;
+	font-weight: 700 !important;
+	font-size: 22px !important;
+	line-height: 45px !important;
+	letter-spacing: -0.5px !important;
+	color: #4C5566 !important;
+	margin-left: 30px !important;
+}
+
+.label-lbl-descripcion-excepcion {
+    display: contents !important;
+}
+
+.lbl-descripcion-excepcion {
+	font-style: normal !important;
+	font-weight: 400 !important;
+	font-size: 17px !important;
+	line-height: 28px !important;
+	letter-spacing: -0.5px !important;
+	color: #4C5566 !important;
+}
+
+ul[id*="idUlEspecificaciones"] {
+	list-style: none !important;
+}
+
+ul[id*="idUlCosto"] {
+	list-style: none !important;
+}
+
+ul[id*="idUlExcepcion"] {
+	list-style: none !important;
+}
+
+ul[id*="idUlRequisito"] {
+	list-style: none !important;
+}
+
+ul[id*="idApoyos"] {
+	list-style: none !important;
+}
+
+ul[id*="idUlEspecificaciones"] li::before {
+	content: "•" !important; 
+	color: #4C5566 !important;
+	margin-right: 10px !important;
+}
+
+ul[id*="idUlCosto"] li::before {
+	content: "•" !important; 
+	color: #4C5566 !important;
+	margin-right: 10px !important;
+}
+
+ul[id*="idUlExcepcion"] li::before {
+	content: "•" !important; 
+	color: #4C5566 !important;
+	margin-right: 10px !important;
+}
+
+ul[id*="idUlRequisito"] li::before {
+	content: "•" !important; 
+	color: #4C5566 !important;
+	margin-right: 10px !important;
+}
+
+ul[id*="idApoyos"] li::before {
+	content: "•" !important; 
+	color: #4C5566 !important;
+	margin-right: 10px !important;
+}
+
+.lbl-requisitos-tramite {
+	font-style: normal !important;
+	font-weight: 700 !important;
+	font-size: 22px !important;
+	line-height: 45px !important;
+	letter-spacing: -0.5px !important;
+	color: #9F2240 !important;
+}
+
+.caja-informativa {
+	background: #E2E8F0 !important;
+    box-shadow: 0px 16px 85px rgb(0 146 135 / 4%) !important;
+    border-radius: 0px !important;
+    /* height: 48px !important;  */
+    display: block !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin-top: 25px !important;
+}
+
+.caja-divisora-cafe {
+	background: #BC955C !important;
+	height: 14px !important;
+}
+
+.titulo-home-tramite {
+	font-style: normal !important;
+	font-weight: 700 !important;
+	font-size: 38px !important;
+	line-height: 45px !important;
+	text-align: center !important;
+	letter-spacing: -0.5px !important;
+	color: #175E50 !important;
+}
+
+.lbl-dependencia {
+	font-style: normal !important;
+	font-weight: 600 !important;
+	font-size: 17px !important;
+	/*  line-height: 45px !important; */
+	letter-spacing: -0.5px !important;
+	color: #475058 !important;
+	text-align: center !important;
+}
+
+.lbl-home-programa {
+	font-style: normal !important;
+	font-weight: 400 !important;
+	font-size: 17px !important;
+	line-height: 23px !important;
+	letter-spacing: -0.5px !important;
+	color: #4C5566 !important;
+}
+
+.lbl-home-programa-pnl-derecho {
+	font-style: normal !important;
+	font-weight: 400 !important;
+	font-size: 17px !important;
+	line-height: 28px !important;
+	letter-spacing: -0.5px !important;
+	color: #4C5566 !important;
+}
+
+.lbl-apoyo-otorgado {
+	font-style: normal !important;
+	font-weight: 700 !important;
+	font-size: 22px !important;
+	/* line-height: 45px !important; */
+	letter-spacing: -0.5px !important;
+	color: #4C5566 !important;
+}
+
+.lbl-titulo-modal {
+	font-style: normal !important;
+	font-weight: 700 !important;
+	font-size: 20px !important;
+	line-height: 26px !important;
+	color: #175E50 !important;
+}
+
+.lbl-cuerpo-manifiesto {
+	font-style: normal !important;
+	font-weight: 400 !important;
+	font-size: 16px !important;
+	line-height: 20px !important;
+	color: #2D3748 !important;
+}
+
+#frmIniciarSesion\:pnlIzquierdo_content {
+	padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+#frmIniciarSesion\:pnlDerecho_content {
+	padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+/* Estilo para quitar padding de p:message */
+.messages-obligatorios {
+	display: none !important;
+	padding: 0 !important;
+}
+
+/* Estilo para ocultar el selectOneMenu del componente radioBoton */
+.selectOneMenuOculto.ui-selectonemenu .ui-selectonemenu-label {
+    display: none !important;
+}
+
+.selectOneMenuOculto.ui-selectonemenu .ui-selectonemenu-trigger .ui-icon:before {
+    content: none;
+}
+
+.selectOneMenuOculto.ui-selectonemenu {
+    border: none;
+}
+
+/*Fin estilo para ocultar el selectOneMenu del componente radioBoton */
+
+/* Estilo para separador componente Checkbox Grupo */
+.separadorCheckGrupo {
+    padding:0 .5rem; 
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 18px;
+    text-align: left;
+    letter-spacing: -0.460643px;
+    color: #235B4E;
+}
+
+/********************************************/
+/* Estilos para los estatus de los trámites */
+/********************************************/
+
+.estatus-en-captura {
+	display: flex !important;
+	justify-content: center !important;
+	background: #FEFCBF !important;
+	border-radius: 3.5px !important;
+}
+
+.estatus-en-captura-txt {
+	font-style: normal !important;
+	font-weight: 500 !important;
+	font-size: 15px !important;
+	line-height: 24px !important;
+	display: flex !important;
+	align-items: center !important;
+	text-align: center !important;
+	color: #B7791F !important;
+}
+
+.estatus-pendiente-pago {
+	display: flex !important;
+	justify-content: center !important;
+	background: #E9E6F7 !important;
+	border-radius: 3.5px !important;	
+}
+
+.estatus-pendiente-pago-txt {
+	font-style: normal !important;
+	font-weight: 500 !important;
+	font-size: 15px !important;
+	line-height: 24px !important;
+	display: flex !important;
+	align-items: center !important;
+	text-align: center !important;
+	color: #869395 !important;
+}
+
+.estatus-enviado {
+	display: flex !important;
+	justify-content: center !important;
+	background: #EBF8FF !important;
+	border-radius: 3.5px !important;
+}
+
+.estatus-enviado-txt {
+	font-style: normal !important;
+	font-weight: 500 !important;
+	font-size: 15px !important;
+	line-height: 24px !important;
+	display: flex !important;
+	align-items: center !important;
+	text-align: center !important;
+	color: #4299E1 !important;
+}
+
+.estatus-en-correcciones {
+	display: flex !important;
+	justify-content: center !important;
+	background: #FEEBC8 !important;
+	border-radius: 3.5px !important;
+}
+
+.estatus-en-correcciones-txt {
+	font-style: normal !important;
+	font-weight: 500 !important;
+	font-size: 15px !important;
+	line-height: 24px !important;
+	display: flex !important;
+	align-items: center !important;
+	text-align: center !important;
+	color: #ED8936 !important;
+}
+
+.estatus-corregido {
+	display: flex !important;
+	justify-content: center !important;
+	background: #EEC49E !important;
+	border-radius: 3.5px !important;
+}
+
+.estatus-corregido-txt {
+	font-style: normal !important;
+	font-weight: 500 !important;
+	font-size: 15px !important;
+	line-height: 24px !important;
+	display: flex !important;
+	align-items: center !important;
+	text-align: center !important;
+	color: #864103 !important;
+}
+
+.estatus-rechazado {
+	display: flex !important;
+	justify-content: center !important;
+	background: #F7EBE6 !important;
+	border-radius: 3.5px !important;
+}
+
+.estatus-rechazado-txt {
+	font-style: normal !important;
+	font-weight: 500 !important;
+	font-size: 15px !important;
+	line-height: 24px !important;
+	display: flex !important;
+	align-items: center !important;
+	text-align: center !important;
+	color: #BE3733 !important;
+}
+
+.estatus-aprobado {
+	display: flex !important;
+	justify-content: center !important;
+	background: #EBF8FF !important;
+	border-radius: 3.5px !important;
+}
+
+.estatus-aprobado-txt {
+	font-style: normal !important;
+	font-weight: 500 !important;
+	font-size: 15px !important;
+	line-height: 24px !important;
+	display: flex !important;
+	align-items: center !important;
+	text-align: center !important;
+	color: #33BE68 !important;
+}
+
+/*********************************************************************/
+/* Estilos para etiquetas del xhtml de fin de registro de formulario */
+/*********************************************************************/
+
+.font-solicitud-finalizada {
+	font-size: 22px !important; 
+	font-weight: 700 !important; 
+	line-height: 26.63px !important; 
+	color: #6F7271 !important;
+}
+
+.font-titulo-donacion {
+	font-size: 45px;
+    font-weight: 700 !important;
+    line-height: 65px !important;
+    color: #783689 !important;
+}
+
+.formularios-btn-donacion {
+    background: linear-gradient(165deg, rgb(255 255 255) 0%, rgba(136,24,91,1) 0%, rgba(183,58,145,1) 100%) !important;
+    border-radius: 30px !important;
+    height: 42px !important;
+    margin: 10px !important;
+    padding: 0px 12px !important;
+}
+
+.formularios-btn-donacion .ui-button-text {
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center !important;
+    letter-spacing: 0.05em !important;
+    color: #ffffff !important;
+}
+
+.font-texto-donacion {
+	font-size: 30px;
+    font-weight: 400 !important;
+    color: #373838 !important;
+    line-height: 5px;
+}
+
+.font-solicitud-folio {
+	font-size: 22px !important; 
+	font-weight: 700 !important; 
+	line-height: 26.63px !important; 
+	color: #2D3748 !important;
+}
+
+.font-solicitud-folio-seguimiento {
+	font-size: 48px !important; 
+	font-weight: bold !important; 
+	line-height: 58px !important; 
+	color: #00AE42 !important;
+}
+
+.font-solicitud-aviso {
+	font-size: 14px !important; 
+	font-weight: 400 !important; 
+	color: #646D6C !important;
+}
+
+.font-adicional-aviso {
+	font-size: 22px !important; 
+	font-weight: 600 !important; 
+	color: #4299E1 !important;
+}
+
+/* Estilo para paginador  */
+.ui-paginator-current {
+    display: flex !important;
+    justify-content: center !important;
+    padding: 1rem !important;
+    color: #B08F5C !important;
+}
+
+body .ui-paginator .ui-paginator-first:before {
+    content: "\e92d" !important;
+}
+
+body .ui-paginator .ui-paginator-last:before {
+    content: "\e92e" !important;
+}
+
+#frmTramites\:dtTramites_paginator_bottom .ui-paginator-first, .ui-paginator-last {
+	width: auto !important;
+}
+
+
+/*********************************************************************/
+/* Estilos para etiquetas de validación del formulario.xhtml */
+/*********************************************************************/
+
+.icon_correcto {
+	background-image: url(/resources/img/ic_like.svg) !important;
+	width: 40px !important;
+	height: 40px !important;
+	top: 46% !important;
+	left: 46% !important;
+}
+
+.icon_incorrecto {
+	background-image: url(/resources/img/ic_dislike.svg) !important;
+	width: 40px !important;
+	height: 40px !important;
+	top: 46% !important;
+	left: 46% !important;
+}
+
+.btn-fondo-icon {
+	background: #CBD5E0 !important;
+	border-radius: 6px !important;
+	width: 44px !important;
+	height: 44px !important;
+	margin: 0px !important;
+	padding: 0px 10px !important
+}
+
+.btn-fondo-icon-seleccionado {
+	background: #CBD5E0 !important;
+	border-radius: 6px !important;
+	border: solid 3px #00AE42 !important;
+	width: 44px !important;
+	height: 44px !important;
+	margin: 0px !important;
+	padding: 0px 10px !important
+}
+
+.lbl-nombre-proyecto {
+	font-style: normal !important;
+	font-weight: 700 !important;
+	font-size: 32px !important;
+	line-height: 40px !important;
+	color: #175E50 !important;
+}
+
+.lbl-texto-estatus {
+	font-style: normal !important;
+	font-weight: 400 !important;
+	font-size: 17px !important;
+	line-height: 28px !important;
+	letter-spacing: -0.5px !important;
+	color: #4C5566 !important;
+}
+
+.lbl-texto-estatus-negritas {
+	font-style: normal !important;
+	font-weight: 600 !important;
+	font-size: 17px !important;
+	line-height: 162.02% !important;
+	letter-spacing: -0.5px !important;
+	color: #4C5566 !important;
+}
+
+/*Media para ajustar los texto de las tablas para dispositivos moviles */
+@media (max-width: 640px) {
+	.header-columna-tramites {
+	    text-align: left !important;
+	    font-style: normal !important;
+	    font-weight: bold !important;
+	    font-size: 15px !important;
+	    line-height: 18px !important;
+	    color: #FFFFFF !important;
+	    /*display: flex !important;*/
+	}
+	.header-movil {
+		width: 50% !important;
+    	margin-top: -20px !important;
+	    margin-left: 125px !important;
+	}	
+}
+
+.ui-fileupload-messages{
+	width: 285px !important;
+    word-break: break-word !important;
+}
+.ui-fileupload-messages .ui-messages-error li{
+	display: grid !important;
+}
+
+/*Estilos para la pantalla Bandeja de trámites para acciones de firmar o descargar*/
+.icono-decargar-archivo {
+	background-image: url(/resources/img/descargarArchivo.png) !important;
+	width: 30px !important;
+	height: 30px !important;
+	left: 10px !important;
+	position: relative !important;
+	display: flex !important;
+	top: 20px !important;
+}
+
+.icono-firmar-archivo {
+	background-image: url(/resources/img/firmarTramite.png) !important;
+	width: 30px !important;
+	height: 30px !important;
+	left: 10px !important;
+	position: relative !important;
+	display: flex !important;
+	top: 20px !important;	
+}
+
+/*Estilos para la pantalla Bandeja de trámites para acciones de descargar la resolucion*/
+.icono-decargar-resolucion {
+  background-image: url(/resources/img/descargarResolucion.png) !important;
+  background-size: 30px!important; 
+  width: 30px !important;
+  height: 30px !important;
+  vertical-align: middle;
+  position: relative !important;
+  display: flex !important;
+  top: 18px !important;
+}
+
+/*Estilos para la pantalla Bandeja de trámites para acciones de revertir estatus*/
+.icono-revertir-estatus {
+    background-image: url(/resources/img/revertir-estatus.svg) !important;
+    width: 25px !important;
+    height: 25px !important;
+    left: 0px !important;
+    position: relative !important;
+    display: flex !important;
+    top: 10px !important;
+}
+
+.icono-info-red {
+    background-image: url(/resources/img/info.svg) !important;
+    background-size: 25px !important;
+    width: 25px !important;
+    height: 25px !important;
+    left: 0px !important;
+    position: relative !important;
+    display: flex !important;
+    top: 10px !important;
+}
+
+/*Estilos para la pantalla Bandeja de trámites para acciones de revertir estatus*/
+.boton-gray-revertir-estatus {
+    background: #CBD5E0 !important;
+    border-radius: 4px !important;
+    width: 30px !important;
+    height: 30px !important;
+    margin: 0px !important;
+    padding: 0px 10px !important;
+    bottom: -2px;
+}
+
+.acciones-firma.ui-button:focus,
+.acciones-firma.ui-button:hover {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    background: none !important;
+}
+
+/* Estilo para mantener color de hover y borde para p:inputText */
+.inputText-motor.ui-inputfield {
+    border: 1px solid #ced4da;
+}
+
+.inputText-motor.ui-inputfield.ui-state-hover {
+    border-color: #2196F3;
+}
+
+.inputText-motor.ui-inputfield.ui-state-default {
+    border: 1px solid #ced4da !important;
+}
+
+.inputText-motor.ui-state-focus {
+    border-color: #2196F3;
+}
+
+.padding-cliente-vacio {
+	padding: 7% 0 12% 0% !important;
+}
+
+.padding-cliente {
+	padding: 2% 0 2% !important;
+}
+
+/* Estilo para el menu de inicio de sesión*/
+/* .adip-menu-btn-user-menu .ui-menu-list .ui-menuitem .ui-menuitem-link .ui-menuitem-text */
+/* 	{ */
+/* 	color: #535353 !important; */
+/* 	font-size: 15px !important; */
+/* 	font-family: 'Montserrat' !important; */
+/* 	font-weight: 700; */
+/* 	line-height: 14px; */
+/* } */
+
+.adip-menu-btn-user-menu .ui-menu-list .ui-menuitem .ui-menuitem-link .ui-menuitem-text:hover
+	{
+	color: #535353 !important;
+	font-size: 15px !important;
+	font-family: 'Montserrat' !important;
+	font-weight: 700;
+	line-height: 14px;
+}
+
+.adip-menu-btn-user-menu {
+	padding: 0 !important;
+}
+
+.adip-menu-btn-user-menu.ui-shadow {
+	border-radius: 0 0 10px 10px !important;
+/* 	top: 70px !important; */
+	box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important;
+}
+
+.adip-menu-btn-user-menu .ui-menu-list .ui-menuitem {
+	padding-right: 0 !important;
+	height: auto !important;
+	padding: 0em;
+	margin: 0px 0px 5px 0px;
+}
+
+.adip-menu-btn-user-menu .ui-menu-list .ui-menuitem .ui-menuitem-link {
+	align-items: center;
+	display: flex !important;
+	height: auto !important;
+	padding: 8px !important;
+}
+
+.adip-menu-btn-user-menu .ui-menu-list .ui-menuitem .ui-menuitem-link.ui-state-hover {
+	background: linear-gradient(133deg, rgba(243, 218, 218, 0.50) 0%,
+		rgba(191, 178, 220, 0.11) 100%) !important;
+}
+
+.datepicker-interprete.ui-calendar input {
+    font-size: 1.5rem !important;
+}
+
+/* Día seleccionado */
+.ui-datepicker .ui-datepicker-calendar td a.ui-state-default:hover {
+    box-shadow: 0 0 8px rgba(33, 150, 243, 0.6) !important;
+    background-color: #e3f2fd !important;
+}
+
+.ui-datepicker .ui-datepicker-calendar td a.ui-state-active {
+    background: #2196F3 !important;
+    color: white !important;
+    box-shadow: 0 0 10px rgba(33, 150, 243, 0.8) !important;
+}
+
+.ui-datepicker .ui-datepicker-calendar td a.ui-state-active:hover {
+    background: #0d8aee !important;
+    box-shadow: 0 0 12px rgba(13, 138, 238, 0.9) !important;
+}
+
+.estatus-completo {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    max-width: 200px;
+    line-height: 1.4 !important;
+}
+
+/*No permitir el redimensionamiento manual del campo*/
+.ui-fluid .ui-inputtextarea {
+    resize: none;
+}
+
+
+/*Nuevos estilos version 2*/
+
+.icono-btn-eliminar {
+	background-image: url(/resources/img/ic_delete.png) !important;
+}
+
+.icono-btn-ver {
+	background-image: url(/resources/img/ic_edit.png) !important;
+}
+.icono-btn-ver, .icono-btn-eliminar{
+	width: 30px !important;
+	height: 30px !important;
+	left: 10px !important;
+	position: relative !important;
+	display: flex !important;
+	top: 20px !important;
+}
+
+.formularios-btn-guinda {
+	background: var(--Guinda) !important;
+	border-radius: 6px !important;
+	height: 44px !important;
+	margin: 10px !important;
+	padding: 0px 12px !important;
+	max-width: 180px !important;
+}
+
+.dynamic-table.ui-datatable thead th {
+    background-color: var(--Guinda)  !important;
+    color: var(--white);
+    font-weight: 600;
+    line-height: 24px !important;
+}
+
+.dynamic-table.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td,
+	.ui-datatable tfoot th {
+	border-bottom: 1px solid #a8a8a8;
+	padding: 1px !important;
+}
+
+ .dynamic-table {
+    width: 100%;
+    min-width: 800px;
+}
+
+.btn-cancelar-nvo{
+	background: var(--white) !important;
+	border: 1px solid #cbd5e1 !important; 
+	color: #334155 !important;
+}
+
+.btn-confirmar-nvo{
+	background: var(--Guinda) !important; 
+	color: var(--white) !important; 
+	border: none !important;   
+}
+.btn-confirmar-nvo, .btn-cancelar-nvo{
+	padding: 8px 25px !important; 
+	border-radius: 6px !important; 
+	cursor: pointer !important; 
+	font-size: 14px !important;  
+}
+/*Nuevos estilos version 2*/

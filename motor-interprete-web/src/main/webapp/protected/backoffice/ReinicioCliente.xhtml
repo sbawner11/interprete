@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default2.xhtml">
+ 
+	<ui:define name="content">
+		<h:form id="frmTramites">
+			<p:outputPanel id="pnlContenedor" style="padding: 2% 0 2%; max-width: 1121px; margin: auto;">
+				<p:outputPanel id="pnlMisTramites" style="padding: 2% 2%; background: #FFF; border-radius: 10px">
+					<p:panelGrid id="pnlTitulo" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:column id="clmTitulo" style="text-align: center !important;">
+							<p:outputLabel value="Reinicio de la BD del Cliente #{seccionesProyectoBean.proyectoDTO.nombreProyecto}" styleClass="font-titulo-bandeja" />
+							
+							<br/>
+							<br/>
+							<br/>
+							<b>¡ADVERTENCIA! Esta funcionalidad borra toda la Base de Datos de este sistema y no hay forma de revertirlo</b>
+							<br/>
+							<br/>
+							<br/>
+							<p:commandButton widgetVar="btnReiniciar" value="Reiniciar BD" action="#{reinicioClienteMotorBean.reiniciarCliente()}"
+							   update="messages" style="background-color:red; color:white; width: 300px;">
+								<p:confirm header="Confirmación" message="¿Está seguro de querer reiniciar el cliente?" icon="fa fa-exclamation-triangle"/>
+							</p:commandButton>	
+								
+							<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+					            <p:commandButton value="No" styleClass="ui-confirmdialog-no btn-nuevo-tramite" style="width: 100px !important;"/>
+					            <p:commandButton value="Sí" styleClass="ui-confirmdialog-yes" style="background-color:red; color:white; width: 100px; height: 44px"/>
+					        </p:confirmDialog>	
+								
+						</p:column>
+					</p:panelGrid>
+					
+				</p:outputPanel>
+			</p:outputPanel>
+			
+			<p:ajaxStatus id="loader" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+		     <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false" header="Procesando..."  styleClass="" style="overflow-y:hidden !important; width: 80px !important;">
+		            <f:facet name="header">
+						<p:outputLabel value="Procesando..." styleClass="adip-dialog-titulo-green" />
+					</f:facet>
+					<p:panelGrid columns="1" columnClasses="ui-grid-col-12" layout="grid" styleClass="center">
+						<p:panelGrid columns="1" columnClasses="ui-grid-col-12" layout="grid" styleClass="p-4">
+							<p:outputLabel value="Procesando..." styleClass="adip-output-campos-dialog-green" />
+							 <p:graphicImage value="/resources/img/loading.gif" width="100%" height="100%"  />
+						</p:panelGrid>
+					</p:panelGrid>      
+		     </p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

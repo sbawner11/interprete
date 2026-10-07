@@ -1,0 +1,80 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<artifactId>motor-interprete</artifactId>
+		<groupId>mx.gob.atdt</groupId>
+		<version>0.44.15</version> 
+	</parent>
+	
+	<name>motor-interprete: Commons Module</name>
+	
+	<artifactId>motor-interprete-commons</artifactId>
+	<packaging>jar</packaging>
+	
+	<url>http://www.gob.mx</url>
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<distribution>repo</distribution>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+		</license>
+	</licenses>
+	
+	<dependencies>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.21.0</version>
+        </dependency>
+		<dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.21.0</version>
+        </dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.6</version>
+		</dependency>
+	</dependencies>	
+
+	<build>
+        <plugins>	
+			<plugin>
+			    <groupId>com.github.wvengen</groupId>
+			    <artifactId>proguard-maven-plugin</artifactId>
+			    <version>2.6.1</version>
+			
+			    <executions>
+			        <execution>
+			            <phase>package</phase>
+			            <goals>
+			                <goal>proguard</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			
+			    <configuration>
+			        <obfuscate>false</obfuscate>
+			
+			        <proguardInclude>${project.basedir}/proguard/proguard.pro</proguardInclude>
+			
+			        <injar>${project.build.finalName}.jar</injar>
+			        <outjar>${project.build.finalName}.jar</outjar>
+			
+			        <outputDirectory>${project.build.directory}</outputDirectory>
+			
+			        <libs>
+			            <lib>${java.home}/lib/rt.jar</lib>
+			        </libs>
+			    </configuration>
+			</plugin>
+		</plugins>
+    </build>
+
+</project>

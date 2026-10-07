@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default2.xhtml">
+ 
+	<ui:define name="content">
+		<h:form id="frmPermisosBD">
+			<p:outputPanel id="pnlContenedor" style="padding: 2% 0 2%; max-width: 1121px; margin: auto;">
+				<p:outputPanel id="pnlPermisosBD" style="padding: 2% 2%; background: #FFF; border-radius: 10px">
+					<p:panelGrid id="pnlTitulo" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:column id="clmTitulo" style="text-align: center !important;">
+							<p:outputLabel value="#{msg.lbl_permisos_bd_titulo}" styleClass="font-titulo-bandeja" />
+						</p:column>
+					</p:panelGrid>
+					
+					<p:panelGrid id="pnlgDescripcion" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" style="text-align: justify;">
+						<p:outputLabel value="#{msg.lbl_permisos_bd_descripcion}" styleClass="font-titulo-bandeja" style="font-size: 16px !important; color: #495057 !important;"/>
+					</p:panelGrid>
+									
+					<p:spacer/>
+					
+					<p:panelGrid id="pnlInfoBD" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" style="text-align: justify;">
+						
+						<p:panelGrid id="pnlNombreBD" columns="2" columnClasses="ui-g-12 ui-md-12 ui-lg-4, ui-g-12 ui-md-12 ui-lg-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" >
+							<p:outputLabel value="#{msg.lbl_permisos_nombre_bd}" styleClass="font-filtros-bandeja" />
+							<p:inputText id="txtNombre" value="#{asignarPermisosBDBean.nombreBD}" styleClass="inputText-motor" readonly="true"
+								style="margin-top: 2px; font-size: 14px !important; max-width: 280px;">
+							</p:inputText>
+						</p:panelGrid>
+					
+						<p:panelGrid id="pnlIpBD" columns="2" columnClasses="ui-g-12 ui-md-12 ui-lg-4, ui-g-12 ui-md-12 ui-lg-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" >
+							<p:outputLabel value="#{msg.lbl_permisos_ip_bd}" styleClass="font-filtros-bandeja" />							
+							<p:inputText id="txtIp" value="#{asignarPermisosBDBean.ipHostBD}" styleClass="inputText-motor" readonly="true"
+								style="margin-top: 2px; font-size: 14px !important; max-width: 280px;">
+							</p:inputText>
+						</p:panelGrid>
+						
+					</p:panelGrid>
+					
+					<p:spacer/>
+					<p:separator/>
+					<p:spacer/>
+					<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" >
+						<p:panelGrid id="pnlCuenta" columns="2" columnClasses="ui-g-12 ui-md-12 ui-lg-4, ui-g-12 ui-md-12 ui-lg-4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" >
+							<p:outputLabel value="#{msg.lbl_permisos_bd_cuenta}" for="txtCuentaUsuario" styleClass="font-campos" />
+							<p:inputText id="txtCuentaUsuario" value="#{asignarPermisosBDBean.cuentaUsuario}" maxlength="60" required="true" requiredMessage="#{msg.msj_campo_requerido}"
+								placeholder="#{msg.lbl_permisos_bd_cuenta_placeholder}" styleClass="inputText-motor"
+								style="margin-top: 2px; font-size: 14px !important; max-width: 280px;">
+							</p:inputText>
+							<p:spacer/>
+							<p:message for="txtCuentaUsuario" styleClass="messages-obligatorios" display="text" />
+						</p:panelGrid>
+					</p:panelGrid>					
+					<p:spacer/>
+					
+					<p:outputPanel id="pnlAcciones" styleClass="formularios-footer-content" rendered="#{authenticatorBean.rolAdministrador eq true}" style="height: auto; padding: 2% 2%; background: #FFF; border-radius: 0 0 10px 10px;">
+						<p:panelGrid columns="2" layout="grid" columnClasses="ui-g-6 ui-md-6 ui-lg-6, ui-g-6 ui-md-6 ui-lg-6" styleClass="ui-panelgrid-blank ui-fluid">
+							<p:commandButton value="#{msg.cancelar}" action="#{asignarPermisosBDBean.cancelar()}"
+								styleClass="formularios-btn-cancelar" style="max-width: 140px !important;" immediate="true"/>
+							<p:commandButton id="btnAsignarPermisos" value="#{msg.lbl_permisos_bd_asignar}" action="#{asignarPermisosBDBean.asignarPermisos()}" 
+								process="@this @form" styleClass="formularios-btn-green" update="@form messages" 
+								style="border: 1px solid #0F4C42 !important; min-width: 170px;" />
+						</p:panelGrid>
+					</p:outputPanel>				
+				
+				</p:outputPanel>
+			</p:outputPanel>
+		</h:form>		
+	</ui:define>
+</ui:composition>

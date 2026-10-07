@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/defaultBack.xhtml">
+
+	<ui:define name="content">
+		<h:form id="frmAsignacion">
+			<p:outputPanel id="pnlContenedor"
+				style="padding: 2% 0 2%; max-width: 1121px; margin: auto;">
+				<p:outputPanel id="pnlDistribucion"
+					style="padding: 2% 2%; background: #FFF; border-radius: 10px">
+					<p:panelGrid id="pnlTitulo" columns="1"
+						columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:column id="clmTitulo" style="text-align: center !important;">
+							<p:outputLabel
+								value="Asignación de usuarios a distribución de solicitudes"
+								styleClass="font-titulo-bandeja" />
+						</p:column>
+					</p:panelGrid>
+
+					<p:panelGrid id="pnlFiltros" columns="3"
+						style="padding: 0 10px 0 0;"
+						columnClasses="ui-g-12 ui-md-5 ui-lg-5, ui-g-12 ui-md-3 ui-lg-3, ui-g-12 ui-md-4 ui-lg-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputPanel>
+							<p:outputLabel
+								value="Distribución por #{asignarSolicitudesBean.componenteDTO.tituloCampo}"
+								styleClass="font-titulo-bandeja"
+								style="font-size: 16px !important;" />
+							<p:selectOneMenu id="somDistribucion"
+								value="#{asignarSolicitudesBean.asignacionDistribucionDTO.idElementoAsignado}"
+								styleClass="tramites-selectOneMenu-admin"
+								requiredMessage="#{msg.msj_combo_requerido}"
+								style="width: 100% !important" required="true" panelStyleClass="selectOneMenu-panel-wide">
+								<f:selectItem itemLabel="#{msg.seleccione}" itemValue="#{null}" />
+								<f:selectItems
+									value="#{asignarSolicitudesBean.lstElementosDistribucion}"
+									var="elemento" itemLabel="#{elemento.descripcionElemento}"
+									itemValue="#{elemento.idElementoMenu}" />
+								<p:ajax event="change"
+									listener="#{asignarSolicitudesBean.listenerDistribucion()}"
+									update="somRoles, somUsuariosOperadoresActivos" global="false" />
+							</p:selectOneMenu>
+							<p:message for="somDistribucion" display="text" />
+						</p:outputPanel>
+						<p:outputPanel>
+							<p:outputLabel value="Roles" styleClass="font-titulo-bandeja"
+								style="font-size: 16px !important;" />
+							<p:selectOneMenu id="somRoles"
+								value="#{asignarSolicitudesBean.rolesSeleccionado.rol}"
+								styleClass="tramites-selectOneMenu-admin"
+								requiredMessage="#{msg.msj_combo_requerido}"
+								style="width: 100% !important" required="true">
+								<f:selectItem itemLabel="#{msg.seleccione}" itemValue="" />
+								<f:selectItems value="#{asignarSolicitudesBean.listRoles}"
+									var="roles" itemLabel="#{roles.rol}" itemValue="#{roles.rol}" />
+								<p:ajax event="change"
+									listener="#{asignarSolicitudesBean.listenerRolSeleccionado}"
+									update="somUsuariosOperadoresActivos messages" global="false"/>
+							</p:selectOneMenu>
+							<p:message for="somRoles" display="text" />
+						</p:outputPanel>
+						<p:outputPanel>
+							<p:outputLabel value="Usuario" styleClass="font-titulo-bandeja"
+								style="font-size: 16px !important;" />
+							<p:selectOneMenu id="somUsuariosOperadoresActivos"
+								value="#{asignarSolicitudesBean.usuarioSeleccionado.idUsuarioLlaveCdmx}"
+								styleClass="tramites-selectOneMenu-admin" required="true"
+								style="width: 100% !important"
+								requiredMessage="#{msg.msj_combo_requerido}">
+								<f:selectItem itemLabel="#{msg.seleccione}" itemValue="#{null}" />
+								<f:selectItems
+									value="#{asignarSolicitudesBean.lstUsuariosActivos}"
+									var="usuario"
+									itemLabel="#{usuario.nombreCompleto} - #{usuario.correo}"
+									itemValue="#{usuario.idUsuarioLlaveCdmx}" />
+								<p:ajax event="change"
+									listener="#{asignarSolicitudesBean.listenerUsuarioSeleccionado()}" global="false"/>
+							</p:selectOneMenu>
+							<p:message for="somUsuariosOperadoresActivos" display="text" />
+						</p:outputPanel>
+					</p:panelGrid>
+
+					<p:panelGrid id="pnlBotonFiltro" columns="1"
+						style="text-align: left;"
+						columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputPanel id="clmFiltrar"
+							style="display:flex;justify-content: right;align-items: flex-end;margin: 1% auto 0;">
+							<p:commandButton value="#{msg.buscar}"
+								styleClass="formularios-btn-green"
+								update="pnlTabla, messages, pnlBotonTabla"
+								style="min-width: auto; max-width: 180px;"
+								action="#{asignarSolicitudesBean.filtrarAsignaDistribucion()}"
+								immediate="true" global="false"/>
+							<p:commandButton value="#{msg.limpiar}"
+								styleClass="motor-btn-limpiar"
+								update="pnlFiltros, pnlTabla, pnlBotonTabla" style="width: auto;"
+								action="#{asignarSolicitudesBean.limpiarFiltros()}" immediate="true" global="false">
+								<p:resetInput target="pnlFiltros" />
+							</p:commandButton>
+						</p:outputPanel>
+					</p:panelGrid>
+
+					<p:panelGrid id="pnlBotonTabla"
+						rendered="#{authenticatorBean.rolAdministrador or authenticatorBean.rolAdministradorDatosTecnicos}"
+						columns="1" style="text-align: left;" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid"
+						columnClasses="ui-g-12 ui-md-12 ui-lg-12">
+
+						<p:outputPanel
+							style="display:flex;justify-content: right;align-items: flex;margin: 1% auto 0;">
+							<p:commandButton value="#{msg.lbl_dashboard_exportar}"
+								ajax="false" disabled="#{asignarSolicitudesBean.habilitaExportar}"
+								styleClass="formularios-btn-green" immediate="true"
+								style="max-width: 180px !important; height: 36px !important;">
+								<p:dataExporter type="xlsx" target="dtAsignaciones"
+									fileName="distribucion_asignaciones"  />
+							</p:commandButton>
+							<p:commandButton id="btnDescargaPlantilla"
+								value="Descargar Plantilla" styleClass="formularios-btn-green"
+								style="max-width: 180px !important; height: 36px !important;"
+								ajax="false" action="#{asignarSolicitudesBean.descargaPlantilla()}"
+								immediate="true" />
+							<p:commandButton id="btnAsignaMasiva" value="Asignación Masiva"
+								styleClass="formularios-btn-green"
+								style="max-width: 180px !important; height: 36px !important;"
+								ajax="false" action="#{asignarSolicitudesBean.irAsignacionMasiva()}" immediate="true" />
+							<p:commandButton id="btnAsignarOperadores" value="Asignar"
+								styleClass="formularios-btn-green"
+								action="#{asignarSolicitudesBean.asignarDistribucion()}"
+								update="somUsuariosOperadoresActivos, frmAsignacion, dtAsignaciones, pnlTabla, pnlBotonTabla"
+								style="width: auto;height: 36px !important;" />
+
+						</p:outputPanel>
+					</p:panelGrid>
+
+					<p:panelGrid id="pnlTabla" columns="1"
+						columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:dataTable id="dtAsignaciones" var="asignacion"
+							value="#{asignarSolicitudesBean.lazyModelAsignaciones}"
+							lazy="true" paginator="true" rows="10" reflow="true"
+							paginatorPosition="bottom" allowUnsorting="true"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							currentPageReportTemplate="Mostrando {endRecord} de {totalRecords} resultados"
+							emptyMessage="#{msg.bandeja_ciudadano_vacia}"
+							widgetVar="dtbAsignaciones"
+							rowKey="#{asignacion.idAsignacionDistribucion}">
+														
+							<p:column id="clmDistribucion"
+								sortBy="#{asignacion.desElementoAsignado}"
+								headerText="Distribución #{asignarSolicitudesBean.componenteDTO.tituloCampo}"
+								styleClass="header-columna-tramites" colspan="2">
+								<h:outputText value="#{asignacion.desElementoAsignado}"
+									styleClass="tbody-tramites">
+								</h:outputText>
+							</p:column>
+
+							<p:column headerText="Usuario responsable"
+								sortBy="#{asignacion.usuarioAsignadoDTO.correo}"
+								styleClass="header-columna-tramites" colspan="1">
+								<h:outputText value="#{asignacion.usuarioAsignadoDTO.nombreCompleto}"
+									styleClass="tbody-tramites">
+								</h:outputText>
+							</p:column>
+
+							<p:column id="clmRol" colspan="1" sortBy="#{asignacion.rol}"
+								headerText="Rol" styleClass="header-columna-tramites">
+								<h:outputText value="#{asignacion.rol}"
+									styleClass="tbody-tramites">
+								</h:outputText>
+							</p:column>
+
+							<p:column id="clmDesasignar" colspan="1"
+								headerText="Desvincular usuario"
+								styleClass="header-columna-tramites" exportable="false">
+								<p:commandButton
+									action="#{asignarSolicitudesBean.mostrarModalRevertirEstatus(asignacion.idAsignacionDistribucion)}"
+									styleClass="boton-gray-revertir-estatus"
+									icon="icono-revertir-estatus"
+									style="max-width: 100px !important;" immediate="true"
+									update="modalDesvincular, frmAsignacion" global="false"/>
+							</p:column>
+						</p:dataTable>
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:outputPanel>
+			
+			<p:ajaxStatus id="loader" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+		     <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false" header="Sincronizando..."  styleClass="" style="overflow-y:hidden !important; width: 80px !important;">
+		            <f:facet name="header">
+						<p:outputLabel value="Procesando..." styleClass="adip-dialog-titulo-green" />
+					</f:facet>
+					<p:panelGrid columns="1" columnClasses="ui-grid-col-12" layout="grid" styleClass="center">
+						<p:panelGrid columns="1" columnClasses="ui-grid-col-12" layout="grid" styleClass="p-4">
+							<p:outputLabel value="Procesando..." styleClass="adip-output-campos-dialog-green" />
+							 <p:graphicImage value="/resources/img/loading.gif" width="100%" height="100%"  />
+						</p:panelGrid>
+					</p:panelGrid>      
+		     </p:dialog>
+		</h:form>
+
+		<!-- INICIA MODAL DESVINCULAR -->
+		<p:dialog id="modalDesvincular" widgetVar="mdlDesvincular"
+			showEffect="fade" responsive="true" modal="true" draggable="false"
+			closable="false" resizable="false" styleClass="pagos" width="577"
+			style="border-radius: 10px">
+			<h:form id="frmDesvincular">
+				<p:panelGrid id="pnlTituloDesvincular" columns="1"
+					columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+					styleClass="ui-panelgrid-blank ui-fluid">
+					<p:panelGrid columns="1"
+						style="display: flex; align-items: center;">
+						<p:outputLabel
+							value="#{msg.asignacion_distribucion_confirmar_desvinculacion}"
+							style="padding-bottom: 10px !important;font-size: 22px !important;line-height: 27px !important;"
+							styleClass="lbl-subseccion" escape="false" />
+					</p:panelGrid>
+
+					<p:panelGrid id="pnlPregunta" columns="1"
+						columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel value="#{msg.desvincular_distribucion_pregunta}"
+							style="font-style: normal;line-height: 18px;font-weight: 400; font-size: 16px;" />
+					</p:panelGrid>
+				</p:panelGrid>
+
+				<p:outputPanel id="pnlAccionesDesvincular" columns="1" layout="grid"
+					columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+					styleClass="formularios-footer-content"
+					style="padding: 0 !important;">
+					<p:commandButton value="#{msg.cancelar}"
+						action="#{asignarSolicitudesBean.cerrarModalDesvincularDistribucion()}"
+						immediate="true" style="width: auto;"
+						styleClass="formularios-btn-prevencion" update="frmAsignacion">
+					</p:commandButton>
+					<p:commandButton value="#{msg.continuar}"
+						action="#{asignarSolicitudesBean.desvincularAsignacion()}"
+						process="@form" update="frmAsignacion, messages"
+						styleClass="formularios-btn-green" style="width:auto;">
+					</p:commandButton>
+				</p:outputPanel>
+			</h:form>
+		</p:dialog>
+		<!-- FIN MODAL DESVINCULAR -->
+	</ui:define>
+</ui:composition>

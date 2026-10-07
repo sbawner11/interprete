@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui" >
+ 	
+    <p:panelGrid columns="1" 
+    	columnClasses="ui-xl-12 ui-lg-12 ui-g-12 ui-md-12 ui-sm-12" 
+    	layout="grid" 
+    	styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading" >
+    	
+<!--     	<p:outputLabel  value="#{informativo.tituloCampo}"  /> -->
+    	
+    	<p:panelGrid  columns="1"
+				layout="grid"
+				styleClass="ui-panelgrid-blank ui-fluid" >
+    	<p:outputLabel  value="#{informativo.textoInformativo}" styleClass="lbl-componente" escape="false"/>
+    	
+		</p:panelGrid>
+    </p:panelGrid>
+    
+</ui:composition>

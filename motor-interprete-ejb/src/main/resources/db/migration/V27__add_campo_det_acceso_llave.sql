@@ -1,0 +1,3 @@
+--SE AGREGA CAMPO PARA PARA LIMITAR A QUE SOLO PUEDA SER GENERADO 1 TRAMITE POR CUENTA LLAVE CDMX.
+
+ALTER TABLE motor_interprete.det_acceso_llave ADD limitar_unico_tramite bool NOT NULL DEFAULT false;

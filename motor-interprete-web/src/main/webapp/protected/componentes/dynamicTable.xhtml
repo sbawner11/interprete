@@ -1,0 +1,571 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <c:set var="componente" value="#{dynamicTableStateful}" />
+    <c:set var="idComp" value="#{comp.idComponente}" />
+    
+    <!-- Contenedor principal -->
+    <p:outputPanel id="pnlDynamicTableContainer_#{idComp}"
+                    style="margin-bottom: 20px; background: white; border-radius: 12px; border: 1px solid #611232; padding: 20px;"
+                    styleClass="classDynamicTable">
+                    
+        <!-- Título -->
+        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank ui-fluid" style="margin-bottom: 10px;">
+        	<h:panelGroup layout="block">
+		        <p:outputLabel value="#{componente.getTitulo(comp)}"
+		            styleClass="lbl-componente"
+		            style="font-size: 18px; font-weight: 600; color: #611232;" />
+		        <h:outputText value=" *"
+		            rendered="#{componente.isTablaRequerida(comp)}"
+		            style="font-size: 18px; font-weight: 600; color: #1E88E5;" />
+    		</h:panelGroup>
+        </p:panelGrid>
+        
+        <!-- Botón agregar fila y contador -->
+        <p:panelGrid id="pnlAgregarFila_#{idComp}" columns="1" 
+                     columnClasses="ui-g-12 ui-md-12 ui-lg-12" 
+                     layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                     
+            <p:column id="clmAgregarFila_#{idComp}" style="display: flex; justify-content: right;">
+            
+                <p:commandButton value="#{msg.lbl_dashboard_exportar}" 
+                                 ajax="false" 
+                                 disabled="#{componente.getTotalFilasLlenas(comp) == 0}"
+                                 styleClass="formularios-btn-guinda">
+                                 
+                    <p:dataExporter type="xlsx" 
+                                    target="tblDynamicTable_#{idComp}" 
+                                    fileName="tabla_dinamica" />
+                </p:commandButton>
+
+                <p:commandButton value="Agregar fila" icon="icono-agregar" 
+                                 styleClass="formularios-btn-guinda"
+                                 actionListener="#{componente.prepararNuevaFila(comp)}"
+                                 oncomplete="marcarFechasEnCalendario();PF('dlgAddMockup_#{idComp}').show();"                              
+                                 process="@this"
+                                 update=":frmFormulario:componente_#{idComp}:dlgAddMockup_#{idComp}"                              
+                                 converter="localDateConverter"
+                                 disabled="#{(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 
+                                              and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false) or
+                                              componente.getTotalFilasActivas(comp) >= componente.getMaxRows(comp)}" 
+                                 rendered="#{seccionesProyectoBean.getProyectoDTO().habilitaCapturaTramites
+                                              and componente.verAcciones()}"/>
+                 <h:outputScript target="body">
+						//<![CDATA[
+						function marcarFechasEnCalendario(){
+						   Object.keys(PrimeFaces.widgets).forEach(function(key){
+		                        if(key.startsWith('wvFecha')){
+		                           let widget = PF(key);
+		                           let valorFecha = widget.input.val();
+						            if(valorFecha){
+						                let partes = valorFecha.split('/');
+						                let fecha = new Date(
+						                    parseInt(partes[2], 10), // año
+						                    parseInt(partes[1], 10) - 1, // mes
+						                    parseInt(partes[0], 10) // día
+						                );
+						                widget.setDate(fecha);
+						            }
+		                        }
+		                    });
+						}
+						//]]>
+				</h:outputScript>
+            </p:column>
+        </p:panelGrid>
+        
+        <!-- Alerta de mínimo de filas -->
+        <p:outputPanel id="pnlMinRowsAlert_#{idComp}" 
+                       style="background: #fef3c7; border-left: 4px solid #611232; padding: 12px 16px; border-radius: 8px; margin-bottom: 16px;"
+                       rendered="#{componente.isTablaRequerida(comp) and not componente.isMinimoAlcanzado(comp)}">
+            <span style="color: #92400e; font-size: 14px;">
+                Atención: Debes completar al menos <strong style="color: #611232;">#{componente.getMinRows(comp)}</strong> filas antes de continuar.
+                Actualmente tienes <strong style="color: #611232;">#{componente.getTotalFilasLlenas(comp)}</strong> fila(s) completas.
+            </span>
+        </p:outputPanel>
+
+        <!-- Contenedor con scroll horizontal -->
+        <p:outputPanel id="pnlTabla_#{idComp}"  style="width:100%; overflow:hidden;">
+           
+            <p:dataTable id="tblDynamicTable_#{idComp}"
+                         var="fila"
+                         value="#{componente.getFilas(comp)}"
+                         paginator="true" rows="#{componente.getPageSize(comp)}" 
+                         reflow="true" paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="Mostrando {endRecord} de {totalRecords} resultados"
+                         rowStyleClass="#{fila.tipoFila == 'fila-dinamica'}"
+                         scrollable="true" scrollHeight="#{componente.getPageSize(comp) > 5 ? 700 : 350}"                        
+                         styleClass="dynamic-table"
+                         scrollWidth="100%"
+                         style="table-layout: fixed; width: 100%;">
+                         
+                <c:forEach var="columna" items="#{componente.getColumnas(comp)}" varStatus="loop">
+                    <p:column headerText="#{columna.nombre} #{columna.requerido ? '*' : ''}" 
+                              styleClass="header-columna-tramites" 
+                              style="width:130px; text-align:center;">
+                        <p:outputLabel value="#{fila.datos[columna.nombre]}" styleClass="tbody-tramites"/>
+                    </p:column>
+                </c:forEach>
+
+                <!-- Columna de Acciones -->
+                <p:column headerText="Acciones" style="width:100px; text-align:center;" 
+                          rendered="#{componente.verAcciones()}" styleClass="header-columna-tramites" exportable="false">
+                    <p:outputPanel style="display: flex; align-items: center; justify-content: space-evenly;">
+                    	
+                    	<!-- Botón Editar -->
+                        <p:commandButton styleClass="acciones-firma" icon="icono-btn-ver"
+                                         actionListener="#{componente.setFilaSeleccionada(fila, comp)}"
+                                         oncomplete="marcarFechasEnCalendario();PF('dlgEditMockup_#{idComp}').show();"
+                                         process="@this"
+                                         disabled="#{(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 
+                                              and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}"
+                                         update=":frmFormulario:componente_#{idComp}:pnlDynamicTableContainer_#{idComp}
+            									 :frmFormulario:componente_#{idComp}:dlgEditMockup_#{idComp}"
+                                         style="max-width: 100px !important;"/>
+                        
+                        <!-- Botón Eliminar -->
+                        <p:commandButton styleClass="acciones-firma" icon="icono-btn-eliminar"
+                                         actionListener="#{componente.setFilaSeleccionada(fila, comp)}"
+                                         onclick="PF('dlgDeleteMockup_#{idComp}').show();"
+                                         process="@this"
+                                         disabled="#{(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 
+                                              and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}"
+                                         update=":frmFormulario:componente_#{idComp}:pnlDynamicTableContainer_#{idComp}"
+                                         style="max-width: 100px !important;"/>
+                    </p:outputPanel>
+                </p:column>
+            </p:dataTable>
+       	
+        </p:outputPanel>
+    </p:outputPanel>
+    
+       
+    <!-- MODAL PARA AGREGAR FILA -->
+    <p:dialog id="dlgAddMockup_#{idComp}"
+              widgetVar="dlgAddMockup_#{idComp}"
+              header="Agregar nuevo registro"
+              modal="true"  dynamic="true"  draggable="false" resizable="false"
+              showEffect="fade" hideEffect="fade" closable="true"
+              styleClass="modal-guinda"
+              style="border-radius: 10px; margin-top: 145px !important;"
+              position="center" appendTo="@(body)"
+              width="50vw">
+        <h:form id="frmAddMockup_#{idComp}">
+            <div style="padding: 15px;">
+                <h:panelGroup style="margin-bottom: 16px;color: #64748b;">
+                    <h:outputText value="Completa los datos del nuevo registro." styleClass="input-text-dynamic-table"/>
+                </h:panelGroup>
+                <br/>
+                <!-- Contenedor con scroll vertical -->
+                <h:panelGroup id="scrollContainer_#{idComp}" layout="block"
+                        style="max-height: 50vh; overflow-y: auto; padding-right: 5px;">
+                    <p:outputPanel id="pnlMensajeValidacion_#{idComp}">
+                        <p:outputPanel rendered="#{not empty componente.getMensajeDeValidaciones(comp)}">
+                            <div class="custom-warning-message">
+                                <i class="pi pi-exclamation-triangle warning-icon"></i>
+                                <span>#{componente.getMensajeDeValidaciones(comp)}</span>
+                            </div>
+                        </p:outputPanel>
+                    </p:outputPanel>
+                    <c:forEach var="columna" items="#{componente.getColumnas(comp)}">
+                        <div style="margin-bottom: 16px;">
+                            <h:panelGroup style="display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; color: #611232;">
+                                <h:outputText value="#{columna.nombre}" styleClass="input-text-dynamic-table"/>
+                                <c:if test="#{columna.requerido}">
+                                    <span style="color: #e53e3e;"> *</span>
+                                </c:if>
+                            </h:panelGroup>
+                            <c:choose>
+                                <c:when test="#{columna.tipo == 'NUMERICO'}">
+                                    <p:inputNumber id="elemento_#{idComp}_#{columna.id}"
+                                        value="#{componente.getNuevaFilaDatos(comp)[columna.nombre]}"
+                                        decimalPlaces="0" thousandSeparator=""
+                                        maxlength="#{columna.longitudMaxima}"
+                                        minValue="0"
+                                        maxValue="#{componente.generarMaxValue(columna.longitudMaxima)}"
+                                        styleClass="input-text-dynamic-table"
+                                        style="width:100%;"
+                                        placeholder="#{columna.tooltip}"
+                                        inputStyle="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; box-sizing:border-box;">
+                                        <p:ajax event="change" />
+                                    </p:inputNumber>
+                                    
+                                     <p:tooltip for="elemento_#{idComp}_#{columna.id}"		                                    
+			                                    value="#{columna.tooltip}" position="bottom"/>
+                                    
+                                </c:when>
+                                <c:when test="#{columna.tipo == 'FECHA'}">
+                                    <p:datePicker id="elemento_#{idComp}_#{columna.id}"                                        
+                                        value="#{componente.getNuevaFilaDatos(comp)[columna.nombre]}"
+                                        autocomplete="off" pattern="dd/MM/yyyy" placeholder="dd/mm/aaaa"
+                                        onkeypress="return false;" locale="es_MX"
+                                        monthNavigator="true" yearNavigator="true" 
+                                        yearRange="#{componente.yearRange}"                                                                           
+                                        styleClass="datepicker-xs" panelStyleClass="datepicker-xs-panel" appendTo="@this"/>   
+                                        
+                                        <p:tooltip for="elemento_#{idComp}_#{columna.id}"
+                                    	value="#{columna.tooltip}" position="bottom"/>                                                                          
+                                    	
+                                </c:when>
+                                <c:otherwise>
+                                    <p:inputText id="elemento_#{idComp}_#{columna.id}"
+                                        value="#{componente.getNuevaFilaDatos(comp)[columna.nombre]}"
+                                        maxlength="#{columna.longitudMaxima}"                                      
+                                        placeholder="#{columna.tooltip}"
+                                        styleClass="input-text-dynamic-table"
+                                        style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; 
+                                                border-radius: 8px; box-sizing: border-box;"/>
+                                                  
+                                        <p:tooltip for="elemento_#{idComp}_#{columna.id}"			                                    
+			                                    value="#{columna.tooltip}" position="bottom"/>
+                                        
+                                </c:otherwise>
+                            </c:choose>
+                            <h:outputText rendered="#{columna.tipo != 'FECHA'}"
+                                style="font-size: 11px; color: #94a3b8; margin-top: 4px; display: block;"
+                                value="Máximo #{columna.longitudMaxima} caracteres #{columna.tipo == 'NUMERICO' ? 'numéricos' : 'alfanuméricos'}" />
+                        </div>
+                    </c:forEach>
+                </h:panelGroup>
+                
+                <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 1px solid #e2e8f0;">
+                    <p:commandButton value="Cancelar" styleClass="btn-cancelar-nvo"
+                        oncomplete="PF('dlgAddMockup_#{idComp}').hide();"
+                        update=":frmFormulario:componente_#{idComp}:pnlDynamicTableContainer_#{idComp}"
+                        immediate="true"
+                        action="#{componente.cancelarAgregarFila(comp)}"
+                        process="@this"/>
+                    <p:commandButton value="Guardar" styleClass="btn-confirmar-nvo"
+                        action="#{componente.agregarFila(comp)}"
+                        update="pnlMensajeValidacion_#{idComp} @(.classDynamicTable)"
+                        oncomplete="if (!args.validationFailed) {
+                                        PF('dlgAddMockup_#{idComp}').hide();
+                                    } else{
+                                        document.getElementById(
+								            'frmFormulario:componente_#{idComp}:frmAddMockup_#{idComp}:scrollContainer_#{idComp}'
+								        ).scrollTop = 0;
+                                    }"
+                        process=":frmFormulario:componente_#{idComp}:frmAddMockup_#{idComp}"/>
+                </div>
+            </div>
+        </h:form>
+    </p:dialog>
+    
+    <!-- MODAL PARA EDITAR -->
+    <p:dialog id="dlgEditMockup_#{idComp}"
+              widgetVar="dlgEditMockup_#{idComp}"
+              header="✏️ Editar registro"
+              modal="true"  dynamic="true" draggable="false" resizable="false"
+              showEffect="fade" hideEffect="fade" closable="true"
+              styleClass="modal-guinda"
+              style="border-radius: 10px; margin-top: 145px !important;"
+              position="center" appendTo="@(body)"
+              width="50vw">
+        <h:form id="frmEditMockup_#{idComp}">
+            <div style="padding: 15px;">
+                <h:panelGroup style="margin-bottom: 16px;color: #64748b;">
+                    <h:outputText value="Modifica los datos del registro seleccionado."
+                        styleClass="input-text-dynamic-table"/>
+                </h:panelGroup>
+                
+                <!-- Contenedor con scroll vertical -->
+                <h:panelGroup id="scrollContainer_#{idComp}" layout="block"
+                        style="max-height: 50vh; overflow-y: auto;">
+                    <p:outputPanel id="pnlMensajeValidacionEdit_#{idComp}">
+                        <p:outputPanel rendered="#{not empty componente.getMensajeDeValidaciones(comp)}">
+                            <div class="custom-warning-message">
+                                <i class="pi pi-exclamation-triangle warning-icon"></i>
+                                <span>#{componente.getMensajeDeValidaciones(comp)}</span>
+                            </div>
+                        </p:outputPanel>
+                    </p:outputPanel>
+                    <c:forEach var="columna" items="#{componente.getColumnas(comp)}">
+                        <div style="margin-bottom: 16px;">
+                            <h:panelGroup style="display: block; font-weight: 500; margin-bottom: 6px; color: #611232;">
+                                <h:outputText value="#{columna.nombre}" styleClass="input-text-dynamic-table"/>
+                                <c:if test="#{columna.requerido}">
+                                    <span style="color: #e53e3e;"> *</span>
+                                </c:if>
+                            </h:panelGroup>
+                            <c:choose>
+                                <c:when test="#{columna.tipo == 'NUMERICO'}">
+                                    <p:inputNumber id="elementoEdit_#{idComp}_#{columna.id}"
+                                        value="#{componente.getFilaSeleccionada(comp).datos[columna.nombre]}"
+                                        decimalPlaces="0" thousandSeparator="" 
+                                        maxlength="#{columna.longitudMaxima}"
+                                        minValue="0"
+                                        maxValue="#{componente.generarMaxValue(columna.longitudMaxima)}"
+                                        styleClass="input-text-dynamic-table"
+                                        style="width:100%;"
+                                        inputStyle="width:100%; padding:10px 12px; border:1px solid #cbd5e1; border-radius:8px; box-sizing:border-box;">
+                                        <p:ajax event="change" />
+                                    </p:inputNumber>
+                                    
+                                    <p:tooltip for="elementoEdit_#{idComp}_#{columna.id}"			                                    
+			                                   value="#{columna.tooltip}" position="bottom"/>
+                                </c:when>
+                                <c:when test="#{columna.tipo == 'FECHA'}">
+                                    <p:datePicker id="elementoEdit_#{idComp}_#{columna.id}"                                   	                            
+                                        value="#{componente.getFilaSeleccionada(comp).datos[columna.nombre]}"
+                                        autocomplete="off" pattern="dd/MM/yyyy" placeholder="dd/mm/aaaa"
+                                        onkeypress="return false;" locale="es_MX"
+                                        monthNavigator="true" yearNavigator="true" 
+                                        yearRange="#{componente.yearRange}"
+                                        styleClass="datepicker-xs" panelStyleClass="datepicker-xs-panel" appendTo="@this"/>
+                                        
+                                        <p:tooltip for="elementoEdit_#{idComp}_#{columna.id}"			                                    
+			                                       value="#{columna.tooltip}" position="bottom"/>
+			                                   
+                                </c:when>
+                                <c:otherwise>
+                                    <p:inputText id="elementoEdit_#{idComp}_#{columna.id}"
+                                        value="#{componente.getFilaSeleccionada(comp).datos[columna.nombre]}"
+                                        maxlength="#{columna.longitudMaxima}"
+                                        placeholder="#{columna.tooltip}"
+                                        styleClass="input-text-dynamic-table"
+                                        style="width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box;">
+                                        <p:ajax event="change" />
+                                    </p:inputText>
+                                    
+                                    <p:tooltip for="elementoEdit_#{idComp}_#{columna.id}"			                                    
+			                                   value="#{columna.tooltip}" position="bottom"/>
+                                    
+                                </c:otherwise>
+                            </c:choose>
+                            <h:outputText rendered="#{columna.tipo != 'FECHA'}"
+                                style="font-size: 11px; color: #94a3b8; margin-top: 4px; display: block;"
+                                value="Máximo #{columna.longitudMaxima} caracteres #{columna.tipo == 'NUMERICO' ? 'numéricos' : 'alfanuméricos'}" />
+                        </div>
+                    </c:forEach>
+                </h:panelGroup>
+                <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 1px solid #e2e8f0;">
+                                      
+	                
+			        <p:commandButton value="Cancelar" styleClass="btn-cancelar-nvo"
+                        oncomplete="PF('dlgEditMockup_#{idComp}').hide();"
+                        update=":frmFormulario:componente_#{idComp}:pnlDynamicTableContainer_#{idComp}"
+                        process="@form"
+                        action="#{componente.cancelarAgregarFila(comp)}"/>
+                    
+                    <p:commandButton value="Actualizar" styleClass="btn-confirmar-nvo"
+								     action="#{componente.guardarEdicionFila(comp)}"
+								     process="@form"
+								     update=":frmFormulario:componente_#{idComp}:pnlDynamicTableContainer_#{idComp}
+								             :frmFormulario:componente_#{idComp}:frmEditMockup_#{idComp}:pnlMensajeValidacionEdit_#{idComp}"
+								     oncomplete="if (!args.validationFailed) {
+								                    PF('dlgEditMockup_#{idComp}').hide();
+								                } else {
+									                document.getElementById(
+			                                            'frmFormulario:componente_#{idComp}:frmEditMockup_#{idComp}:scrollContainer_#{idComp}'
+			                                        ).scrollTop = 0;
+								                    PF('dlgEditMockup_#{idComp}').content.scrollTop(0);
+								                }" />
+                </div>
+            </div>
+        </h:form>
+    </p:dialog>
+    
+    <!-- MODAL PARA CONFIRMAR ACTUALIZACION DATO TABLA -->
+    <p:dialog id="dlgConfirmaActuaMockup_#{idComp}"
+              widgetVar="dlgConfirmaActuaMockup_#{idComp}"
+              header="Confirmar Actualización"
+              modal="true" dynamic="true" draggable="false" resizable="false"
+              width="450" showEffect="fade" hideEffect="fade" closable="true"
+              styleClass="modal-guinda">
+        <h:form id="frmConfirmaActuaMockup_#{idComp}">
+            <div style="padding: 15px;">
+                <p style="text-align: center; font-size: 16px; margin-bottom: 16px; color: #611232;">
+                    ¿Está seguro que desea actualizar el registro?
+                </p>
+                <p style="text-align: center; font-size: 13px; color: #611232; margin-bottom: 20px;">
+                    Atención: Esta acción no se puede deshacer.
+                </p>
+                <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
+                    <p:commandButton value="Cancelar" styleClass="btn-cancelar-nvo"
+                        onclick="PF('dlgConfirmaActuaMockup_#{idComp}').hide();" immediate="true"/>
+                    <p:commandButton value="Confirmar" styleClass="btn-confirmar-nvo"
+                        action="#{componente.guardarEdicionFila(comp)}"
+                        oncomplete="PF('dlgConfirmaActuaMockup_#{idComp}').hide();"
+                        update=":frmFormulario:componente_#{idComp}:pnlDynamicTableContainer_#{idComp}"
+                        process="@form"/>
+                </div>
+            </div>
+        </h:form>
+    </p:dialog>
+    
+    <!-- MODAL PARA ELIMINAR -->
+    <p:dialog id="dlgDeleteMockup_#{idComp}"
+              widgetVar="dlgDeleteMockup_#{idComp}"
+              header="Eliminar registro"
+              modal="true" dynamic="true" draggable="false" resizable="false"
+              width="450" showEffect="fade" hideEffect="fade" closable="true"
+              styleClass="modal-guinda">
+        <h:form id="frmDeleteMockup_#{idComp}">
+            <div style="padding: 15px;">
+                <p style="text-align: center; font-size: 16px; margin-bottom: 16px; color: #611232;">
+                    ¿Estás seguro de que deseas eliminar el registro seleccionado?
+                </p>
+                <p style="text-align: center; font-size: 13px; color: #611232; margin-bottom: 20px;">
+                    Atención: Esta acción no se puede deshacer.
+                </p>
+                <c:set var="filaSel" value="#{componente.getFilaSeleccionada(comp)}" />
+                <div style="margin-bottom: 20px; padding: 12px; border-radius: 8px; background: #{filaSel != null and filaSel.tipoFila == 'BASE' ? '#fef3c7' : '#e0f2fe'}; border-left: 4px solid #611232;">
+                    <p style="font-size: 13px; margin: 0; text-align: center;">
+                        <c:choose>
+                            <c:when test="#{filaSel != null and filaSel.tipoFila == 'BASE'}">
+                                <span style="color: #611232;">⚠️ Atención:</span> Esta es una fila base obligatoria. Si la eliminas, deberás mantener al menos <strong style="color: #611232;">#{componente.getMinRows(comp)}</strong> filas completas.
+                            </c:when>
+                            <c:otherwise>
+                                <span style="color: #611232;">ℹ️ Nota:</span> Esta es una fila que agregaste. Puedes eliminarla sin problema.
+                            </c:otherwise>
+                        </c:choose>
+                    </p>
+                </div>
+                <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px; padding-top: 15px; border-top: 1px solid #e2e8f0;">
+                    <p:commandButton value="Cancelar" styleClass="btn-cancelar-nvo"
+                        onclick="PF('dlgDeleteMockup_#{idComp}').hide();" type="button" />
+                    <p:commandButton value="Eliminar" styleClass="btn-confirmar-nvo"
+                        action="#{componente.eliminarFila(comp)}"
+                        oncomplete="PF('dlgDeleteMockup_#{idComp}').hide();"
+                        update=":frmFormulario:componente_#{idComp}:pnlDynamicTableContainer_#{idComp}"
+                        process="@this"/>
+                </div>
+            </div>
+        </h:form>
+    </p:dialog>
+    
+   	<h:outputStylesheet>
+        .dynamic-table-container {
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #611232;
+            overflow: hidden;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(97, 18, 50, 0.1);
+        }
+        
+        
+        .dynamic-table-container table {
+            border-collapse: collapse !important;
+            border-spacing: 0 !important;
+        }
+        
+        .dynamic-table-container thead th  td {
+         	border: none !important;
+            padding: 0 !important;           
+        }
+        
+        .dynamic-table-container th {
+            border: none !important;
+            padding: 0 !important;
+            background-color: var(--Guinda)  !important;
+		    color: var(--white);
+		    font-weight: 600;
+		    
+        }
+        
+        .dynamic-table-container table tr td {
+            border-left: none !important;
+            border-right: none !important;
+        }
+        
+        .dynamic-table-container td div {
+            border: none !important;
+        }
+        
+        
+        .table-scroll-wrapper {
+            overflow-x: auto;
+            overflow-y: visible;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+        }
+        
+       
+        .fila-base td div {
+            background: #ffffff;
+        }
+        
+        .fila-base:hover td div {
+            background: #f5f5f5;
+        }
+        
+        .fila-dinamica td div {
+            background: #fefce8;
+        }
+        
+        .fila-dinamica:hover td div {
+            background: #fef9c3;
+        }
+        
+        .ui-state-error {
+            border-color: #611232 !important;
+            background: #fff5f5 !important;
+        }
+        
+        .modal-guinda .ui-dialog-titlebar {
+            background: #611232 !important;
+            color: white !important;
+            border-bottom: none !important;
+        }
+        
+        .modal-guinda .ui-dialog-titlebar .ui-dialog-title {
+            color: #64748b !important;
+            margin-bottom: 16px !important;
+            padding: 15px !important;
+        }
+        
+        .modal-guinda .ui-dialog-titlebar .ui-dialog-titlebar-close {
+            color: white !important;
+        }
+        
+        .dynamic-table-container input,
+        .dynamic-table-container .ui-inputfield {
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        
+        /* Para móviles */
+        @media (max-width: 768px) {
+            .dynamic-table-container {
+                padding: 15px !important;
+            }
+            
+            .fila-base td div,
+            .fila-dinamica td div {
+                padding: 6px !important;
+            }
+            
+            .dynamic-table-container input,
+            .dynamic-table-container .ui-inputfield {
+                font-size: 12px !important;
+                padding: 6px 8px !important;
+            }
+        }
+        
+        
+        .table-scroll-wrapper::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .table-scroll-wrapper::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .table-scroll-wrapper::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        .table-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #611232;
+        }
+    </h:outputStylesheet>
+
+</ui:composition>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/defaultBack.xhtml">
+
+	<ui:define name="content">
+		<h:form id="frmNuevaCargaMasiva" enctype="multipart/form-data">
+			<p:outputPanel style="padding: 2% 0 2%; max-width: 1121px; margin: auto;">
+				<p:outputPanel style="padding: 2% 2%; background: #FFF; border-radius: 10px">
+
+					<p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:column style="text-align: center !important;">
+							<p:outputLabel value="Nueva carga masiva para distribución"
+								styleClass="font-titulo-bandeja" />
+						</p:column>
+						<p:column style="text-align: center !important; padding-top: 10px;">
+							<p:outputLabel
+								value="Para realizar la asignación masiva, seleccione un rol de usuario, un nombre de usuario y cargue el archivo que contiene los elementos que se vincularán."
+								style="font-size: 14px !important; font-weight: 400 !important; color: #6C757D !important; line-height: 20px;" />
+						</p:column>
+					</p:panelGrid>
+
+					<p:panelGrid id="pnlCamposCarga" columns="3"
+						columnClasses="ui-g-12 ui-md-4 ui-lg-4, ui-g-12 ui-md-4 ui-lg-4, ui-g-12 ui-md-4 ui-lg-4"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
+						style="text-align: left; margin-top: 24px;">
+
+						<!-- Columna 1: Rol -->
+						<p:outputPanel>
+							<p:outputLabel value="Rol de usuario:*" styleClass="font-titulo-bandeja"
+								style="font-size: 16px !important;" />
+							<p:selectOneMenu id="somRoles"
+								value="#{nuevaCargaMasivaDistribucionBean.rolesSeleccionado.rol}"
+								styleClass="tramites-selectOneMenu-admin"
+								required="true" requiredMessage="#{msg.msj_combo_requerido}"
+								style="width: 100% !important">
+								<f:selectItem itemLabel="#{msg.seleccione}" itemValue="" />
+								<f:selectItems value="#{nuevaCargaMasivaDistribucionBean.listRoles}"
+									var="roles" itemLabel="#{roles.rol}" itemValue="#{roles.rol}" />
+								<p:ajax event="change"
+									listener="#{nuevaCargaMasivaDistribucionBean.listenerRolSeleccionado}"
+									update="somUsuarios messages" />
+							</p:selectOneMenu>
+							<p:message for="somRoles" display="text" />
+						</p:outputPanel>
+
+						<!-- Columna 2: Usuario -->
+						<p:outputPanel>
+							<p:outputLabel value="Nombre de usuario:*" styleClass="font-titulo-bandeja"
+								style="font-size: 16px !important;" />
+							<p:selectOneMenu id="somUsuarios"
+								value="#{nuevaCargaMasivaDistribucionBean.usuarioSeleccionado.idUsuarioLlaveCdmx}"
+								styleClass="tramites-selectOneMenu-admin"
+								required="true" requiredMessage="#{msg.msj_combo_requerido}"
+								style="width: 100% !important">
+								<f:selectItem itemLabel="#{msg.seleccione}" itemValue="#{null}" />
+								<f:selectItems value="#{nuevaCargaMasivaDistribucionBean.lstUsuariosActivos}"
+									var="usuario"
+									itemLabel="#{usuario.nombreCompleto} - #{usuario.correo}"
+									itemValue="#{usuario.idUsuarioLlaveCdmx}" />
+								<p:ajax event="change"
+									listener="#{nuevaCargaMasivaDistribucionBean.listenerUsuarioSeleccionado()}" />
+							</p:selectOneMenu>
+							<p:message for="somUsuarios" display="text" />
+						</p:outputPanel>
+
+						<!-- Columna 3: Archivo CSV -->
+						<p:outputPanel>
+							<p:outputLabel value="Archivo con elementos para distribución:"
+								styleClass="font-titulo-bandeja" style="font-size: 16px !important;" />
+							<p:fileUpload id="fileCarga"
+								listener="#{nuevaCargaMasivaDistribucionBean.handleFileUpload}"
+								mode="advanced"
+								auto="true"
+								skinSimple="true"
+								label="#{msg.ful_lbl_adjuntar_archivo}"
+								update="lblArchivoSeleccionado messages"
+								allowTypes="/(\.|\/)(csv)$/"
+								accept=".csv"
+								sizeLimit="20971520"
+								invalidSizeMessage="#{msg.msj_carga_masiva_tamanio_invalido}"
+								invalidFileMessage="#{msg.msj_carga_masiva_extension_invalida}"
+								styleClass="carga-documento-span"
+								style="background: #1A6058; border: 1px solid #1A6058; border-radius: 4px; max-width: 203px; height: 38px; background-image: url(#{request.contextPath}/resources/img/clip.svg); background-repeat: no-repeat; background-position-x: 8%; background-position-y: 7px; margin-top: 4px;" />
+							<p:outputLabel
+								value="Sube máximo 1 archivo CSV no mayor a 20 MB"
+								style="display:block; margin-top: 8px; font-style: normal; font-weight: 400; font-size: 12px; line-height: 16px; color: #6C757D;" />
+							<p:outputLabel id="lblArchivoSeleccionado"
+								value="#{nuevaCargaMasivaDistribucionBean.nombreArchivoCarga}"
+								style="display:block; margin-top: 4px; font-size: 12px; color: #1A6058;" />
+						</p:outputPanel>
+					</p:panelGrid>
+
+				</p:outputPanel>
+				<p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank ui-fluid formularios-footer-content"
+					style="padding: 0 !important;">
+					<p:column style="display:flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap;">
+						<p:commandButton value="Procesar archivo"
+							action="#{nuevaCargaMasivaDistribucionBean.iniciarCargaMasiva()}"
+							update="frmNuevaCargaMasiva messages"
+							styleClass="formularios-btn-green"
+							style="width:auto; height: 36px !important;" />
+						<p:commandButton value="Cancelar"
+							action="#{nuevaCargaMasivaDistribucionBean.regresarListado()}"
+							immediate="true"
+							styleClass="formularios-btn-cancelar"
+							style="width:auto; height: 36px !important;" />
+					</p:column>
+				</p:panelGrid>
+			</p:outputPanel>
+			
+			<p:ajaxStatus id="loader" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+		     <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false" header="Sincronizando..."  styleClass="" style="overflow-y:hidden !important; width: 80px !important;">
+		            <f:facet name="header">
+						<p:outputLabel value="Procesando..." styleClass="adip-dialog-titulo-green" />
+					</f:facet>
+					<p:panelGrid columns="1" columnClasses="ui-grid-col-12" layout="grid" styleClass="center">
+						<p:panelGrid columns="1" columnClasses="ui-grid-col-12" layout="grid" styleClass="p-4">
+							<p:outputLabel value="Procesando..." styleClass="adip-output-campos-dialog-green" />
+							 <p:graphicImage value="/resources/img/loading.gif" width="100%" height="100%"  />
+						</p:panelGrid>
+					</p:panelGrid>      
+		     </p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

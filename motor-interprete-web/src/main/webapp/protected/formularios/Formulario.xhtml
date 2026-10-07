@@ -1,0 +1,974 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:c="http://java.sun.com/jsp/jstl/core"
+    template="/WEB-INF/templates/defaultBack.xhtml">
+ 
+    <ui:define name="content">
+            
+        <p:outputPanel id="Contenedor" style="padding: 2% 0 2%; max-width: 1121px; margin: auto;">
+        
+            <p:outputPanel style="padding: 2% 0 0; text-align: center; border-radius: 8px; background: white;">
+                <h:form id="frmFormulario" onkeypress="if (event.keyCode == 13) { return false; }">
+                
+                    <p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading" style="margin-top: 10px;">
+                        <p:column style="text-align: center;">
+                            <p:outputLabel value="#{registrarFormularioBean.proyectoDTO.nombreProyecto}" styleClass="lbl-titulo-seccion" />
+                        </p:column>
+                    </p:panelGrid>
+                
+                    <p:panelGrid columns="2" columnClasses="ui-g-12 ui-md-4 ui-lg-4, ui-g-12 ui-md-8 ui-lg-8" layout="grid" styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading" style="margin-top: 10px;">
+
+                        <p:panelGrid id="pnlSeccion" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading" style="padding: 0 10% 0 10%;">
+
+                            <p:column styleClass="recuadro-secciones mt-3" style="display: flex;justify-content: left;">
+                                <ul class="StepProgress-seccion">
+                                    <c:forEach var="seccion" varStatus="posicionActual" items="${registrarFormularioBean.lstSeccionesDTO}">
+                                        <c:if test="${posicionActual.last == false}">
+                                            <li class="#{seccion.idSeccionFormulario == registrarFormularioBean.seccionActualDTO.idSeccionFormulario ? 'StepProgress-seccion-item current' : 'StepProgress-seccion-item is-done'} ">
+                                                <p:commandLink  value="#{seccion.nombreSeccion}" styleClass="#{(seccion.idSeccionFormulario == registrarFormularioBean.seccionActualDTO.idSeccionFormulario) ? 'lbl-seccion' : 'lbl-seccion-gris'}" 
+                                                    style="cursor: default !important; overflow-wrap: anywhere !important; text-decoration: none;" process="@this" />
+                                            </li>                                   
+                                        </c:if>     
+
+                                        <c:if test="${posicionActual.last}">
+                                            <li class="#{seccion.idSeccionFormulario == registrarFormularioBean.seccionActualDTO.idSeccionFormulario ? 'StepProgress-seccion-item last' : 'StepProgress-seccion-item last-done'} ">
+                                                <p:commandLink  value="#{seccion.nombreSeccion}" styleClass="#{(seccion.idSeccionFormulario == registrarFormularioBean.seccionActualDTO.idSeccionFormulario) ? 'lbl-seccion' : 'lbl-seccion-gris'}" 
+                                                    style="cursor: default !important; overflow-wrap: anywhere !important; text-decoration: none;" process="@this" />
+                                            </li>
+                                        </c:if>
+                                    </c:forEach>
+                                </ul>
+                            </p:column>
+                            
+                            <c:if test="${registrarFormularioBean.mostrarPnlComentario}">
+                            
+                                <p:spacer/>
+                                
+                                <p:outputPanel id="opnlComentarios" styleClass="recuadro-comentarios" >                         
+                                    <p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" style="padding: 5px;" >
+                                        <p:outputLabel value="#{msg.lbl_comentarios_titulo}" styleClass="lbl-titulo-comentarios" />                                 
+                                    </p:panelGrid>
+                                                        
+                                    <p:separator/>
+                                        
+                                    <p:panelGrid id="pnlComentarios" columns="2" columnClasses="ui-g-6 ui-md-6 ui-lg-6, ui-g-6 ui-md-6 ui-lg-6" 
+                                        layout="grid" styleClass="ui-panelgrid-blank ui-fluid" style="text-align: left; padding: 10px !important;" >
+                                        
+                                        <p:outputLabel value="#{msg.lbl_estatus_tramite}" styleClass="lbl-comentarios" />
+                                        <p:column id="clmComentarios" style="width: auto;">
+                                            <div class="#{registrarFormularioBean.tramiteActual.estiloEstatus}" style="padding: 0 10px;"> 
+                                                <p:commandLink value="#{registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.descripcion}"
+                                                    styleClass="#{registrarFormularioBean.tramiteActual.estiloTxtEstatus}" style="text-decoration: none;" />
+                                            </div> 
+                                        </p:column>
+                                        <p:outputLabel value="#{msg.lbl_fecha_revision}" styleClass="lbl-comentarios" />
+                                        <p:outputLabel value="#{registrarFormularioBean.tramiteActual.fechaRevision}" styleClass="lbl-comentarios">
+                                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                        </p:outputLabel>
+                                        
+                                        <p:outputLabel value="#{msg.lbl_archivo_adjunto}" styleClass="lbl-comentarios" rendered="#{registrarFormularioBean.tramiteActual.rutaDocumentoPrevencion != null}" />
+                                        <p:commandLink action="#{registrarFormularioBean.verDocumento(registrarFormularioBean.tramiteActual.rutaDocumentoPrevencion)}" rendered="#{registrarFormularioBean.tramiteActual.rutaDocumentoPrevencion != null}"
+                                            immediate="true" ajax="false"> 
+                                            <p:graphicImage value="/resources/img/ic_ver.svg" style="max-width: 50px;height: -webkit-fill-available;"/>
+                                        </p:commandLink>
+                                    </p:panelGrid>
+                                    
+                                    <c:if test="${registrarFormularioBean.tramiteActual.respuestaFolioConclusion ne null}">
+                                        <p:separator/>
+                                    </c:if>
+                                    
+                                    <p:panelGrid rendered="#{registrarFormularioBean.tramiteActual.respuestaFolioConclusion ne null}" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" style="text-align: justify !important; " >
+                                        <p:outputLabel value="#{msg.lbl_comentario_conclusion}" styleClass="lbl-comentarios" />
+                                        <p:inputTextarea value="#{registrarFormularioBean.tramiteActual.respuestaFolioConclusion}"
+                                            rows="10" autoResize="false" style="text-align: justify !important; border-radius: 8px;" 
+                                            readonly="true"
+                                            rendered="#{registrarFormularioBean.tramiteActual.respuestaFolioConclusion ne null}"/>  
+                                        <p:separator/>  
+                                    
+                                    </p:panelGrid>  
+                                    
+                                    <c:if test="${registrarFormularioBean.tramiteActual.respuestaFolioPrevencion ne null}">
+                                        <p:panelGrid id="pnlPrevencion" columns="2" columnClasses="ui-g-6 ui-md-6 ui-lg-6, ui-g-6 ui-md-6 ui-lg-6" 
+                                            layout="grid" styleClass="ui-panelgrid-blank ui-fluid" style="text-align: left; padding: 10px !important;" >
+                                            
+<!--                                            <c:if test="${registrarFormularioBean.tramiteActual.respuestaFolioConclusion ne null}"> -->
+<!--                                                <p:outputLabel value="#{msg.lbl_estatus_tramite}" styleClass="lbl-comentarios" /> -->
+<!--                                                <p:column id="clmComentariosConclusion" style="width: auto;"> -->
+<!--                                                    <div class="#{registrarFormularioBean.tramiteActual.estiloEstatus}" style="padding: 0 10px;">  -->
+<!--                                                        <p:commandLink value="#{registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.descripcion}" -->
+<!--                                                            styleClass="#{registrarFormularioBean.tramiteActual.estiloTxtEstatus}" style="text-decoration: none;" /> -->
+<!--                                                    </div>  -->
+<!--                                                </p:column>                                      -->
+<!--                                            </c:if> -->
+                                            
+                                            <c:if test="${registrarFormularioBean.tramiteActual.respuestaFolioPrevencion ne null 
+                                            				and registrarFormularioBean.tramiteActual.respuestaFolioConclusion ne null}">
+                                                <p:outputLabel value="#{msg.lbl_estatus_tramite}" styleClass="lbl-comentarios" />
+                                                <p:column id="clmComentariosPrevencion" style="width: auto;">
+                                                    <div class="estatus-en-correcciones" style="padding: 0 10px;"> 
+                                                        <p:commandLink value="Prevenido"
+                                                            styleClass="#{registrarFormularioBean.tramiteActual.estiloTxtEstatus}" style="text-decoration: none;" />
+                                                    </div> 
+                                                </p:column>                                             
+                                            </c:if>
+                                            
+                                        </p:panelGrid>                                  
+                                    
+                                        <c:if test="${registrarFormularioBean.tramiteActual.respuestaFolioConclusion ne null}">
+                                            <p:separator/>
+                                        </c:if>                                 
+                                    
+                                        <p:panelGrid rendered="#{registrarFormularioBean.tramiteActual.respuestaFolioPrevencion ne null}" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" style="text-align: justify !important; " > 
+                                             <p:outputLabel value="#{msg.lbl_comentario_prevencion}" styleClass="lbl-comentarios" />
+                                            <p:inputTextarea value="#{registrarFormularioBean.tramiteActual.respuestaFolioPrevencion}"
+                                                rows="10" autoResize="false" style="text-align: justify !important; border-radius: 8px;" 
+                                                readonly="true"/>
+                                        </p:panelGrid>                                  
+                                    </c:if>                 
+                                </p:outputPanel>    
+                            
+                            </c:if>
+                        </p:panelGrid>
+
+                        <p:panelGrid id="pnlSubsecciones" columns="2" columnClasses="ui-g-12 ui-md-12 ui-lg-12, ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading" style="padding-left: 5%;padding-right: 5%;">
+                        
+                            <c:if test="${registrarFormularioBean.seccionActualDTO.lstSubsecciones.size() == 0}">
+                                <p:column style="text-align: left;" 
+                                    styleClass="#{seccion.lstSubsecciones.size() gt 1 ? 'mt-3' : ''}">
+                                    <p:outputLabel value="#{msg.formulario_no_secciones}"
+                                        styleClass="lbl-subseccion" />
+                                </p:column>
+                                
+                            </c:if>
+                            
+                            <c:if test="${registrarFormularioBean.seccionActualDTO.lstSubsecciones.size() != 0}">
+
+                                <c:forEach var="subseccion" varStatus="subseccionActual" items="${registrarFormularioBean.seccionActualDTO.lstSubsecciones}">
+                                    
+                                    <c:if test="${subseccion.lstComponentes.size() == 0}">
+                                        <p:column style="text-align: left;" 
+                                            styleClass="#{seccion.lstSubsecciones.size() gt 1 ? 'mt-3' : ''}">
+                                            <p:outputLabel value="#{msg.formulario_no_componentes}"
+                                                styleClass="lbl-subseccion" />
+                                        </p:column>                                 
+                                    </c:if>
+                                    
+                                    <c:if test="${subseccion.lstComponentes.size() != 0}">  
+                                        
+                                        <p:panelGrid columns="2" layout="grid" 
+                                            columnClasses="ui-g-12 ui-md-9 ui-lg-9, ui-g-12 ui-md-3 ui-lg-3"
+                                            styleClass="ui-panelgrid-blank ui-fluid">
+                                                
+                                            <p:panelGrid columns="1" layout="grid"
+                                                columnClasses="ui-grid-col-12" 
+                                                style="text-align: left !important; margin-top:8px;" >
+                                                
+                                                
+                                                    <p:panelGrid id="pnlDetSeccion" columns="#{registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 3 and (authenticatorBean.rolSupervisor eq true or authenticatorBean.rolOperador eq true) and registrarFormularioBean.validacionTramite eq true ? 3 : 2}" layout="grid" styleClass="ui-panel-sin-pading" 
+                                                        columnClasses="#{registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 3 and (authenticatorBean.rolSupervisor eq true or authenticatorBean.rolOperador eq true) and registrarFormularioBean.validacionTramite eq true ? 'ui-g-8 ui-md-8 ui-lg-8, ui-g-2 ui-md-2 ui-lg-2, ui-g-2 ui-md-2 ui-lg-2' : 'ui-g-11 ui-md-11 ui-lg-11, ui-g-1 ui-md-1 ui-lg-1'}" > 
+                                                        
+                                                        <p:panelGrid columns="1" layout="grid" columnClasses="ui-grid-col-12" styleClass="ui-panel-sin-pading" style="text-align: justify !important;"  >
+                                                            <p:outputLabel value="#{subseccion.nombreSubseccion}" styleClass="lbl-subseccion" />
+                                                        </p:panelGrid>
+                                                        
+                                                        <c:if test="${subseccionActual.first}">
+                                                            <p:panelGrid columns="1" layout="grid" columnClasses="ui-grid-col-12" styleClass="ui-panel-sin-pading" style="text-align: center !important;"  >
+<!--                                                                (registrarFormularioBean.rolPermiteConcluirTramite == false and registrarFormularioBean.rolPermitePrevenirTramite == false) -->
+                                                                <p:commandButton icon="icon_correcto" actionListener="#{registrarFormularioBean.listenerHabilitaObservaciones(false)}"  
+                                                                    rendered="#{registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 3 and (authenticatorBean.rolSupervisor eq true or authenticatorBean.rolOperador eq true) and registrarFormularioBean.validacionTramite eq true }" 
+                                                                    disabled="#{registrarFormularioBean.seccionInformativa}"                                                                     
+                                                                    styleClass="#{registrarFormularioBean.seccionActualDTO.contieneObservaciones ne null and 
+                                                                    !registrarFormularioBean.seccionActualDTO.contieneObservaciones ? 'btn-fondo-icon-seleccionado' : 'btn-fondo-icon'}" immediate="true" process="@this, opnlObservaciones" 
+                                                                    update="opnlObservaciones pnlDetSeccion pnlAccionesBackOffice"/>
+                                                            </p:panelGrid>                                                      
+                                                            
+                                                            <p:panelGrid columns="1" layout="grid" columnClasses="ui-grid-col-12" styleClass="ui-panel-sin-pading" style="text-align: center !important;"  >
+<!--                                                                (registrarFormularioBean.rolPermiteConcluirTramite == false and registrarFormularioBean.rolPermitePrevenirTramite == false) -->
+                                                                <p:commandButton icon="icon_incorrecto" actionListener="#{registrarFormularioBean.listenerHabilitaObservaciones(true)}" 
+                                                                    rendered="#{registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 3 and (authenticatorBean.rolSupervisor eq true or authenticatorBean.rolOperador eq true) and registrarFormularioBean.validacionTramite eq true }" 
+                                                                    disabled="#{registrarFormularioBean.seccionInformativa}"
+                                                                    styleClass="#{registrarFormularioBean.seccionActualDTO.contieneObservaciones ne null and 
+                                                                    registrarFormularioBean.seccionActualDTO.contieneObservaciones ? 'btn-fondo-icon-seleccionado' : 'btn-fondo-icon'}" immediate="true" process="@this, opnlObservaciones" 
+                                                                    update="opnlObservaciones pnlDetSeccion pnlAccionesBackOffice"/>
+                                                            </p:panelGrid>
+                                                        </c:if>
+                                                        
+                                                    </p:panelGrid>                      
+                                            </p:panelGrid>
+                                                                    
+                                            <c:if test="${subseccionActual.first}">                                     
+                                                <p:panelGrid columns="1" layout="grid" columnClasses="ui-grid-col-12" style="padding-top: 10px; display:flex;justify-content: end; margin-top:8px;">
+                                                    <p:panelGrid columns="1" layout="grid" columnClasses="ui-grid-col-12">
+                                                        <p:outputLabel value="#{msg.lbl_datos_obligatorios}" styleClass="font-titulo-requerido" />                                                  
+                                                    </p:panelGrid>
+                                                </p:panelGrid>
+                                            </c:if>
+                                        </p:panelGrid>                  
+                                                                                
+                                        <p:column style="text-align: left;">
+                                            <c:forEach var="componente" items="#{subseccion.lstComponentes}" varStatus="loop">
+                                                <f:subview id="componente_#{componente.idComponente}">
+                                                    <c:if test="${componente.catTipoComponenteDTO.idTipoComponente == 1 and componente.activo == true and componente.alfanumerico == true}">
+                                                        <ui:include src="/protected/componentes/inputText.xhtml">
+                                                            <c:set var="campoTexto" value="#{componente}" />
+                                                        </ui:include>
+                                                    </c:if>
+                                                    
+                                                    <c:if test="${componente.catTipoComponenteDTO.idTipoComponente == 1 and componente.activo == true and componente.numerico == true}">
+                                                        <ui:include src="/protected/componentes/inputNumber.xhtml">
+                                                            <c:set var="campoTexto" value="#{componente}" />
+                                                        </ui:include>
+                                                    </c:if>
+                                                    
+                                                    <c:if test="${componente.catTipoComponenteDTO.idTipoComponente == 2 and componente.activo == true}">
+                                                        <ui:include src="/protected/componentes/checkboxUnico.xhtml">
+                                                            <c:set var="checkbox" value="#{componente}" />
+                                                        </ui:include>
+                                                    </c:if>
+                                                    
+                                                    <c:if test="${componente.catTipoComponenteDTO.idTipoComponente == 3 and componente.activo == true}">
+                                                        <ui:include src="/protected/componentes/checkbox.xhtml">
+                                                            <c:set var="checkbox" value="#{componente}" />
+                                                        </ui:include>
+                                                    </c:if>
+        
+                                                    <c:if test="${componente.catTipoComponenteDTO.idTipoComponente == 4 and componente.activo == true}">
+                                                        <ui:include src="/protected/componentes/fecha.xhtml">
+                                                            <c:set var="fecha" value="#{componente}" />
+                                                        </ui:include>
+                                                    </c:if>
+                                                    
+                                                    <c:if test="${componente.catTipoComponenteDTO.idTipoComponente == 5 and componente.activo == true}">
+                                                        <ui:include src="/protected/componentes/radioBoton.xhtml">
+                                                            <c:set var="radioBoton" value="#{componente}" />
+                                                        </ui:include>
+                                                    </c:if>
+                                                    
+                                                    <c:if test="${componente.catTipoComponenteDTO.idTipoComponente == 6 and componente.activo == true}">
+                                                        <ui:include src="/protected/componentes/menuDesplegable.xhtml">
+                                                            <c:set var="menuDesplegable" value="#{componente}" />
+                                                        </ui:include>
+                                                    </c:if>
+                                                    
+                                                    <c:if test="${componente.catTipoComponenteDTO.idTipoComponente == 7 and componente.activo == true}">
+                                                        <ui:include src="/protected/componentes/cargaDocumento.xhtml">
+                                                            <c:set var="cargaDocumentos" value="#{componente}" />
+                                                        </ui:include>
+                                                    </c:if>
+                                                    
+                                                    <c:if test="${componente.catTipoComponenteDTO.idTipoComponente == 10 and componente.activo == true}">
+                                                        <ui:include src="/protected/componentes/datosDomicilio.xhtml">
+                                                            <c:set var="domicilio" value="#{componente}" />
+                                                        </ui:include>
+                                                    </c:if>
+                                                                                                            
+                                                    <c:if test="${componente.catTipoComponenteDTO.idTipoComponente == 11 and componente.activo == true}">
+                                                        <ui:include src="/protected/componentes/datosPersonales.xhtml">
+                                                            <c:set var="datosPersonales" value="#{componente}" />
+                                                        </ui:include>
+                                                    </c:if>
+                                                                                                        
+                                                    <c:if test="${componente.catTipoComponenteDTO.idTipoComponente == 12 and componente.activo == true}">
+                                                        <ui:include src="/protected/componentes/datosPersonalesLlave.xhtml">
+                                                            <c:set var="datosPersonalesLlave" value="#{componente}" />
+                                                        </ui:include>
+                                                    </c:if>
+                                                    
+                                                    <c:if test="${componente.catTipoComponenteDTO.idTipoComponente == 13 and componente.activo == true}">
+                                                        <ui:include src="/protected/componentes/informativo.xhtml">
+                                                            <c:set var="informativo" value="#{componente}" />
+                                                        </ui:include>
+                                                    </c:if>
+                                                    
+                                                    <c:if test="${componente.catTipoComponenteDTO.idTipoComponente == 14 and componente.activo == true }">
+                                                        <c:choose>
+                                                            <c:when test="${ registrarFormularioBean.tramiteActual.tipoPersona eq 'Sí'  }">
+                                                                <ui:include src="/protected/componentes/datosPersonaMoral.xhtml">
+                                                                    <c:set var="datosPersonaMoral" value="#{componente}" />
+                                                                </ui:include>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <p:panelGrid columns="1" layout="grid" columnClasses="ui-grid-col-12">
+                                                                    <p:outputLabel value="#{msg.msj_sin_datos_persona_moral}" styleClass="lbl-componente" />                                                    
+                                                                </p:panelGrid>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </c:if>
+        
+                                                    <c:if test="${componente.catTipoComponenteDTO.idTipoComponente == 15 and componente.activo == true}">
+                                                        <ui:include src="/protected/componentes/inputTextarea.xhtml">
+                                                            <c:set var="areaTexto" value="#{componente}" />
+                                                        </ui:include>
+                                                    </c:if>
+                                                                                            
+	            									<c:if test="${componente.catTipoComponenteDTO.idTipoComponente == 16 and componente.activo == true}">
+													    <ui:include src="/protected/componentes/dynamicTable.xhtml">
+													        <ui:param name="comp" value="#{componente}" />
+													    </ui:include>
+													</c:if>
+	        										     											
+        
+                                                </f:subview>
+                                            </c:forEach>
+                                        </p:column>
+                                    </c:if>
+                                </c:forEach>                                
+                            
+                            </c:if>
+                            
+                            <!-- SE AGREGA LA IFORMACIÓN DE FIRMA DE CIUDADANO -->
+                            <p:outputPanel id="pnlDatosInfoFirmaCiudadano" 
+                                          rendered="#{registrarFormularioBean.lstSeccionesDTO[registrarFormularioBean.lstSeccionesDTO.size()-1].idSeccionFormulario == registrarFormularioBean.seccionActualDTO.idSeccionFormulario
+                                                      and  registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite > 2                                                    
+                                                      and (authenticatorBean.rolAdministrador eq true or authenticatorBean.rolAdministradorDatosTecnicos eq true
+                                                        or authenticatorBean.rolSupervisor eq true or authenticatorBean.rolOperador eq true or authenticatorBean.rolConsulta eq true)
+                                                      and (not empty registrarFormularioBean.datosFirmaCiudadanoDTO)
+                                                      and registrarFormularioBean.firmaCiudadano eq true }">
+                                <p:outputPanel id="pnlDatosFirma">
+                                
+                                   <p:spacer height="20" />
+                                
+                                   <div class="titulo-firma-ciudadano">
+                                        <h3>#{msg.lbl_titulo_datos_firma_ciudadano}</h3>
+                                    </div>
+                                
+                                  <p:panelGrid columns="2"                     
+                                        styleClass="ui-panelgrid-blank datos-firma-grid alineacion-izquierda-datos-ciudadano"
+                                        columnClasses="label-left, value-left">
+                                                
+                                        <p:outputLabel value="#{msg.lbl_nombre_firma_ciudadano}"  styleClass="label-text-ciudadano"/>
+                                        <p:outputLabel value="#{registrarFormularioBean.datosFirmaCiudadanoDTO.nombreFirmante}"  styleClass="value-text-ciudadano"/>
+                                        
+                                        <p:outputLabel value="#{msg.lbl_fecha_firma_ciudadano}"  styleClass="label-text-ciudadano"/>
+                                        <p:outputLabel value="#{registrarFormularioBean.datosFirmaCiudadanoDTO.fechaCreacion}"  styleClass="value-text-ciudadano"/>
+                                     
+                                        <p:outputLabel value="#{msg.lbl_cadena_firma_ciudadano}"  styleClass="label-text-ciudadano" />
+                                        <p:outputLabel value="#{registrarFormularioBean.datosFirmaCiudadanoDTO.cadenaOriginal}" styleClass="value-text-ciudadano"/>
+                            
+                                        <p:outputLabel value="#{msg.lbl_sello_firma_ciudadano}"  styleClass="label-text-ciudadano"/>
+                                        <p:outputLabel value="#{registrarFormularioBean.datosFirmaCiudadanoDTO.cadenaFirmada}" styleClass="value-text-ciudadano"/>
+                            
+                                    </p:panelGrid>
+                                </p:outputPanel>
+                            </p:outputPanel>                            
+                        
+                            <c:if test="${(seccionesProyectoBean.captchaDTO.llavePrivada ne null or !empty seccionesProyectoBean.captchaDTO.llavePrivada) and (seccionesProyectoBean.captchaDTO.llavePublica ne null or !empty seccionesProyectoBean.captchaDTO.llavePublica)}">
+                                <p:panelGrid id="pnlCaptcha" columns="1" 
+                                        rendered="#{registrarFormularioBean.visualizarCaptha() == false and registrarFormularioBean.usuarioBack == false and (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 0 || registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1)}"
+                                        columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+                                        styleClass="pnl-captcha ui-panelgrid-blank ui-fluid ui-panelgrid-sin-pading"
+                                        style="text-align: left;">
+                                        <p:captcha id="Captcha" language="es" required="true"
+                                            requiredMessage="Debe marcar la casilla del captcha" size="100px"
+                                            rendered="#{registrarFormularioBean.lstSeccionesDTO.get(0).idSeccionFormulario == registrarFormularioBean.seccionActualDTO.idSeccionFormulario ? 'true' : 'false'}" />
+                                        <p:message for="Captcha" display="text" />
+                                    </p:panelGrid>
+                            </c:if>
+                            
+                            <p:outputPanel id="opnlObservaciones">
+                                <p:panelGrid id="pnlObservaciones" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading" 
+                                    style="text-align: left;"
+                                    rendered="#{((authenticatorBean.rolAdministrador  or authenticatorBean.rolAdministradorDatosTecnicos
+                                        or authenticatorBean.rolSupervisor or authenticatorBean.rolOperador or authenticatorBean.rolConsulta) and registrarFormularioBean.seccionActualDTO.contieneObservaciones)
+                                        or (registrarFormularioBean.seccionActualDTO.contieneObservaciones and registrarFormularioBean.seccionActualDTO.observaciones ne null)
+                                        and (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite ne 3 and registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite ne 6 and registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite ne 7)}">
+                                    <p:separator/>                                  
+                                    <p:outputLabel value="#{msg.lbl_observaciones_titulo}" style="font-style: normal;line-height: 18px;font-weight: 400;" for="txtObservaciones"/>
+                                    <p:inputTextarea id="txtObservaciones" placeholder="#{msg.lbl_observaciones_texto}" value="#{registrarFormularioBean.seccionActualDTO.observaciones}"
+                                        readonly="#{registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 5 or 
+                                            registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 6 or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 7
+                                            or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 8}" 
+                                        rows="5" autoResize="false" style="border-radius: 8px;" styleClass="componente-text-area" required="#{registrarFormularioBean.seccionActualDTO.contieneObservaciones}" 
+                                        requiredMessage="#{msg.msj_campo_requerido}"/>
+                                    <p:message for="txtObservaciones" styleClass="messages-obligatorios" display="text" />
+                                </p:panelGrid>
+                            </p:outputPanel>
+                            
+                        </p:panelGrid>
+                    </p:panelGrid>
+                                        
+                    <p:outputPanel id="pnlAcciones" styleClass="formularios-footer-content" 
+                        rendered="#{authenticatorBean.rolConsulta eq false and authenticatorBean.rolSupervisor eq false and 
+                        authenticatorBean.rolOperador eq false and authenticatorBean.rolAdministrador eq false and authenticatorBean.rolAdministradorDatosTecnicos eq false}"
+                        style="height: auto; padding: 2% 2%; background: #FFF; border-radius: 0 0 10px 10px;">
+                            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            <p:commandButton value="#{msg.cancelar}" action="#{registrarFormularioBean.finalizarRegistro()}"
+                                styleClass="formularios-btn-cancelar" rendered="#{authenticatorBean.usuarioLogueado == null and (authenticatorBean.rolSupervisor eq false or authenticatorBean.rolOperador eq false)}"
+                                style="flex: 1 1 45%; max-width: 140px" immediate="true"/>
+                            <p:commandButton value="#{msg.cancelar}" action="#{bandejaTramitesBean.inicializar()}"
+                                styleClass="formularios-btn-cancelar" rendered="#{authenticatorBean.usuarioLogueado != null and (authenticatorBean.rolSupervisor eq false or authenticatorBean.rolOperador eq false)}"
+                                style="flex: 1 1 45%; max-width: 140px" immediate="true"/>
+                            <p:commandButton process="@this @form" value="#{msg.anterior}" action="#{registrarFormularioBean.anteriorSeccion()}"
+                                disabled="#{registrarFormularioBean.lstSeccionesDTO.get(0).idSeccionFormulario == registrarFormularioBean.seccionActualDTO.idSeccionFormulario ? 'true' : 'false'}"                             
+                                styleClass="formularios-btn-green" update="@form messages" immediate="true" resetValues="true"
+                                style="flex: 1 1 45%; max-width: 140px; border: 1px solid #0F4C42 !important;" />
+
+                            <p:commandButton id="botonGeneraLineaCaptura1" process="@this @form"
+                                styleClass="formularios-btn-green" update="@form messages"
+                                value="#{generaLineaCapturaBean.deshabilitarBotonFinalizarTramite ? msg.lbl_genera_linea_captura : msg.lbl_descarga_linea_captura}"
+                                onclick="PrimeFaces.monitorDownload(start, stop);"
+                                actionListener="#{registrarFormularioBean.generarLineaCapturaDesdeFormularioTramite(registrarFormularioBean.tramiteActual, registrarFormularioBean.proyectoDTO)}"
+                                style="flex: 1 1 45%; max-width: 140px; border: 1px solid #0F4C42 !important;"
+                                rendered="#{registrarFormularioBean.activarBotonLineaCaptura()}" 
+                                ajax="true"
+                                >
+                                <p:fileDownload value="#{generaLineaCapturaBean.filePdfLC}" />
+                            </p:commandButton>
+                            <p:commandButton process="@this @form"
+                                styleClass="formularios-btn-green" update="@form messages"
+                                value="#{registrarFormularioBean.botonTramiteCiudadano}"
+                                action="#{registrarFormularioBean.siguienteSeccion()}"
+                                style="flex: 1 1 45%; max-width: 140px; border: 1px solid #0F4C42 !important;"
+                                rendered="#{registrarFormularioBean.mostrarBotonSiguienteOFinalizar()}"
+                                oncomplete="window.scrollTo({ top: 0, behavior: 'smooth' });" />
+                                
+                            <p:commandButton value="#{msg.descargar_comprobante}" rendered="#{(registrarFormularioBean.lstSeccionesDTO.get(registrarFormularioBean.lstSeccionesDTO.size()-1).idSeccionFormulario == registrarFormularioBean.seccionActualDTO.idSeccionFormulario)
+                                    and registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite != 1 and registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite != 4}"
+                                styleClass="formularios-btn-rechazar"
+                                action="#{registrarFormularioBean.generarComprobante()}"
+                                style="max-width: 220px !important;" immediate="true" update="messages" ajax="false"/>          
+                            </div>
+                    </p:outputPanel>
+                    
+                    <h:outputScript>
+                            function start() {
+                                PF('statusDialog').show(); // Opcional: mostrar un diálogo de carga
+                            }
+                            function stop() {
+                                PF('statusDialog').hide();
+                                guardadoTramite();
+                            }
+                        </h:outputScript>
+                    <p:remoteCommand name="guardadoTramite" action="#{registrarFormularioBean.siguienteSeccion()}" />
+                    
+                    <p:outputPanel id="pnlAccionesBackOffice" styleClass="formularios-footer-content" 
+                        rendered="#{authenticatorBean.rolConsulta eq true or authenticatorBean.rolSupervisor eq true or 
+                            authenticatorBean.rolOperador eq true or authenticatorBean.rolAdministrador eq true or authenticatorBean.rolAdministradorDatosTecnicos eq true}"
+                        style="height: auto; padding: 2% 2%; background: #FFF; border-radius: 0 0 10px 10px;">
+                         <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                            <!-- action="#{bandejaValidacionTramitesBean.inicializar()}" -->
+                            
+                            <p:commandButton value="Cargar resolución del trámite" 
+                                styleClass="formularios-btn-blue" rendered="#{registrarFormularioBean.renderizarResolucionTramite}" 
+                                action="#{registrarFormularioBean.listenerAsignarEstatusResolucionTramite(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite)}" 
+                                update=":frmModalResolucionTramite"
+                                style="height: 44px; padding: 0 16px;" immediate="true"/>
+                            
+                            <p:commandButton value="#{msg.cancelar}" action="#{registrarFormularioBean.cancelar()}"
+                                styleClass="formularios-btn-cancelar" 
+                                    rendered="#{authenticatorBean.rolConsulta == true or authenticatorBean.rolSupervisor == true or authenticatorBean.rolOperador == true or authenticatorBean.rolAdministrador eq true or authenticatorBean.rolAdministradorDatosTecnicos eq true}"
+                                style="max-width: 140px !important;" immediate="true"/>
+                                
+                                <p:commandButton value="#{msg.anterior}" action="#{registrarFormularioBean.anteriorSeccion()}"
+                                rendered="#{registrarFormularioBean.lstSeccionesDTO.get(0).idSeccionFormulario != registrarFormularioBean.seccionActualDTO.idSeccionFormulario ? 'true' : 'false'}"                             
+                                styleClass="formularios-btn-green" update="@form messages" immediate="true" resetValues="true"
+                                style="border: 1px solid #0F4C42 !important; max-width: 140px !important;" />
+                                
+                              <p:commandButton id="botonGeneraLineaCaptura2" process="@this @form"
+                                styleClass="formularios-btn-green" update="@form messages"
+                                value="#{generaLineaCapturaBean.deshabilitarBotonFinalizarTramite ? msg.lbl_genera_linea_captura : msg.lbl_descarga_linea_captura}"
+                                onclick="PrimeFaces.monitorDownload(start, stop);"
+                                actionListener="#{registrarFormularioBean.generarLineaCapturaDesdeFormularioTramite(registrarFormularioBean.tramiteActual, registrarFormularioBean.proyectoDTO)}"
+                                style="flex: 1 1 45%; max-width: 140px; border: 1px solid #0F4C42 !important;"
+                                rendered="#{registrarFormularioBean.activarBotonLineaCaptura()}" 
+                                ajax="true"
+                                >
+                                <p:fileDownload value="#{generaLineaCapturaBean.filePdfLC}" />
+                            </p:commandButton>
+                            
+                            <p:commandButton process="@this @form" styleClass="formularios-btn-green" update="@form messages" 
+                                value="#{registrarFormularioBean.botonTramiteCiudadano}"
+                                action="#{registrarFormularioBean.siguienteSeccion()}" style="border: 1px solid #0F4C42 !important; max-width: 140px !important;"
+								rendered="#{!(
+									(
+										registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 3
+										or (
+											registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4
+											and authenticatorBean.usuarioLogueado.idUsuarioLlaveCdmx != registrarFormularioBean.tramiteActual.usuario.idUsuarioLlaveCdmx
+										)
+										or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 5
+										or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 6
+										or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 7
+										or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 8
+										or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 9
+										or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 10
+									)
+									and registrarFormularioBean.lstSeccionesDTO.get(registrarFormularioBean.lstSeccionesDTO.size()-1).idSeccionFormulario eq registrarFormularioBean.seccionActualDTO.idSeccionFormulario
+								)}" 								
+                                oncomplete="window.scrollTo({ top: 0, behavior: 'smooth' });"/>
+                            
+                                
+                                <!--  ACCIONES PARA BACK OFFICE  -->
+<!--                                (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 3 and !registrarFormularioBean.observacionesTramite) -->
+                            <p:commandButton value="Rechazar solicitud" disabled="#{registrarFormularioBean.existenSeccionesConObservaciones() == false}"
+                                rendered="#{registrarFormularioBean.rolPermiteConcluirTramite == true and registrarFormularioBean.validacionTramite == true 
+                                    and registrarFormularioBean.lstSeccionesDTO.get(registrarFormularioBean.lstSeccionesDTO.size()-1).idSeccionFormulario == registrarFormularioBean.seccionActualDTO.idSeccionFormulario
+                                    and (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 3 or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 5 or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 8)}"
+                                styleClass="formularios-btn-rechazar"
+                                update="opnlObservaciones, frmModalPrevencion:opnlCargaArchivo, frmModalPrevencion:idTxtObservacionesPrevencion, frmModalPrevencion:idTxtObservacionesConclusion, frmModalPrevencion:pnlTituloModal, frmModalPrevencion:pnlComentarios"
+                                action="#{registrarFormularioBean.listenerAsignarEstatusTramite(6)}"/>
+                            <p:commandButton value="Realizar prevención" disabled="#{registrarFormularioBean.existenSeccionesConObservaciones() == false}"
+                                rendered="#{registrarFormularioBean.rolPermitePrevenirTramite == true and registrarFormularioBean.validacionTramite == true
+                                    and registrarFormularioBean.lstSeccionesDTO.get(registrarFormularioBean.lstSeccionesDTO.size()-1).idSeccionFormulario == registrarFormularioBean.seccionActualDTO.idSeccionFormulario
+                                    and (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 3 or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 8)}"
+                                styleClass="formularios-btn-prevencion"
+                                update="opnlObservaciones, frmModalPrevencion:opnlCargaArchivo, frmModalPrevencion:idTxtObservacionesPrevencion, frmModalPrevencion:idTxtObservacionesConclusion, frmModalPrevencion:pnlTituloModal, frmModalPrevencion:pnlComentarios"
+                                action="#{registrarFormularioBean.listenerAsignarEstatusTramite(4)}"/>
+<!--                            registrarFormularioBean.observacionesTramite or -->
+                            <p:commandButton value="Concluir"
+                                disabled="#{(registrarFormularioBean.existenSeccionesConObservaciones() == true and registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite != 5)}"
+                                rendered="#{registrarFormularioBean.renderBtnConclusion}"
+                                style="max-width: 140px !important;" styleClass="formularios-btn-green"
+                                actionListener="#{registrarFormularioBean.listenerAsignarEstatusTramite(7)}"
+                                action="#{registrarFormularioBean.mostrarModalConcluir()}"
+                                update="opnlObservaciones frmModalConclusion:idTxtObservacionesConclusion"/>
+                                                                
+<!--                                and seccionesProyectoBean.gestionUsuarioDTO.perfilOperadorConclusion eq false and seccionesProyectoBean.gestionUsuarioDTO.perfilOperadorPrevencion eq false -->
+                            <p:commandButton value="Finalizar revisión" styleClass="formularios-btn-green"
+                                rendered="#{registrarFormularioBean.renderBtnFinalizarRevision}"
+                                actionListener="#{registrarFormularioBean.listenerAsignarEstatusTramite(8)}"
+                                action="#{registrarFormularioBean.validarFirmadoTramite()}"
+                                disabled="#{registrarFormularioBean.habilitarOpcionFinalizarTramite()}"/>
+                                
+                            <p:commandButton value="#{msg.descargar_comprobante}" rendered="#{(registrarFormularioBean.lstSeccionesDTO.get(registrarFormularioBean.lstSeccionesDTO.size()-1).idSeccionFormulario == registrarFormularioBean.seccionActualDTO.idSeccionFormulario)
+                                    and registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite != 1 and registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite != 4}"
+                                styleClass="formularios-btn-rechazar"
+                                action="#{registrarFormularioBean.generarComprobante()}"
+                                style="max-width: 220px !important;" immediate="true" update="messages" ajax="false"/>  
+                        </div>
+                    </p:outputPanel>
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+                        closable="false" resizable="false" showHeader="false"
+                        header="Procesando..." styleClass=""
+                        style="overflow-y:hidden !important; width: 80px !important;">
+                        <f:facet name="header">
+                            <p:outputLabel value="Procesando..."
+                                styleClass="adip-dialog-titulo-green" />
+                        </f:facet>
+                        <p:panelGrid columns="1" columnClasses="ui-grid-col-12"
+                            layout="grid" styleClass="center">
+                            <p:panelGrid columns="1" columnClasses="ui-grid-col-12"
+                                layout="grid" styleClass="p-4">
+                                <p:outputLabel value="Procesando..."
+                                    styleClass="adip-output-campos-dialog-green" />
+                                <p:graphicImage value="/resources/img/loading.gif" width="100%"
+                                    height="100%" />
+                            </p:panelGrid>
+                        </p:panelGrid>
+                    </p:dialog>
+
+                </h:form>
+            </p:outputPanel>
+        </p:outputPanel>
+        
+        <!-- INICIA MODAL TIPO DE PERSONA-->
+        <p:dialog id="mdlTipoPersona" widgetVar="mdlTipoPersona" 
+                  showEffect="fade" responsive="true" modal="true" 
+                  draggable="false" closable="false" resizable="false" 
+                  styleClass="pagos" width="700" 
+                  style="border-radius: 10px;"
+                  visible="#{registrarFormularioBean.mostrarModalTipoPersona}">
+        
+            <h:form id="frmTipoPersonaInfo">
+                <div style="padding: 20px; display: flex; flex-direction: column; gap: 20px;">
+                    
+                    <div style="text-align: center;">
+                        <p:outputLabel value="Esta realizando el tramite como: #{registrarFormularioBean.msgTipoPersona}" 
+                                     styleClass="lbl-subseccion"
+                                     style="font-size: 22px; line-height: 27px; margin-bottom: 15px;"
+                                     escape="false"/>
+                    </div>
+        
+                    <div style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                           
+                            
+                            <p:outputLabel 
+                                value="¿Desea Continuar?" 
+                                style="font-style: normal; line-height: 18px; font-weight: 400; vertical-align: middle;"/>
+                        </div>                           
+                    </div>
+                            
+                    <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px;">
+                       
+                        <p:commandButton 
+                            value="Sí" 
+                            styleClass="formularios-btn-prevencion"
+                            style="max-width: 180px;"
+                            oncomplete="PF('mdlTipoPersona').hide();" 
+                            process="@form"
+                            action="#{registrarFormularioBean.cerrarModalTipoPersona}"
+                            />
+                   
+                         
+                        <p:commandButton 
+                            value="No" 
+                            styleClass="formularios-btn-prevencion"
+                            style="max-width: 180px;"
+                            oncomplete="PF('mdlTipoPersona').hide();" 
+                            process="@form"
+                            action="#{registrarFormularioBean.redirectToBandejaTramites}"
+                            />             
+                    
+                    </div>  
+                                    
+                </div>
+            </h:form>
+        </p:dialog>
+        
+        
+        <!-- INICIA MODAL PREVENCION/RECHAZO-->
+        <p:dialog id="mdlPrevencion" widgetVar="mdlPrevencion" showEffect="fade" responsive="true" modal="true" draggable="false"
+            closable="false" resizable="false" styleClass="pagos" width="577" style="border-radius: 10px">
+            <h:form id="frmModalPrevencion">                    
+                <p:panelGrid id="pnlTituloModal" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                    <p:panelGrid columns="1" style="display: flex; align-items: center;">
+                        <p:outputLabel value="#{registrarFormularioBean.idEstatusValidacionTramite == 6 ? 'Realizar rechazo' :'Realizar prevención'}" 
+                            style="padding-bottom: 10px !important;font-size: 22px !important;line-height: 27px !important;" 
+                            styleClass="lbl-subseccion" escape="false"/>
+                    </p:panelGrid>
+                </p:panelGrid>      
+                <p:panelGrid id="pnlComentarios" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+                    styleClass="ui-panelgrid-blank ui-fluid" style="padding-left: 10px;padding-right: 10px;">
+                    <p:outputLabel value="#{registrarFormularioBean.idEstatusValidacionTramite == 6 ? 'Motivo del rechazo' : 'Motivo de la prevención'}" style="font-style: normal;line-height: 18px;font-weight: 400;" 
+                        for="@next"/>
+                    <p:inputTextarea id="idTxtObservacionesPrevencion" placeholder="Escribe tus comentarios" 
+                        value="#{registrarFormularioBean.tramiteRevision.respuestaFolioPrevencion}"
+                        cols="5" autoResize="false" style="border-radius: 8px;" 
+                        required="true" 
+                        requiredMessage="#{msg.msj_campo_requerido}"
+                        rendered="#{registrarFormularioBean.idEstatusValidacionTramite eq 4}"/> 
+                    <p:inputTextarea id="idTxtObservacionesConclusion" placeholder="Escribe tus comentarios" 
+                        value="#{registrarFormularioBean.tramiteRevision.respuestaFolioConclusion}"
+                        cols="5" autoResize="false" style="border-radius: 8px;" 
+                        required="true" 
+                        requiredMessage="#{msg.msj_campo_requerido}"
+                        rendered="#{registrarFormularioBean.idEstatusValidacionTramite eq 6}"/>
+                    <p:message for="idTxtObservacionesPrevencion" styleClass="messages-obligatorios" display="text" />
+                    <p:message for="idTxtObservacionesConclusion" styleClass="messages-obligatorios" display="text" />
+                </p:panelGrid>
+                <p:outputPanel id="opnlCargaArchivo">
+                    <p:outputPanel rendered="#{registrarFormularioBean.tramiteRevision.rutaDocumentoPrevencion != null}" style="padding: 0 4%;">
+                        <p:outputLabel value="#{msg.lbl_archivo_cargado}" 
+                            style="font-style: normal;font-weight: 400;font-size: 15px;line-height: 18px;color: #2D3748;"/>
+                        <p:panelGrid columns="2" 
+                            columnClasses="ui-xl-10 ui-lg-10 ui-g-10 ui-md-10 ui-sm-12, ui-xl-2 ui-lg-2 ui-g-2 ui-md-2 ui-sm-12" 
+                            layout="grid"
+                            styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading">
+                            <p:column style="display: inline-grid;">
+                                <p:outputLabel value="#{registrarFormularioBean.obtenerFileName(registrarFormularioBean.tramiteRevision.rutaDocumentoPrevencion)}" 
+                                    style="font-style: normal;font-weight: 700;font-size: 15px;line-height: 22px;color: #BC955C;"/>
+                            </p:column>
+                            <p:commandLink action="#{registrarFormularioBean.eliminarArchivoCargado(registrarFormularioBean.tramiteRevision.rutaDocumentoPrevencion)}" immediate="true" 
+                                update="frmModalPrevencion"> 
+                                <p:graphicImage value="/resources/img/ic_eliminar.svg" style="max-width: 20px;height: -webkit-fill-available;"/>
+                            </p:commandLink>
+                        </p:panelGrid>
+                    </p:outputPanel>
+                    <p:panelGrid id="pnlCargaArchivo" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+                        styleClass="ui-panelgrid-blank ui-fluid" style="padding-left: 10px;padding-right: 10px;"
+                        rendered="#{seccionesProyectoBean.gestionUsuarioDTO.adjuntaOficio and registrarFormularioBean.idEstatusValidacionTramite == 4}">
+                        <p:outputLabel value="Cargar archivo de prevención" style="font-style: normal;line-height: 18px;font-weight: 400;"/>
+                            <p:fileUpload id="cdoc_prevencion"
+                                auto="true"
+                                mode="advanced"
+                                label="#{msg.ful_lbl_adjuntar_archivo}"
+                                listener="#{registrarFormularioBean.subirArchivo}"
+                                required="false"
+                                invalidSizeMessage="#{msg.msj_invalid_size_document}"
+                                styleClass="carga-documento-span"
+                                update="@this, opnlCargaArchivo"
+                                allowTypes="/(\.|\/)(pdf)$/"
+                                accept=".pdf"
+                                sizeLimit="10485760"
+                                style="background: #1A6058;border: 1px solid #1A6058;border-radius: 4px;max-width: 216px;height: 38px;background-image: url(/resources/img/clip.svg);background-repeat: no-repeat;background-position-x: 8%; background-position-y: 7px;"> 
+                            </p:fileUpload>
+                            <p:outputLabel
+                                value="Sube un archivo no mayor a 10 MB" 
+                                style="font-style: normal;font-weight: 400;font-size: 12px;line-height: 16px;color: #343A40;"/>
+                    </p:panelGrid>
+                </p:outputPanel>
+                
+                <p:outputPanel id="pnlAccionesModal" columns="1" layout="grid" columnClasses="ui-g-12 ui-md-12 ui-lg-12" styleClass="formularios-footer-content" style="padding: 0 !important;">
+                    <p:commandButton value="#{msg.cancelar}" styleClass="formularios-btn-prevencion" 
+                        oncomplete="PF('mdlPrevencion').hide();" 
+                        process="@form" 
+                        update="messages frmModalPrevencion" 
+                        immediate="true"
+                        actionListener="#{registrarFormularioBean.cancelarModal()}"
+                        style="max-width: 140px !important;"/>
+                    <p:commandButton value="Enviar" styleClass="formularios-btn-green" 
+                        update="messages @form mdlFirmaTramite" 
+                        process="@form" 
+                        action="#{registrarFormularioBean.validarFirmadoTramite()}"
+                        oncomplete="PF('mdlPrevencion').hide();" 
+                        style="max-width: 140px !important;" />
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+        <!-- FIN MODAL -->
+        
+        <!-- MODAL PARA RESOLUCIÓN DEL TRÁMITE -->
+        <p:dialog id="mdlResolucionTramite"
+                  widgetVar="mdlResolucionTramite"
+                  showEffect="fade"
+                  responsive="true"
+                  modal="true"
+                  draggable="false"
+                  closable="false"
+                  resizable="false"
+                  styleClass="pagos"
+                  width="577"
+                  style="border-radius: 10px; margin: 0 auto;">
+            
+            <h:form id="frmModalResolucionTramite">
+                <h:panelGroup layout="block" style="text-align: center;">
+        
+                    <p:panelGrid columns="1" layout="grid"
+                                 styleClass="ui-panelgrid-blank ui-fluid"
+                                 style="display: flex; justify-content: center; align-items: center;">
+                        <p:outputLabel value="Cargar resolución del trámite"
+                                       style="padding-bottom: 10px; font-size: 22px; line-height: 27px;"
+                                       styleClass="lbl-subseccion" escape="false"/>
+                    </p:panelGrid>
+        
+                    <p:panelGrid columns="1"
+                                 columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+                                 layout="grid"
+                                 styleClass="ui-panelgrid-blank ui-fluid"
+                                 style="padding: 10px 20px; margin-bottom: 15px;">
+                        
+                        <p:outputLabel value="Seleccione el tipo de resolución"
+                                       style="font-style: normal; line-height: 18px; font-weight: 400;"/>
+        
+                        <p:selectOneRadio id="tipoResolucion"
+                                          value="#{registrarFormularioBean.tipoResolucionTramite}" 
+                                          layout="custom"                                         
+                                          disabled="#{registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 6}">
+                            <f:selectItem itemLabel="Positiva" itemValue="#{true}"
+                                          
+                                          disabled="#{registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 6}"/>
+                            <f:selectItem itemLabel="Negativa" itemValue="#{false}"/>
+                            <p:ajax listener="#{registrarFormularioBean.actualizarLeyendaResolucion}"
+                                    update="opnlCargaArchivoResolucionTramite"/>
+                        </p:selectOneRadio>
+        
+                   
+                        <p:panelGrid columns="2"
+                                     styleClass="ui-panelgrid-blank"
+                                     style="margin-top: 5px; justify-content: center; display: flex; gap: 20px;">
+                            
+                            <h:panelGroup style="display: flex; align-items: center;">
+                                <p:radioButton id="positiva" for="tipoResolucion" itemIndex="0"/>
+                                <p:outputLabel for="positiva" value="Positiva" style="margin-left: 5px;"/>
+                            </h:panelGroup>
+                            
+                            <h:panelGroup style="display: flex; align-items: center;">
+                                <p:radioButton id="negativa" for="tipoResolucion" itemIndex="1"/>
+                                <p:outputLabel for="negativa" value="Negativa" style="margin-left: 5px;"/>
+                            </h:panelGroup>
+                        </p:panelGrid>
+                    </p:panelGrid>
+        
+                    <p:outputPanel id="opnlCargaArchivoResolucionTramite">
+                    
+                          <p:outputPanel rendered="#{registrarFormularioBean.tramiteRevision.rutaDocumentoResolucionPositiva != null 
+                                                  or registrarFormularioBean.tramiteRevision.rutaDocumentoResolucionNegativa != null}"
+                                         style="padding: 10px 20px;">
+                            
+                            <p:outputLabel value="#{msg.lbl_archivo_cargado}"
+                                           style="font-style: normal; font-weight: 400; font-size: 15px;
+                                                  line-height: 18px; color: #2D3748;"/>
+            
+                            <h:panelGroup layout="block"
+                                          style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 10px 0;">
+                                
+                                <p:outputLabel value="#{registrarFormularioBean.obtenerFileName(
+                                                            registrarFormularioBean.tramiteRevision.rutaDocumentoResolucionPositiva != null 
+                                                                ? registrarFormularioBean.tramiteRevision.rutaDocumentoResolucionPositiva 
+                                                                : registrarFormularioBean.tramiteRevision.rutaDocumentoResolucionNegativa)}"
+                                                            style="font-weight: 700; font-size: 15px; color: #BC955C;"/>
+                                
+                                <p:commandLink action="#{registrarFormularioBean.eliminarArchivoResolucionTramite()}"
+                                               immediate="true"
+                                               update="frmModalResolucionTramite">
+                                    <p:graphicImage value="/resources/img/ic_eliminar.svg"
+                                                    style="width: 20px; height: 20px;"/>
+                                </p:commandLink>
+                            </h:panelGroup>
+                        </p:outputPanel>
+                    
+                        <p:panelGrid columns="1" layout="grid"
+                                     columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+                                     styleClass="ui-panelgrid-blank ui-fluid"
+                                     style="padding: 0 20px; text-align: center;">
+                            
+                            <p:outputLabel value="#{registrarFormularioBean.leyendaTipoDeResolucionTramite}"
+                                           style="font-style: normal; line-height: 18px; font-weight: 400;"/>
+        
+                            <p:fileUpload id="cdoc_resolucion_tramite"
+                                          auto="true"
+                                          mode="advanced"
+                                          label="#{msg.ful_lbl_adjuntar_archivo}"
+                                          listener="#{registrarFormularioBean.subirArchivoResolucionTramite}"
+                                          invalidFileMessage="#{msg.msj_invalid_type_document}"
+                                          invalidSizeMessage="#{msg.msj_invalid_size_document}"
+                                          styleClass="carga-documento-span"
+                                          update="messages opnlCargaArchivoResolucionTramite"
+                                          allowTypes="/(\.|\/)(pdf)$/"
+                                          accept=".pdf"
+                                          sizeLimit="10485760"
+                                          style="background: #1A6058; border: 1px solid #1A6058; border-radius: 4px;
+                                                 max-width: 216px; height: 38px; margin: 0 auto;
+                                                 background-image: url(/resources/img/clip.svg);
+                                                 background-repeat: no-repeat;
+                                                 background-position-x: 8%;
+                                                 background-position-y: 7px;
+                                                 font-size: 14px !important;"/>
+        
+                            <p:outputLabel value="Sube un archivo no mayor a 10 MB"
+                                           style="font-style: normal; font-weight: 400; font-size: 12px;
+                                                  line-height: 16px; color: #343A40;"/>
+                        </p:panelGrid>
+                    </p:outputPanel>
+                              
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+        
+                    <p:outputPanel id="pnlAccionesModalResolucionTramite"
+                                   layout="block"
+                                   styleClass="formularios-footer-content"
+                                   style="display: flex; justify-content: center; gap: 15px; padding: 20px 0; margin-top: 75px;">
+                        
+                        <p:commandButton value="#{msg.cancelar}"
+                                         styleClass="formularios-btn-prevencion"
+                                         oncomplete="PF('mdlResolucionTramite').hide();"
+                                         process="@form"
+                                         update="messages frmModalResolucionTramite"
+                                         immediate="true"
+                                         actionListener="#{registrarFormularioBean.eliminarArchivoResolucionTramite()}"
+                                         style="max-width: 140px;"/>
+                        
+                        <p:commandButton value="Cargar y notificar al solicitante"
+                                         styleClass="formularios-btn-green"
+                                         update="messages @form"
+                                         process="@form"
+                                         action="#{registrarFormularioBean.guardarResolucionTramite()}"
+                                         style="max-width: 250px;"/>
+                    </p:outputPanel>
+        
+                </h:panelGroup>
+            </h:form>
+        </p:dialog>
+
+        
+        <!-- INICIA MODAL CONFIRMACION SI FIRMA TRAMITE-->
+        <p:dialog id="mdlFirmaTramite" widgetVar="mdlFirmaTramite" showEffect="fade" responsive="true" modal="true" draggable="false"
+            closable="true" resizable="false" styleClass="pagos" width="577" style="border-radius: 10px">
+            <h:form id="frmFirmaTramite">                   
+                <p:panelGrid id="pnlTituloModalFirma" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                    <p:panelGrid columns="1" style="display: flex; align-items: center;">
+                        <p:outputLabel value="Finalizar revisión de trámite" 
+                            style="padding-bottom: 10px !important;font-size: 22px !important;line-height: 27px !important;" 
+                            styleClass="lbl-subseccion" escape="false"/>
+                    </p:panelGrid>
+                    
+                    <p:panelGrid id="pnlComentarios" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+                        styleClass="ui-panelgrid-blank ui-fluid">
+                            <p:outputLabel value="Seleccione la opción que desea realizar." 
+                                style="font-style: normal;line-height: 18px;font-weight: 400;" />               
+                    </p:panelGrid>
+                    
+                </p:panelGrid>
+                
+                <p:outputPanel id="pnlAccionesModalFirma" columns="1" layout="grid" columnClasses="ui-g-12 ui-md-12 ui-lg-12" styleClass="formularios-footer-content" style="padding: 0 !important;">
+                    <p:commandButton value="Firmar y concluir" styleClass="formularios-btn-prevencion" 
+                        oncomplete="PF('mdlFirmaTramite').hide();" 
+                        process="@form" 
+                        action="#{registrarFormularioBean.iniciarFirmaTramite()}"
+                        update="messages frmFirmaTramite" 
+                        immediate="true"
+                        disabled="#{registrarFormularioBean.idEstatusValidacionTramite == 4}"
+                        style="max-width: 180px !important;"/>
+                    <p:commandButton value="Concluir" styleClass="formularios-btn-green" 
+                        update="messages @form" 
+                        process="@form" 
+                        action="#{registrarFormularioBean.guardarRevisionTramite(null)}"
+                        style="max-width: 140px !important;" />
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+        <!-- FIN MODAL -->
+        
+        <!-- INICIA MODAL CONCLUSION-->
+        <p:dialog id="mdlConclusion" widgetVar="mdlConclusion" showEffect="fade" responsive="true" modal="true" draggable="false"
+            closable="false" resizable="false" styleClass="pagos" width="577" style="border-radius: 10px">
+            <h:form id="frmModalConclusion">                    
+                <p:panelGrid id="pnlTituloModal" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                    <p:panelGrid columns="1" style="display: flex; align-items: center;">
+                        <p:outputLabel value="Realizar conclusión" 
+                            style="padding-bottom: 10px !important;font-size: 22px !important;line-height: 27px !important;" 
+                            styleClass="lbl-subseccion" escape="false"/>
+                    </p:panelGrid>
+                </p:panelGrid>      
+                <p:panelGrid id="pnlComentarios" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+                    styleClass="ui-panelgrid-blank ui-fluid" style="padding-left: 10px;padding-right: 10px;">
+                    <p:outputLabel value="Mensaje de Conclusión" style="font-style: normal;line-height: 18px;font-weight: 400;" 
+                        for="@next"/>
+                    <p:inputTextarea id="idTxtObservacionesConclusion" placeholder="Escribe tus comentarios" 
+                        value="#{registrarFormularioBean.tramiteRevision.respuestaFolioConclusion}"
+                        cols="5" autoResize="false" style="border-radius: 8px;"/>
+                </p:panelGrid>                
+                <p:outputPanel id="pnlAccionesModal" columns="1" layout="grid" columnClasses="ui-g-12 ui-md-12 ui-lg-12" styleClass="formularios-footer-content" style="padding: 0 !important;">
+                    <p:commandButton value="#{msg.cancelar}" styleClass="formularios-btn-prevencion" 
+                        oncomplete="PF('mdlConclusion').hide();" 
+                        process="@form" 
+                        update="messages frmModalConclusion" 
+                        immediate="true"
+                        actionListener="#{registrarFormularioBean.cancelarModal()}"
+                        style="max-width: 140px !important;"/>
+                    <p:commandButton value="Enviar" styleClass="formularios-btn-green" 
+                        update="messages mdlConclusion" 
+                        process="@form" 
+                        action="#{registrarFormularioBean.validarFirmadoTramite()}"
+                        oncomplete="PF('mdlConclusion').hide();" 
+                        style="max-width: 140px !important;" />
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+        <!-- FIN MODAL -->
+            
+	    <!-- INICIA MODAL FALLO CONEXION FIRMA MX-->
+        <p:dialog id="mdlFirmaMx" widgetVar="mdlFirmaMx" showEffect="fade" responsive="true" modal="true" draggable="false"
+            closable="false" resizable="false" styleClass="pagos" width="577" style="border-radius: 10px">
+            <h:form id="frmModalFirmaMx">                    
+                <p:panelGrid id="pnlTituloModal" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                    <p:panelGrid columns="1" style="display: flex; align-items: center;">
+                        <p:outputLabel value="#{msg.lbl_titulo_mdlFirma}" 
+                            style="padding-bottom: 10px !important;font-size: 22px !important;line-height: 27px !important;" 
+                            styleClass="lbl-subseccion" escape="false"/>
+                    </p:panelGrid>
+                </p:panelGrid>      
+                <p:panelGrid id="pnlMensaje" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+                    styleClass="ui-panelgrid-blank ui-fluid" style="padding-left: 10px;padding-right: 10px;">
+                    <p:outputLabel value="#{msg.lbl_error_timeout}" style="font-style: normal;line-height: 18px;font-weight: 400;"/>
+                    
+                </p:panelGrid>                
+                <p:outputPanel id="pnlAccionesModal" columns="1" layout="grid" columnClasses="ui-g-12 ui-md-12 ui-lg-12" 
+                	styleClass="formularios-footer-content" style="padding: 0 !important;">
+                    <p:commandButton value="#{msg.aceptar}" styleClass="formularios-btn-green"
+                        process="@this"
+                        action="#{registrarFormularioBean.inicializarBandejaPostFirma(true)}"
+                        oncomplete="PF('mdlFirmaMx').hide();"
+                        ajax="false"
+                        style="max-width: 140px !important;" />
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+        <!-- FIN MODAL -->
+                    
+    </ui:define>
+</ui:composition>

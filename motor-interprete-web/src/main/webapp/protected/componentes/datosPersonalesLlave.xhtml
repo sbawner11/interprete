@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+ 
+	<p:panelGrid columns="1" columnClasses="ui-g-12" layout="grid"
+		styleClass="ui-panelgrid-blank ui-fluid">
+		<p:outputLabel value="#{datosPersonalesLlave.tituloCampo}" />
+
+		<p:panelGrid columns="1" columnClasses="ui-g-12" layout="grid"
+			styleClass="ui-panelgrid-blank ui-fluid">
+			<p:outputLabel value="#{msg.lbl_datos_personales_curp}"
+				rendered="#{datosPersonalesLlave.habilitaCurp}"
+				styleClass="lbl-componente" />
+			<p:outputLabel id="lbl_curp_#{datosPersonalesLlave.idComponente}"
+				value="#{registrarFormularioBean.mapRespuestas[datosPersonalesLlave.curp]}"
+				rendered="#{datosPersonalesLlave.habilitaCurp}" />
+		</p:panelGrid>
+
+		<p:panelGrid columns="3"
+			columnClasses="ui-xl-4 ui-lg-4 ui-g-4 ui-md-6 ui-sm-12, ui-xl-4 ui-lg-4 ui-g-4 ui-md-6 ui-sm-12, ui-xl-4 ui-lg-4 ui-g-4 ui-md-6 ui-sm-12"
+			layout="grid"
+			styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading">
+
+			<p:panelGrid columns="1" columnClasses="ui-g-12" layout="grid"
+				styleClass="ui-panelgrid-blank ui-fluid">
+				<p:column>
+					<p:outputLabel value="#{msg.lbl_datos_personales_nombre}"
+						rendered="#{datosPersonalesLlave.habilitaNombre}"
+						styleClass="lbl-componente" />
+				</p:column>
+				<p:column>
+					<p:outputLabel id="lbl_nombre_#{datosPersonalesLlave.idComponente}"
+						value="#{registrarFormularioBean.mapRespuestas[datosPersonalesLlave.nombre]}"
+						rendered="#{datosPersonalesLlave.habilitaNombre}" />
+				</p:column>
+			</p:panelGrid>
+
+			<p:panelGrid columns="1" columnClasses="ui-g-12" layout="grid"
+				styleClass="ui-panelgrid-blank ui-fluid">
+				<p:column>
+					<p:outputLabel value="#{msg.lbl_datos_personales_primer_apellido}"
+						rendered="#{datosPersonalesLlave.habilitaPrimerApellido}"
+						styleClass="lbl-componente" />
+				</p:column>
+				<p:column>
+					<p:outputLabel
+						id="lbl_primerApellido_#{datosPersonalesLlave.idComponente}"
+						value="#{registrarFormularioBean.mapRespuestas[datosPersonalesLlave.primerApellido]}"
+						rendered="#{datosPersonalesLlave.habilitaPrimerApellido}" />
+				</p:column>
+			</p:panelGrid>
+
+			<p:panelGrid columns="1" columnClasses="ui-g-12" layout="grid"
+				styleClass="ui-panelgrid-blank ui-fluid">
+				<p:column>
+					<p:outputLabel value="#{msg.lbl_datos_personales_segundo_apellido}"
+						rendered="#{datosPersonalesLlave.habilitaSegundoApellido}"
+						styleClass="lbl-componente" />
+				</p:column>
+				<p:column>
+					<p:outputLabel
+						id="lbl_segundoApellido_#{datosPersonalesLlave.idComponente}"
+						value="#{registrarFormularioBean.mapRespuestas[datosPersonalesLlave.segundoApellido]}"
+						rendered="#{datosPersonalesLlave.habilitaSegundoApellido}" />
+				</p:column>
+			</p:panelGrid>
+			
+			<p:panelGrid columns="1" columnClasses="ui-g-12" layout="grid"
+				styleClass="ui-panelgrid-blank ui-fluid">
+				<p:column>
+					<p:outputLabel value="#{msg.lbl_datos_personales_sexo}"
+						rendered="#{datosPersonalesLlave.habilitaSexo}"
+						styleClass="lbl-componente" />
+				</p:column>
+				<p:column>
+					<p:outputLabel id="lbl_sexo_#{datosPersonalesLlave.idComponente}"
+						value="#{registrarFormularioBean.mapRespuestas[datosPersonalesLlave.sexo]}"
+						rendered="#{datosPersonalesLlave.habilitaSexo}" />
+				</p:column>
+			</p:panelGrid>
+
+			<p:panelGrid columns="1" columnClasses="ui-g-12" layout="grid"
+				styleClass="ui-panelgrid-blank ui-fluid">
+				<p:column>
+					<p:outputLabel value="#{msg.lbl_datos_personales_telefono}"
+						rendered="#{datosPersonalesLlave.habilitaTelefono}"
+						styleClass="lbl-componente" />
+				</p:column>
+				<p:column>
+					<p:outputLabel id="lbl_tel_#{datosPersonalesLlave.idComponente}"
+						value="#{registrarFormularioBean.mapRespuestas[datosPersonalesLlave.telefono]}"
+						rendered="#{datosPersonalesLlave.habilitaTelefono}" />
+				</p:column>
+			</p:panelGrid>
+
+			<p:panelGrid columns="1" columnClasses="ui-g-12" layout="grid"
+				styleClass="ui-panelgrid-blank ui-fluid">
+				<p:column>
+					<p:outputLabel value="#{msg.lbl_datos_personales_correo}"
+						rendered="#{datosPersonalesLlave.habilitaCorreoElectronico}"
+						styleClass="lbl-componente" />
+				</p:column>
+				<p:column>
+					<p:outputLabel id="lbl_correo_#{datosPersonalesLlave.idComponente}"
+						value="#{registrarFormularioBean.mapRespuestas[datosPersonalesLlave.correoElectronico]}"
+						rendered="#{datosPersonalesLlave.habilitaCorreoElectronico}" 
+						style="word-wrap: break-word; white-space: normal; display: block; width: 95%;"/>
+				</p:column>
+			</p:panelGrid>
+			
+			<p:panelGrid columns="1" columnClasses="ui-g-12" layout="grid"
+				styleClass="ui-panelgrid-blank ui-fluid">
+				<p:column>
+					<p:outputLabel value="#{msg.lbl_datos_personales_fecha}"
+						rendered="#{datosPersonalesLlave.habilitaFechaNacimiento}"
+						styleClass="lbl-componente" />
+				</p:column>
+				<p:column>
+					<p:outputLabel id="lbl_fecha_#{datosPersonalesLlave.idComponente}"
+						value="#{registrarFormularioBean.mapRespuestas[datosPersonalesLlave.fechaNacimiento]}"
+						rendered="#{datosPersonalesLlave.habilitaFechaNacimiento}" />
+				</p:column>
+			</p:panelGrid>
+			
+	
+		</p:panelGrid>
+
+	</p:panelGrid>
+
+</ui:composition>

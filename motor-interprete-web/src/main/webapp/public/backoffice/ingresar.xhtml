@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    JBoss, Home of Professional Open Source
+    Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+    contributors by the @authors tag. See the copyright.txt in the
+    distribution for a full listing of individual contributors.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default2.xhtml"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+ 
+	<ui:define name="content">
+		<!--  
+		<p:outputPanel style="padding-top: 1rem;">
+			<p:panelGrid id="contenedorIndicadores" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12 ui-sm-12 adip-contenedor-widgets" layout="grid" 
+				styleClass="ui-panelgrid-blank ui-fluid grecaFooterConsulta indicadoresAlto" 
+	            style="max-width:1121px;margin:0 auto; width:100% !important;" rendered="true"> 
+	            <div id="widget"  style="padding: 8.74px 0;" class="indicadoresAlto">
+	                 <iframe src="https://www.cdmx.gob.mx/widget/" title="indicadores CDMX" frameborder="0" framespacing="0" width="100%" ></iframe>
+	            </div>
+	        </p:panelGrid>
+        </p:outputPanel>
+        -->
+
+		<p:outputPanel id="Contenedor"
+			style="padding: 2% 0 2%; max-width: 1121px; margin: auto;">
+
+			<!-- VALIDACIÓN PARA QUE SI NO HAY NINGUN PROYECTO SE MUESTRE UN MENSAJE  -->
+			<c:if test="${indexBean.proyectoDTO eq null}">
+				<p:outputPanel
+					style="padding: 10% 5%; background: #FFF; border-radius: 5px;">
+					<p:panelGrid id="pnlTitulo" columns="1"
+						columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+						styleClass="parrafo1 ui-panelgrid-blank ui-fluid"
+						style="padding-bottom: 35px;">
+						<p:outputLabel styleClass="titulo-home-tramite"
+							value="Sistema en mantenimiento" />
+					</p:panelGrid>
+					<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+						layout="grid" styleClass="ui-panelgrid-blank ui-fluid"
+						style="text-align: center;">
+
+						<p:outputLabel styleClass="titulo-home-tramite"
+							value="El sistema se encuentra temporalmente inactivo, por favor intente ingresar más tarde."
+							style="font-size: 20px !important;" />
+						<p:outputLabel styleClass="titulo-home-tramite"
+							value="¡Lamentamos los inconvenientes presentados!"
+							style="font-size: 20px !important;" />
+					</p:panelGrid>
+				</p:outputPanel>
+			</c:if>
+
+			<!-- VALIDACIÓN PARA HOME TRAMITE -->
+			<c:if
+				test="${indexBean.proyectoDTO.catTipoProyectoDTO.idTipoProyecto eq 1}">
+				<p:outputPanel
+					style="background: white;border-radius: 18px 18px 0px 0px;">
+					<p:outputPanel style="display: flex;justify-content: center;">
+<!-- 						value="#{indexBean.homeTramiteDTO.imagenInicio.contenidoArchivo}" -->
+						<p:graphicImage styleClass="first-section__image" value="#{indexBean.homeTramiteDTO.rutaImagen}"
+							width="1121" height="126" cache="false"/>
+					</p:outputPanel>
+					<p:outputPanel>
+						<h2 class="titulo-home-tramite">#{indexBean.proyectoDTO.nombreProyecto}</h2>
+					</p:outputPanel>
+					
+					<h:form id="frmIniciarSesion">
+						<p:panelGrid id="pnlBtnInicSes" columns="1"
+							columnClasses="ui-xl-12 ui-lg-12 ui-g-12 ui-md-12 ui-sm-12"
+							layout="grid" style="text-align: center;margin: 0 0 20px 0;">
+								<p:commandButton id="btnIniciaSesionLlave"
+									value="#{msg.home_txt_ingresar_programa_llave}"
+									action="#{authenticatorBean.redirectUrlLoginCDMX(1,true)}"
+									immediate="true"
+									style="font-size: 14px !important; text-align: left !important;line-height: 10px !important;"
+									styleClass="boton-continuar-llave-home botonAncho "
+									escape="false" />
+						</p:panelGrid>
+						<p:panelGrid columns="1"
+								columnClasses="ui-xl-12 ui-lg-12 ui-g-12 ui-md-12 ui-sm-12"
+								layout="grid" style="text-align: center;">
+								
+								<p:outputPanel style="margin-bottom:10px" 
+									rendered="#{indexBean.homeProgramaDTO.legalesDTO.contieneAvisoSimplificado == true or indexBean.homeTramiteDTO.legalesDTO.contieneAvisoSimplificado == true}">
+									<p:link styleClass="titulo-texto-footer"  style="letter-spacing: 0.05em; color: black;text-decoration: revert;font-size: 10px;" 
+										href="#{indexBean.incializarAvisoSimplificado()}" target="_blank" value="Aviso de privacidad">
+										<p:ajax event="click" update="@form" />
+									</p:link>	
+								</p:outputPanel>
+
+							</p:panelGrid>
+					</h:form>
+					<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+							layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading caja-divisora-cafe"
+							style="margin-top: -5px;" />
+				</p:outputPanel>
+			</c:if>
+
+			<!-- VALIDACIÓN PARA HOME PROGRAMA SOCIAL -->
+			<c:if
+				test="${indexBean.proyectoDTO.catTipoProyectoDTO.idTipoProyecto eq 2}">
+				<p:outputPanel
+					style="background: white;border-radius: 18px 18px 0px 0px;">
+					<p:outputPanel style="display: flex;justify-content: center;">
+<!-- 						value="#{indexBean.homeProgramaDTO.imagenInicio.contenidoArchivo}" -->
+						<p:graphicImage styleClass="first-section__image" value="#{indexBean.homeProgramaDTO.rutaImagen}"
+							width="1121" height="126" cache="false" />
+					</p:outputPanel>
+					<p:outputPanel style="margin-bottom: 45px;">
+						<h2 class="titulo-home-tramite">#{indexBean.proyectoDTO.nombreProyecto}</h2>
+						<h4 class="lbl-dependencia">Dependencia:
+							#{indexBean.proyectoDTO.catDependenciaDTO.descripcion}</h4>
+					</p:outputPanel>
+					
+					<h:form id="frmIniciarSesion">
+						<p:panelGrid id="pnlBtnInicSes" columns="1"
+							columnClasses="ui-xl-12 ui-lg-12 ui-g-12 ui-md-12 ui-sm-12"
+							layout="grid" style="text-align: center;margin: 0 0 20px 0;">
+								<p:commandButton id="btnIniciaSesionLlave"
+									value="#{msg.home_txt_ingresar_programa_llave}"
+									action="#{authenticatorBean.redirectUrlLoginCDMX(1,true)}"
+									immediate="true"
+									style="font-size: 14px !important; text-align: left !important;line-height: 10px !important;"
+									styleClass="boton-continuar-llave-home botonAncho "
+									escape="false" />
+						</p:panelGrid>
+						<p:panelGrid columns="1"
+								columnClasses="ui-xl-12 ui-lg-12 ui-g-12 ui-md-12 ui-sm-12"
+								layout="grid" style="text-align: center;">
+								
+								<p:outputPanel style="margin-bottom:10px" 
+									rendered="#{indexBean.homeProgramaDTO.legalesDTO.contieneAvisoSimplificado == true or indexBean.homeTramiteDTO.legalesDTO.contieneAvisoSimplificado == true}">
+									<p:link styleClass="titulo-texto-footer"  style="letter-spacing: 0.05em; color: black;text-decoration: revert;font-size: 10px;" 
+										href="#{indexBean.incializarAvisoSimplificado()}" target="_blank" value="Aviso de privacidad">
+										<p:ajax event="click" update="@form" />
+									</p:link>	
+								</p:outputPanel>
+
+							</p:panelGrid>
+					</h:form>
+					<p:panelGrid columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12"
+							layout="grid"
+							styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading caja-divisora-cafe"
+							style="margin-top: -5px;" />
+				</p:outputPanel>
+			</c:if>
+		</p:outputPanel>
+
+	</ui:define>
+</ui:composition>

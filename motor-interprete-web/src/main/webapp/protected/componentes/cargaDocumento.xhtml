@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+ 	
+    <p:panelGrid id="png_#{cargaDocumentos.idComponente}" columns="1" 
+    	columnClasses="ui-xl-12 ui-lg-12 ui-g-12 ui-md-12 ui-sm-12" 
+    	layout="grid" 
+    	styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading" style="max-width:700px;">
+		
+		<p:outputLabel value="#{cargaDocumentos.tituloCampo}" 
+    		style="font-style: normal;font-weight: 400;font-size: 20px;line-height: 25px;color: #B08F5C;"
+    		rendered="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1)}"/>
+    		
+    	<p:outputLabel for="@next" rendered="#{cargaDocumentos.archivos.size() > 0}"
+    		value="#{cargaDocumentos.documentoUnico ? msg.lbl_archivos_gargados : msg.lbl_archivo_cargado}" 
+    		style="font-style: normal;font-weight: 400;font-size: 20px;line-height: 25px;color: #B08F5C;"/>
+
+		<p:outputPanel rendered="#{cargaDocumentos.archivos.size() == 0}">
+			<p:outputLabel value="Sin archivos registrados."
+				style="color: #888;font-style: italic;" />
+		</p:outputPanel>
+		<p:outputPanel rendered="#{cargaDocumentos.archivos.size() > 0}">
+    	<p:repeat var="archivo" value="#{cargaDocumentos.archivos}">
+				<p:panelGrid columns="4" 
+	    			columnClasses="ui-xl-1 ui-lg-1 ui-g-1 ui-md-1 ui-sm-12, ui-xl-8 ui-lg-8 ui-g-8 ui-md-8 ui-sm-12, ui-xl-2 ui-lg-2 ui-g-2 ui-md-2 ui-sm-12, ui-xl-1 ui-lg-1 ui-g-1 ui-md-1 ui-sm-12" 
+	    			layout="grid"
+	    			styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading">
+	    			<p:graphicImage value="#{cargaDocumentoBean.obtenerImagenArchivoAdjunto(archivo)}" style="max-width: 50px;color: #175E50;"/>
+	    			<p:column style="display: inline-grid;">
+		    			<p:outputLabel value="#{cargaDocumentoBean.obtenerFileName(archivo)}" style="font-style: normal;font-weight: 700;font-size: 18px;line-height: 22px;color: #646D6C;"/>
+		    			<p:outputLabel value="#{cargaDocumentoBean.formatoBytes(archivo)}" style="font-style: normal;font-weight: 500;font-size: 1.5rem;line-height: 22px;color: #646D6C;"/>
+	    			</p:column>
+	    			<p:commandLink action="#{cargaDocumentoBean.verDocumento(archivo)}" immediate="true" ajax="false"> 
+	    				<p:graphicImage value="/resources/img/ic_ver.svg" style="max-width: 50px;height: -webkit-fill-available;"/>
+	    			</p:commandLink>
+	    			<p:commandLink action="#{cargaDocumentoBean.eliminarArchivoCargado(archivo, cargaDocumentos)}" immediate="true" 
+	    				update="frmFormulario:componente_#{cargaDocumentos.idComponente}:png_#{cargaDocumentos.idComponente}"
+						disabled="#{registrarFormularioBean.deshabilitaEliminarArchivo}"
+	    				rendered="#{(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 
+			    			or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4)}"> 
+	    				<p:graphicImage value="/resources/img/ic_eliminar.svg" style="max-width: 30px;height: -webkit-fill-available;"/>
+	    			</p:commandLink>
+	    		</p:panelGrid>
+			</p:repeat>
+		</p:outputPanel>
+		
+		<c:if test="${(
+					(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 
+						and registrarFormularioBean.usuarioBack == false) or ((registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 and (registrarFormularioBean.usuarioBack == true and registrarFormularioBean.validacionTramite == false)))
+			    		or ((registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.usuarioBack == false) 
+			    		or ((registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and (registrarFormularioBean.usuarioBack == true and registrarFormularioBean.validacionTramite == false))
+			    			and registrarFormularioBean.seccionActualDTO.contieneObservaciones == true)))}">
+			<p:outputLabel for="@next" 
+	    		value="#{cargaDocumentos.tituloCampo}" 
+	    		styleClass="lbl-componente"/>
+	    	
+	    	<p:fileUpload id="cdoc_#{cargaDocumentos.idComponente}"
+	    		auto="true"
+	    		listener="#{cargaDocumentoBean.subirArchivo}"
+	    		mode="advanced" 
+	    		label="#{msg.ful_lbl_adjuntar_archivo}"
+	    		required="#{cargaDocumentos.requerido}"
+	    		requiredMessage="#{msg.msj_campo_requerido}"
+	    		invalidSizeMessage="#{msg.msj_invalid_size_document}"
+	    		invalidFileMessage="#{msg.msj_invalid_type_document}"
+	    		styleClass="carga-documento-span"
+	    		update="frmFormulario:componente_#{cargaDocumentos.idComponente}:png_#{cargaDocumentos.idComponente}"
+	    		allowTypes="#{cargaDocumentoBean.obtenerAllowTypesComponenteCargaDocmento(cargaDocumentos)}"
+	    		accept="#{cargaDocumentoBean.obtenerAcceptComponenteCargaDocmento(cargaDocumentos)}"
+	    		sizeLimit="#{cargaDocumentoBean.calcularFileSizeLimit(cargaDocumentos.catTamanioArchivosDTO.idTamanioArchivo)}"
+	    		style="background: #1A6058;border: 1px solid #1A6058;border-radius: 4px;max-width: 203px;height: 38px;background-image: url(/resources/img/clip.svg);background-repeat: no-repeat;background-position-x: 8%; background-position-y: 7px;"> 
+	    	</p:fileUpload>
+	    	
+	    	<p:outputLabel
+	    		value="#{cargaDocumentoBean.informativoDocumentoCargar(cargaDocumentos)}" 
+	    		style="font-style: normal;font-weight: 400;font-size: 12px;line-height: 16px;color: #343A40;"/>
+	    		
+	    	<p:message for="frmFormulario:componente_#{cargaDocumentos.idComponente}:cdoc_#{cargaDocumentos.idComponente}" display="text"/>
+	    	<p:tooltip rendered="#{cargaDocumentos.tooltip}" 
+	    		for="frmFormulario:componente_#{cargaDocumentos.idComponente}:cdoc_#{cargaDocumentos.idComponente}"
+	    		value="#{cargaDocumentos.descripcionTooltip}"
+	    		position="bottom" showEvent="mouseover" hideEvent="mouseout"/>
+	    	
+	    	<p:panelGrid columns="1" style="display: none;">
+	   	    	<!-- Componente de apoyo para poder seterar al MAP las rutas de arvhicos para su guardado en BD -->
+				<p:selectOneMenu id="cbxOpcion_#{cargaDocumentos.idComponente}" value="#{registrarFormularioBean.mapRespuestas[cargaDocumentos.respuestaComponente]}"  
+					style="padding: 0px !important;" >
+					<c:if test="${cargaDocumentos.archivos.size() > 0}">
+						<f:selectItems value="#{cargaDocumentoBean.obtenerRutasArchivos(cargaDocumentos.archivos)}"
+							var="opcion" itemLabel="#{opcion.description}" itemValue="#{opcion.value}" />
+					</c:if>
+				</p:selectOneMenu>	
+	    	</p:panelGrid>
+		</c:if>	
+    		
+    </p:panelGrid>
+    
+</ui:composition>

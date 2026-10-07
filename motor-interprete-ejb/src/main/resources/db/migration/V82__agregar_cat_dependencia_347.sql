@@ -1,0 +1,2 @@
+--Se integra dependencia Agencia de transformacion digital y telecomunicaciones
+insert into motor_interprete.cat_dependencia (id_dependencia,descripcion,activo) VALUES (347,'Agencia de Transformación Digital y Telecomunicaciones',true);

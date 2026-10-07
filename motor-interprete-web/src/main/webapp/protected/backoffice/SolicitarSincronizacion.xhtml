@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/default.xhtml">
+
+	<ui:define name="content">
+		<h:form id="frmSincronizacion">
+			<p:outputPanel id="pnlContenedor" style="padding: 2% 0 2%; max-width: 1121px; margin: auto;">
+				<p:outputPanel id="pnlGeneral" style="padding: 2% 2%; background: #FFF; border-radius: 10px; margin-top: 5%;">
+					<p:panelGrid id="pnlTitulo" columns="1" columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+						<p:column id="clmTitulo" style="text-align: center !important;">
+							<p:outputLabel value="Sincronización del Proyecto:  #{seccionesProyectoBean.proyectoDTO.nombreProyecto}" styleClass="font-titulo-bandeja" />
+							<br/>
+							<br/>
+							<p:outputLabel value="La plataforma cambiará a estatus En mantenimiento durante el proceso de sincronización del proyecto, una vez finalizado el envío de información la plataforma será nuevamente activada." styleClass="font-filtros-bandeja" style="text-align: center !important;"/>
+							<br/>
+							<br/>
+							<p:outputLabel value="Nota: En caso de transcurrir un periodo mayor a 5 minutos, por favor contacte al Administrador para mayor información." styleClass="font-filtros-bandeja" style="text-align: center !important;"/>
+							<br/>
+							<br/>
+							<p:commandButton widgetVar="btnSincronizar" value="Iniciar sincronización" action="#{solicitarSincronizacionBean.solicitaSincronizacion}"
+							   update="messages" style="background-color:red; color:white; width: 300px; height: 40px;">
+								<p:confirm header="Confirmación" message="&lt;br/&gt;¿Está seguro de realizar la sincronización?" escape="false" icon="fa fa-exclamation-triangle"/>
+							</p:commandButton>	
+								
+							<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="400" height="55">
+					            <p:commandButton id="btnNoContinar" value="No" styleClass="ui-confirmdialog-no btn-nuevo-tramite" style="width: 100px !important; height: 40px !important;"/>
+					            <p:commandButton id="btnSiContinar" value="Sí" delay="500" onclick="PF('btnSiContinar').disable()" oncomplete="PF('btnSiContinar').enable()" 
+					            	styleClass="ui-confirmdialog-yes" style="background-color:red; color:white; width: 100px; height: 40px !important;"/>
+					        </p:confirmDialog>	
+								
+						</p:column>
+					</p:panelGrid>
+					
+				</p:outputPanel>
+			</p:outputPanel>
+			
+			<p:ajaxStatus id="loader" onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+		     <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false" header="Sincronizando..."  styleClass="" style="overflow-y:hidden !important; width: 80px !important;">
+		            <f:facet name="header">
+						<p:outputLabel value="Sincronizando..." styleClass="adip-dialog-titulo-green" />
+					</f:facet>
+					<p:panelGrid columns="1" columnClasses="ui-grid-col-12" layout="grid" styleClass="center">
+						<p:panelGrid columns="1" columnClasses="ui-grid-col-12" layout="grid" styleClass="p-4">
+							<p:outputLabel value="Procesando..." styleClass="adip-output-campos-dialog-green" />
+							 <p:graphicImage value="/resources/img/loading.gif" width="100%" height="100%"  />
+						</p:panelGrid>
+					</p:panelGrid>      
+		     </p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/templates/default3.xhtml">
+
+    <ui:define name="content" >
+    
+    	<f:event type="preRenderView" listener="#{authenticatorBean.ejecutaAlCargarPagina}" />
+    
+        <h:form id="frmTipoPersona"  style="padding-top: 10vh;">
+            <div style="max-width: 700px; margin: 10px auto; padding: 20px; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);">
+                
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <p:outputLabel value="Seleccione el tipo de persona con la que desea iniciar el trámite" 
+                                 styleClass="lbl-subseccion"
+                                 style="font-size: 22px; line-height: 27px;"
+                                 escape="false"/>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 25px; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 15px; width: 100%; max-width: 400px;">
+                        <p:selectBooleanCheckbox 
+                            id="checkboxCiudadano" 
+                            value="#{authenticatorBean.ciudadanoSeleccionado}"                             
+                            styleClass="checkbox-interprete"
+                            style="margin-right: 8px;">
+                         
+                          <p:ajax update="comboPersonaMoral" 
+                                  listener="#{authenticatorBean.seleccionaCiudadano}" />
+                        
+                        </p:selectBooleanCheckbox>
+                        
+                        <p:outputLabel 
+                            value="¿Desea iniciar el trámite como Ciudadano?" 
+                            style="font-style: normal; line-height: 18px; font-weight: 400;"
+                            for="checkboxCiudadano"/>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 400px;">
+                        <p:outputLabel value="Persona Moral:" style="font-weight: bold;"/>
+                        <p:selectOneMenu 
+                            id="comboPersonaMoral"                  
+                            value="#{authenticatorBean.personaMoralSeleccionada}"
+                            style="width: 100%;"                                                         
+                            disabled="#{authenticatorBean.ciudadanoSeleccionado}">
+                            
+                            <f:selectItem itemLabel="-- Seleccione persona moral --" itemValue="" />
+                            <f:selectItems 
+                                value="#{authenticatorBean.listaPersonasMorales}"
+                                var="persona"
+                                itemLabel="#{persona.razonSocial}"
+                                itemValue="#{persona.idPersonaMoral}" />
+                                
+                            <p:ajax 
+                                event="change" 
+                                listener="#{authenticatorBean.procesarSeleccionPersonaMoral}"
+                                process="@this" />
+                                
+                        </p:selectOneMenu>
+                    </div>
+
+                    <h:inputHidden 
+                        id="validacionOpcion"
+                        required="#{not authenticatorBean.ciudadanoSeleccionado and empty authenticatorBean.personaMoralSeleccionada}"
+                        requiredMessage="#{msg.msg_mdl_persona_moral}" />
+
+                    <p:message 
+                        for="validacionOpcion" 
+                        showDetail="true" 
+                        styleClass="messages-obligatorios" />
+
+                    
+                    <div style="display: flex; justify-content: center; margin-top: 30px; gap: 10px;">
+                    
+					   <p:commandButton 
+					       value="#{msg.cerrar_sesion}" 
+					       styleClass="formularios-btn-rechazar"
+					       style="min-width: 180px; padding: 10px 20px;"
+					       action="#{authenticatorBean.cerrarSesionUsuario}"
+					       rendered="#{not authenticatorBean.haSeleccionadoPreviamente}"
+					       immediate="true"/>
+					
+					   <p:commandButton 
+					       value="#{msg.cancelar}" 
+					       styleClass="formularios-btn-rechazar"
+					       style="min-width: 180px; padding: 10px 20px;"
+					       action="#{authenticatorBean.btnCancelarSeleccionTipoPersona}"
+					       rendered="#{authenticatorBean.haSeleccionadoPreviamente}"
+					       immediate="true"/>		
+					       
+					   <p:commandButton 
+					       value="#{msg.continuar}" 
+					       styleClass="formularios-btn-prevencion"
+					       style="min-width: 180px; padding: 10px 20px;"
+					       process="@form"
+					       action="#{authenticatorBean.btnContinuarTipoPersona}" 
+					       update="@form"/>		                   
+                    
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>  
+    
+</ui:composition>

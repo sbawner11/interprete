@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/defaultBack.xhtml">
+
+	<ui:define name="content">
+		<h:form id="frmAsignacionMasiva" enctype="multipart/form-data">
+			<p:outputPanel id="pnlContenedor"
+				style="padding: 2% 0 2%; max-width: 1121px; margin: auto;">
+				<p:outputPanel id="pnlAsignacionMasiva"
+					style="padding: 2% 2%; background: #FFF; border-radius: 10px">
+										
+					<p:panelGrid columns="1" style="text-align: left;" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid"
+						columnClasses="ui-g-12 ui-md-12 ui-lg-12">
+						<p:column style="display:flex;justify-content: left;align-items: flex;margin: 1% auto 0;">
+							<p:commandButton id="btnRegresar" value="Regresar"
+								styleClass="formularios-btn-green"
+								action="#{asignacionMasivaSolicitudesBean.irAsignarSolicitudes()}"
+								ajax="false"  immediate="true"
+								style="width: auto; height: 36px !important; margin: 10px 0 !important;" />
+						</p:column>
+					</p:panelGrid>
+					
+					<p:panelGrid id="pnlTitulo" columns="1"
+						columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:column id="clmTitulo" style="text-align: center !important;">
+							<p:outputLabel
+								value="Asignación masiva de usuarios para distribución"
+								styleClass="font-titulo-bandeja" />
+						</p:column>
+					</p:panelGrid>
+					
+					<p:panelGrid id="pnlLblListaCarga" columns="1" 
+						columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid" 
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:outputLabel value="Listado de cargas masivas para distribución" 
+							styleClass="font-titulo-bandeja" style="font-size: 16px !important;"/>
+					</p:panelGrid>
+					
+					<p:panelGrid columns="1" style="text-align: left;" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid"
+						columnClasses="ui-g-12 ui-md-12 ui-lg-12">
+						<p:column id="clmBotones"
+							style="display:flex;justify-content: right;align-items: flex;margin: 1% auto 0;">
+							<p:commandButton id="btnNuevaCarga"
+								value="Nueva Carga"
+				   				action="#{nuevaCargaMasivaDistribucionBean.irNuevaCarga()}"
+				   				immediate="true"
+				   				styleClass="formularios-btn-green"
+				   				style="width:auto; height: 36px !important; margin: 10px 0 !important;" />
+						</p:column>
+					</p:panelGrid>
+					
+										
+					<p:panelGrid id="pnlFiltros" columns="4" layout="grid"
+					    styleClass="ui-panelgrid-blank ui-fluid"
+					    columnClasses="ui-g-12 ui-md-3, ui-g-12 ui-md-3, ui-g-12 ui-md-3, ui-g-12 ui-md-3"
+					    style="margin: 15px 0; padding: 15px; border-radius: 5px;">
+					
+					    <p:column>
+					        <p:outputLabel id="lblDesde" value="Desde:" styleClass="font-filtros-bandeja" />
+							<p:datePicker id="inpFechDesde" value="#{asignacionMasivaSolicitudesBean.fechaDesde}" autocomplete="off" styleClass="datepicker-interprete" pattern="dd/MM/yyyy" placeholder="dd/mm/aaaa"
+								onkeypress="return false;" locale="es_MX" monthNavigator="true" yearNavigator="true" />
+					    </p:column>
+					
+					    <p:column>
+					        <p:outputLabel id="lblHasta" value="Hasta:" styleClass="font-filtros-bandeja" />
+							<p:datePicker id="inpFechHasta" value="#{asignacionMasivaSolicitudesBean.fechaHasta}" autocomplete="off" styleClass="datepicker-interprete" pattern="dd/MM/yyyy" placeholder="dd/mm/aaaa"
+								onkeypress="return false;" locale="es_MX" monthNavigator="true" yearNavigator="true" />
+					    </p:column>
+					    
+					    <p:column>
+					        <p:outputLabel value="Estatus:" for="estatusFiltro" styleClass="font-filtros-bandeja" />
+					        <p:selectOneMenu id="estatusFiltro" 
+					            value="#{asignacionMasivaSolicitudesBean.estatusFiltro}"
+					            style="width: 100%;">
+					            <f:selectItem itemLabel="Todos" itemValue="" />
+					            <f:selectItems value="#{asignacionMasivaSolicitudesBean.listaEstatusFiltro}" 
+					                var="estatus" 
+					                itemLabel="#{estatus.descripcion}" 
+					                itemValue="#{estatus.idEstatusCarga}" />
+					        </p:selectOneMenu>
+					    </p:column>
+					    
+					    <p:column>
+					        <p:outputLabel value="Usuario que realiza carga:" for="filtroUsuarioCarga" styleClass="font-filtros-bandeja" />
+					        <p:inputText id="filtroUsuarioCarga" value="#{asignacionMasivaSolicitudesBean.usuarioCargaFiltro}"
+					            placeholder="Nombre del usuario" style="width: 100%;" />
+					    </p:column>
+
+					    <p:column>
+					        <p:outputLabel value="Usuario asignado:" for="filtroUsuarioAsignado" styleClass="font-filtros-bandeja" />
+					        <p:inputText id="filtroUsuarioAsignado" value="#{asignacionMasivaSolicitudesBean.usuarioAsignadoFiltro}"
+					            placeholder="Nombre del usuario" style="width: 100%;" />
+					    </p:column>
+									    
+			    		<p:column  style="display: flex; justify-content: flex-start; align-items: flex-end;margin: 1.5% auto 0;">
+					        <p:commandButton value="Buscar" 
+					            action="#{asignacionMasivaSolicitudesBean.filtrar()}"
+					            update="dtCargaMasivaAsignacion pnlFiltros"
+					            style="max-width: 180px !important;"
+					            styleClass="formularios-btn-green" />
+					        <p:commandButton value="Limpiar" 
+					            action="#{asignacionMasivaSolicitudesBean.limpiarFiltros()}"
+					            update="dtCargaMasivaAsignacion pnlFiltros" 
+					            styleClass="motor-btn-limpiar"
+					            style="width: auto;"/>
+					    </p:column>
+					</p:panelGrid>
+
+					<!-- Tabla de cargas -->
+					<p:panelGrid id="pnlTabla" columns="1"
+						columnClasses="ui-g-12 ui-md-12 ui-lg-12" layout="grid"
+						styleClass="ui-panelgrid-blank ui-fluid">
+						<p:dataTable id="dtCargaMasivaAsignacion" var="archivoCarga"
+							value="#{asignacionMasivaSolicitudesBean.listaCargas}"
+							paginator="true" rows="10" reflow="true"
+							paginatorPosition="bottom" allowUnsorting="true"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							currentPageReportTemplate="Mostrando {endRecord} de {totalRecords} resultados"
+							emptyMessage="No hay cargas registradas"
+							widgetVar="dtbCargaMasivaAsignacion"
+							rowKey="#{archivoCarga.idArchivoCargaMasiva}">
+
+							<p:column headerText="Fecha de carga" styleClass="header-columna-tramites">
+								<p:outputLabel value="#{archivoCarga.fechaCarga}" styleClass="tbody-tramites"> 
+									<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+								</p:outputLabel>
+							</p:column>
+
+							<p:column headerText="Usuario que realiza carga" styleClass="header-columna-tramites">
+								<h:outputText value="#{archivoCarga.usuarioCargaDTO.nombreCompleto}"  styleClass="tbody-tramites"/>
+							</p:column>
+
+							<p:column headerText="Usuario asignado" styleClass="header-columna-tramites">
+								<h:outputText value="#{archivoCarga.usuarioAsignadoDTO.nombreCompleto}" styleClass="tbody-tramites" />
+							</p:column>
+
+							<p:column headerText="Estatus de carga" styleClass="header-columna-tramites">
+								<p:outputLabel value="#{archivoCarga.estatusCargaDTO.descripcion}" styleClass="tbody-tramites"/>
+							</p:column>
+
+							<p:column headerText="Descargar resultados" styleClass="header-columna-tramites">
+							   <p:commandLink  icon="icono-decargar-resolucion"
+							       action="#{asignacionMasivaSolicitudesBean.descargarResultado(archivoCarga)}"
+							       ajax="false"		
+							       rendered="#{archivoCarga.estatusCargaDTO.idEstatusCarga != 3}"		      
+							       style="text-decoration: underline; color: #007bff; cursor: pointer;">							     
+							       	<i class="fas fa-download" style="font-size: 18px; color: #0e4c42"/>
+							    </p:commandLink>
+							</p:column>
+						</p:dataTable>
+						
+						<p:poll interval="5" 
+						        listener="#{asignacionMasivaSolicitudesBean.recargarLista()}" 
+						        update="dtCargaMasivaAsignacion"
+						        widgetVar="pollActualizacion"
+						        autoStart="false" />
+												
+					</p:panelGrid>
+				</p:outputPanel>
+			</p:outputPanel>
+			
+		</h:form>
+	</ui:define>
+</ui:composition>

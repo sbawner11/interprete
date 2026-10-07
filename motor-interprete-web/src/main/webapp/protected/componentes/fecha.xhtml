@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+ 
+	<p:panelGrid columns="1"
+		columnClasses="ui-xl-7 ui-lg-7 ui-g-7 ui-md-7 ui-sm-7"
+		layout="grid"
+		styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading">
+		<p:outputLabel id="lblCal_#{fecha.idComponente}" for="@next"
+			value="#{fecha.tituloCampo}" styleClass="lbl-componente" />
+			
+		<p:datePicker id="calendar_#{fecha.idComponente}"
+			value="#{registrarFormularioBean.mapRespuestas[fecha.respuestaComponente]}"			
+			disabled="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 
+			    			or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) 
+			    			or (registrarFormularioBean.usuarioBack and registrarFormularioBean.validacionTramite == true)
+			    			or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}"
+			autocomplete="off"
+			styleClass="datepicker-interprete"
+			disabledDays="#{fecha.diasInhabiles ? [0,6] : null}"
+			pattern="dd/MM/yyyy" placeholder="dd/mm/aaaa"
+			onkeypress="return false;" locale="es_MX"
+			requiredMessage="#{msg.msj_campo_requerido}"
+			required="#{fecha.requerido}"
+			maxdate="#{fecha.obtenerMaxDate()}"
+			mindate="#{fecha.obtenerMinDate()}"			
+			disabledDates="#{fecha.obtenerFechaNoDisponible()}"
+			title="#{fecha.tooltip == true ? fecha.descripcionTooltip : null}"
+			yearRange="#{fecha.calculaRangoCalendario()}"
+			monthNavigator="true" yearNavigator="true">
+			<p:ajax process="@this" update="@this" />			
+		</p:datePicker>
+
+		<p:message for="@previous" display="text" />
+		<!-- 		<p:tooltip rendered="#{fecha.tooltip}"  -->
+		<!--     		for="#frmFormulario:componente_#{fecha.idComponente}:lblCal_#{fecha.idComponente}_input}" -->
+		<!--     		value="#{fecha.descripcionTooltip}" -->
+		<!--     		position="top" -->
+		<!--     		showEvent="focus" -->
+		<!--     		hideEvent="blur"/> -->
+
+	</p:panelGrid>
+
+</ui:composition>

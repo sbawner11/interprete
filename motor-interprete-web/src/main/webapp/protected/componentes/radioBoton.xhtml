@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+ 	
+    <p:panelGrid id="pnlgRdb#{radioBoton.idComponenteRadioboton}" columns="1" 
+    	columnClasses="ui-xl-12 ui-lg-12 ui-g-12 ui-md-12 ui-sm-12" 
+    	layout="grid" 
+    	styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading">
+    	<p:outputLabel id="lbl_#{radioBoton.idComponenteRadioboton}"
+    		for="@next" 
+    		value="#{radioBoton.tituloCampo}"
+    		styleClass="lbl-componente"/>
+    	
+    	<p:selectOneRadio id="rdb_#{radioBoton.idComponenteRadioboton}" 
+    		value="#{registrarFormularioBean.mapRespuestas[radioBoton.opcionRespuesta]}"
+    		layout="custom"
+    		unselectable="true" 
+    		requiredMessage="#{msg.msj_campo_requerido}"    		
+    		disabled="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 or
+    			registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) 
+    			or (registrarFormularioBean.usuarioBack and registrarFormularioBean.validacionTramite == true)
+    			or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}"
+    		required="#{radioBoton.requerido}">
+    		<f:selectItems value="#{radioBoton.detElementosRadiobotonsDTO}"
+    			var="opcion" 
+    			itemLabel="#{opcion.descripcionElemento}"
+    			itemValue="#{opcion.idElementoRadioboton}"/>
+    		<c:if test="${radioBoton.habilitaOpcionOtro}">
+    			<f:selectItem itemValue="0" itemLabel="Otro" />
+    		</c:if>
+    		<p:ajax process="@this" update="pnlgRdb#{radioBoton.idComponenteRadioboton}" resetValues="true" />
+    	</p:selectOneRadio>
+    	<p:outputPanel>
+	    	<p:repeat var="radio" value="#{radioBoton.detElementosRadiobotonsDTO}" varStatus="recorrido">
+		    	<div class="ui-g-12 ui-md-6">
+		    		<p:radioButton for="frmFormulario:componente_#{radioBoton.idComponente}:rdb_#{radioBoton.idComponenteRadioboton}" 
+		    			itemIndex="#{recorrido.index}"
+		    			styleClass="radioboton-interprete"/>
+		    		<h:outputLabel value="#{radio.descripcionElemento}" 
+		    			title="#{radioBoton.descripcionTooltip}"
+		    			for="@previous" 
+		    			styleClass="radioboton-label-interprete"/>
+		    	</div>
+	    	</p:repeat>
+    		
+    		<c:if test="${radioBoton.habilitaOpcionOtro}">
+		   		<div class="ui-g-12 ui-md-6" >
+		   		
+			    	<p:radioButton id="rdbotro_#{radioBoton.idComponenteRadioboton}"
+			    		styleClass="radioboton-interprete"
+			    		for="frmFormulario:componente_#{radioBoton.idComponente}:rdb_#{radioBoton.idComponenteRadioboton}" 
+			    		itemIndex="#{radioBoton.detElementosRadiobotonsDTO.size()}" />
+			    		
+			    	<h:outputLabel for="frmFormulario:componente_#{radioBoton.idComponente}:rdbotro_#{radioBoton.idComponenteRadioboton}" 
+			    		value="#{msg.lbl_otro}" 
+			    		title="#{radioBoton.descripcionTooltip}"
+			    		styleClass="radioboton-label-interprete"/>
+			    	
+			    	<div style="display: none;">
+				    	<!-- Componente de apoyo para poder seterar al MAP la bandera de "Otro" para el guardado en BD -->
+				    	<p:selectOneMenu id="cbxOpcion_#{radioBoton.idComponenteRadioboton}" value="#{registrarFormularioBean.mapRespuestas[radioBoton.isOtro]}" 
+							style="padding: 0px !important;" >
+							<f:selectItems value="#{radioBotonBean.obtenerOpcionSeleccionada(registrarFormularioBean.mapRespuestas[radioBoton.opcionRespuesta])}"
+								var="opcion" itemLabel="#{opcion.description}" itemValue="#{opcion.value}"  />
+						</p:selectOneMenu>
+						
+						<!-- Componente de apoyo para poder seterar al MAP el valor NULL cuando en una edición cambia la opción "Otro" a una difenente -->
+						<p:selectOneMenu value="#{registrarFormularioBean.mapRespuestas[radioBoton.especifiqueOtro]}" 
+							style="padding: 0px !important;" rendered="#{registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 
+								and registrarFormularioBean.mapRespuestas[radioBoton.opcionRespuesta] != 0}" >
+							<f:selectItems itemValue="#{null}"  />
+						</p:selectOneMenu>
+			    	</div>	
+					
+			    	<p:inputText id="txtrb_#{radioBoton.idComponenteRadioboton}"
+			    		value="#{registrarFormularioBean.mapRespuestas[radioBoton.especifiqueOtro]}"
+			    		placeholder="#{radioBoton.textoInteriorOtro}"
+			    		readonly="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 
+			    			or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) 
+			    			or (registrarFormularioBean.usuarioBack and registrarFormularioBean.validacionTramite == true)
+			    			or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}"
+			    		disabled="#{registrarFormularioBean.mapRespuestas[radioBoton.opcionRespuesta] != 0}"
+				    	required="#{registrarFormularioBean.mapRespuestas[radioBoton.opcionRespuesta] == 0 and radioBoton.requerido == true}"  
+			    		requiredMessage="#{msg.msj_campo_requerido}"
+		   				styleClass="componente-campo-texto"
+		   				style="max-width:420px;"
+		   				maxlength="100"/>
+				</div>
+			</c:if>
+		</p:outputPanel>
+
+		<c:if test="${radioBoton.habilitaOpcionOtro}" >
+    		<p:message for="frmFormulario:componente_#{radioBoton.idComponente}:txtrb_#{radioBoton.idComponenteRadioboton}" styleClass="messages-obligatorios" display="text"/>
+    	</c:if>
+    	    	
+    	<p:message for="frmFormulario:componente_#{radioBoton.idComponente}:rdb_#{radioBoton.idComponenteRadioboton}" styleClass="messages-obligatorios"  display="text"/>
+    	<p:tooltip rendered="#{radioBoton.tooltip}" 
+    		for="frmFormulario:componente_#{radioBoton.idComponente}:rdb_#{radioBoton.idComponenteRadioboton}"
+    		value="#{radioBoton.descripcionTooltip}"
+    		position="top" />    		
+    </p:panelGrid>
+</ui:composition>

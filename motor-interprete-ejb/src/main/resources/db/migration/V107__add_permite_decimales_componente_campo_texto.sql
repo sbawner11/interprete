@@ -1,0 +1,3 @@
+-- SE AGREGA COLUMNA PARA PROPIEDAD DE PERMITIR DECIMALES EN LOS TIPO NUMÉRICO
+ALTER TABLE motor_interprete.componente_campo_texto
+ADD COLUMN permite_decimales bool NOT NULL DEFAULT false;

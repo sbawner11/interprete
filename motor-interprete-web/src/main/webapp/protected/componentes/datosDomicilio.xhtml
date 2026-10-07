@@ -1,0 +1,118 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+ 
+	<p:panelGrid columns="1" columnClasses="ui-g-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+	
+		<p:outputLabel value="#{domicilio.tituloCampo}" styleClass="lbl-subseccion" />
+		
+		<p:panelGrid columns="1" columnClasses="ui-g-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading">
+			<p:outputLabel value="#{msg.lbl_domicilio_calle}" for="txtCalle_#{domicilio.idComponente}" rendered="#{domicilio.habilitaCalle}" styleClass="lbl-componente" />
+			<p:inputText id="txtCalle_#{domicilio.idComponente}" value="#{registrarFormularioBean.mapRespuestas[domicilio.calle]}"
+				onkeyup="$(this).val($(this).val().toUpperCase());"
+				readonly="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 
+					or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) or (registrarFormularioBean.usuarioBack == true and registrarFormularioBean.validacionTramite == true)
+					or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}"
+				styleClass="componente-campo-texto" required="#{domicilio.calleObligatorio}" requiredMessage="#{msg.msj_campo_requerido}"
+				rendered="#{domicilio.habilitaCalle}"  placeholder="#{domicilio.textoInteriorCalle}"
+				maxlength="100" />
+			
+			<p:message for="txtCalle_#{domicilio.idComponente}" styleClass="messages-obligatorios" display="text" />
+
+			<p:outputLabel value="#{msg.lbl_domicilio_numext}" for="txtNumExt_#{domicilio.idComponente}" rendered="#{domicilio.habilitaNumeroExterior}" styleClass="lbl-componente"/>
+			<p:inputText id="txtNumExt_#{domicilio.idComponente}" value="#{registrarFormularioBean.mapRespuestas[domicilio.numeroExterior]}"
+				onkeyup="$(this).val($(this).val().toUpperCase());"
+				readonly="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 
+					or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) or (registrarFormularioBean.usuarioBack == true and registrarFormularioBean.validacionTramite == true)
+					or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}"
+				styleClass="componente-campo-texto" required="#{domicilio.numeroExteriorObligatorio}" requiredMessage="#{msg.msj_campo_requerido}"
+				rendered="#{domicilio.habilitaNumeroExterior}"  placeholder="#{domicilio.textoInteriorNumeroExterior}" 
+				maxlength="60"/>
+				
+			<p:message for="txtNumExt_#{domicilio.idComponente}" styleClass="messages-obligatorios" display="text" />
+
+			<p:outputLabel value="#{msg.lbl_domicilio_numint}" for="txtNumInt_#{domicilio.idComponente}" rendered="#{domicilio.habilitaNumeroInterior}" styleClass="lbl-componente"/>
+			<p:inputText id="txtNumInt_#{domicilio.idComponente}" value="#{registrarFormularioBean.mapRespuestas[domicilio.numeroInterior]}"
+				onkeyup="$(this).val($(this).val().toUpperCase());"
+				readonly="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 
+					or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) or (registrarFormularioBean.usuarioBack == true and registrarFormularioBean.validacionTramite == true)
+					or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}"
+				styleClass="componente-campo-texto" required="#{domicilio.numeroInteriorObligatorio}" requiredMessage="#{msg.msj_campo_requerido}"
+				rendered="#{domicilio.habilitaNumeroInterior}"  placeholder="#{domicilio.textoInteriorNumeroInterior}" 
+				maxlength="60"/>
+			
+			<p:message for="txtNumInt_#{domicilio.idComponente}" styleClass="messages-obligatorios" display="text" />
+
+			<p:panelGrid id="pnlCodigoPostal_#{domicilio.idComponente}" columns="1" columnClasses="ui-g-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading">
+				<p:outputLabel value="#{msg.lbl_domicilio_cp}" for="txtCp_#{domicilio.idComponente}" rendered="#{domicilio.habilitaCodigoPostal}" styleClass="lbl-componente"/>
+				
+				<p:inputText id="txtCp_#{domicilio.idComponente}" rendered="#{domicilio.habilitaCodigoPostal}" required="#{domicilio.codigoPostalObligatorio}"
+					value="#{registrarFormularioBean.mapRespuestas[domicilio.codigoPostal]}"
+					readonly="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 
+						or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) or (registrarFormularioBean.usuarioBack == true and registrarFormularioBean.validacionTramite == true)
+						or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}" 
+					maxlength="5" minlength="5" onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"
+					placeholder="#{domicilio.textoInteriorCodigoPostal}"
+					validator="codigoPostalValidator" requiredMessage="#{msg.msj_campo_requerido}"
+					styleClass="componente-campo-texto">					
+					<p:ajax update="pnlEstado_#{domicilio.idComponente} cbxEstado_#{domicilio.idComponente} pnlColonia_#{domicilio.idComponente} pnlAlcaldia_#{domicilio.idComponente} pnlCodigoPostal_#{domicilio.idComponente} cbxColonia_#{domicilio.idComponente} cbxAlcaldia_#{domicilio.idComponente}" process="@this" />
+				</p:inputText>
+				
+				<p:message for="txtCp_#{domicilio.idComponente}" styleClass="messages-obligatorios" display="text" />
+			</p:panelGrid>
+			
+			<p:panelGrid id="pnlEstado_#{domicilio.idComponente}" columns="1" columnClasses="ui-g-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading">
+				<p:outputLabel value="#{msg.lbl_domicilio_estado}" for="cbxEstado_#{domicilio.idComponente}" rendered="#{domicilio.habilitaEstado}" styleClass="lbl-componente"/>
+				<p:selectOneMenu id="cbxEstado_#{domicilio.idComponente}" value="#{registrarFormularioBean.mapRespuestas[domicilio.estado]}"  rendered="#{domicilio.habilitaEstado}"
+					disabled="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 
+						or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) or (registrarFormularioBean.usuarioBack == true and registrarFormularioBean.validacionTramite == true)
+						or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}" 
+					styleClass="selectOneMenu-interprete"
+					required="#{domicilio.estadoObligatorio}"  requiredMessage="#{msg.msj_campo_requerido}" placeholder="#{domicilio.textoInteriorEstado}">
+					<f:selectItems value="#{domicilioBean.obtenerEstado(registrarFormularioBean.mapRespuestas[domicilio.codigoPostal])}"
+						var="estado" itemLabel="#{estado.descripcion}" itemValue="#{estado.idEstado}" />
+					<p:ajax update="pnlColonia_#{domicilio.idComponente} pnlAlcaldia_#{domicilio.idComponente}" process="@this" resetValues="true" />
+				</p:selectOneMenu>
+				
+				<p:message for="cbxEstado_#{domicilio.idComponente}" styleClass="messages-obligatorios" display="text" />
+			</p:panelGrid>
+
+			<p:panelGrid id="pnlAlcaldia_#{domicilio.idComponente}" columns="1" columnClasses="ui-g-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading">
+				<p:outputLabel value="#{msg.lbl_domicilio_alcaldia}" for="cbxAlcaldia_#{domicilio.idComponente}" rendered="#{domicilio.habilitaAlcaldia}" styleClass="lbl-componente"/>
+				<p:selectOneMenu id="cbxAlcaldia_#{domicilio.idComponente}" value="#{registrarFormularioBean.mapRespuestas[domicilio.alcaldia]}"  rendered="#{domicilio.habilitaAlcaldia}"
+					disabled="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 
+						or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) or (registrarFormularioBean.usuarioBack == true and registrarFormularioBean.validacionTramite == true)
+						or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}" 
+					styleClass="selectOneMenu-interprete"
+					required="#{domicilio.alcaldiaObligatorio}"  requiredMessage="#{msg.msj_campo_requerido}" placeholder="#{domicilio.textoInteriorAlcaldia}">
+					<f:selectItems value="#{domicilioBean.obtenerAlcaldia(registrarFormularioBean.mapRespuestas[domicilio.codigoPostal])}"
+						var="alcaldia" itemLabel="#{alcaldia.descripcion}" itemValue="#{alcaldia.idMunicipio}" />
+					<p:ajax update="pnlColonia_#{domicilio.idComponente} pnlAlcaldia_#{domicilio.idComponente}" process="@this" resetValues="true" />
+				</p:selectOneMenu>
+				
+				<p:message for="cbxAlcaldia_#{domicilio.idComponente}" styleClass="messages-obligatorios" display="text" />
+			</p:panelGrid>
+			
+			<p:panelGrid id="pnlColonia_#{domicilio.idComponente}" columns="1" columnClasses="ui-g-12" layout="grid" styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading">
+				<p:outputLabel value="#{msg.lbl_domicilio_colonia}" for="cbxColonia_#{domicilio.idComponente}" rendered="#{domicilio.habilitaColonia}" styleClass="lbl-componente"/>
+				<p:selectOneMenu id="cbxColonia_#{domicilio.idComponente}" value="#{registrarFormularioBean.mapRespuestas[domicilio.colonia]}"
+					disabled="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 
+						or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) or (registrarFormularioBean.usuarioBack == true and registrarFormularioBean.validacionTramite == true)
+						or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}" 
+					rendered="#{domicilio.habilitaColonia}" required="#{domicilio.coloniaObligatorio}" requiredMessage="#{msg.msj_campo_requerido}"
+					styleClass="selectOneMenu-interprete" maxlength="60"
+					placeholder="#{domicilio.textoInteriorColonia}">
+					<f:selectItems value="#{domicilioBean.obtenerColonias(registrarFormularioBean.mapRespuestas[domicilio.codigoPostal])}"
+						var="colonia" itemLabel="#{colonia.descripcion}" itemValue="#{colonia.idAsentamiento}" />
+					<p:ajax update="pnlColonia_#{domicilio.idComponente} pnlAlcaldia_#{domicilio.idComponente}" process="@this" />					
+				</p:selectOneMenu>
+				
+				<p:message for="cbxColonia_#{domicilio.idComponente}" styleClass="messages-obligatorios" display="text" />
+			</p:panelGrid>
+		</p:panelGrid>
+
+	</p:panelGrid>
+
+</ui:composition>

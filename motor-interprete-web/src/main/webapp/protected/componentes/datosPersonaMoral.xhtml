@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+ 
+	<p:panelGrid columns="1" columnClasses="ui-g-12" layout="grid"
+		styleClass="ui-panelgrid-blank ui-fluid">
+		<p:outputLabel value="#{datosPersonaMoral.tituloCampo}" />
+
+		<p:panelGrid columns="1" columnClasses="ui-g-12" layout="grid"
+			styleClass="ui-panelgrid-blank ui-fluid">
+			<p:outputLabel value="#{msg.lbl_datos_persona_moral_rfc}"
+				rendered="#{datosPersonaMoral.habilitaRfc}"
+				styleClass="lbl-componente" />
+			<p:outputLabel id="lbl_rfc_#{datosPersonaMoral.idComponente}"
+				value="#{registrarFormularioBean.mapRespuestas[datosPersonaMoral.rfc]}"
+				rendered="#{datosPersonaMoral.habilitaRfc}" />
+		</p:panelGrid>
+
+		<p:panelGrid columns="1" columnClasses="ui-g-12" layout="grid"
+		styleClass="ui-panelgrid-blank ui-fluid">
+
+			<p:panelGrid columns="1" columnClasses="ui-g-12" layout="grid"
+				styleClass="ui-panelgrid-blank ui-fluid">
+				<p:column>
+					<p:outputLabel value="#{msg.lbl_datos_persona_moral_razon_social}"
+						rendered="#{datosPersonaMoral.habilitaPersonaMoral}"
+						styleClass="lbl-componente" />
+				</p:column>
+				<p:column>
+					<p:outputLabel id="lbl_razon_social_#{datosPersonaMoral.idComponente}"
+						value="#{registrarFormularioBean.mapRespuestas[datosPersonaMoral.razonSocial]}"
+						rendered="#{datosPersonaMoral.habilitaPersonaMoral}" />
+				</p:column>
+			</p:panelGrid>
+
+			<p:panelGrid columns="1" columnClasses="ui-g-12" layout="grid"
+				styleClass="ui-panelgrid-blank ui-fluid">
+				<p:column>
+					<p:outputLabel value="#{msg.lbl_datos_persona_moral_vigencia}"
+						rendered="#{datosPersonaMoral.habilitaFechaVigencia}"
+						styleClass="lbl-componente" />
+				</p:column>
+				<p:column>
+					<p:outputLabel id="lbl_vigencia_#{datosPersonaMoral.idComponente}"	
+						value="#{registrarFormularioBean.mapRespuestas[datosPersonaMoral.vigenciaCertificado]}"
+						rendered="#{datosPersonaMoral.habilitaFechaVigencia}" />
+				</p:column>
+			</p:panelGrid>
+		</p:panelGrid>
+
+	</p:panelGrid>
+
+</ui:composition>

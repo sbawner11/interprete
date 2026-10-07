@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+ 	
+    <p:panelGrid columns="1" 
+    	columnClasses="ui-xl-12 ui-lg-12 ui-g-12 ui-md-12 ui-sm-12" 
+    	layout="grid" 
+    	styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading">
+    	<p:outputLabel for="@next" value="#{campoTexto.tituloCampo}" styleClass="lbl-componente"/>
+    	
+    	<!-- INPUTNUMBER CUANDO ES UN CAMPO DE TEXTO NUMERICO -->
+    	<p:inputNumber id="nmr_#{campoTexto.idComponente}"
+    		value="#{registrarFormularioBean.mapRespuestas[campoTexto.respuestaComponente]}"
+    		readonly="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 
+			    			or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4)
+			    			or (registrarFormularioBean.usuarioBack and registrarFormularioBean.validacionTramite == true)
+			    			or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}"
+    		required="#{campoTexto.requerido}" requiredMessage="#{msg.msj_campo_requerido}"
+    		placeholder="#{campoTexto.habilitaTextoInterior ? campoTexto.textoInterior : '' }"
+    		styleClass="componente-campo-numero"    		
+    		padControl="false"
+    		modifyValueOnWheel="false"
+    		decimalSeparator="." thousandSeparator=""
+    		decimalPlaces="#{campoTexto.permiteDecimales ? 2 : 0}"
+    		minValue="0" maxValue="#{campoTexto.valorMaximo}" >
+    		<c:if test="${campoTexto.validadores eq true}">
+    			<f:validator validatorId="telefonoValidator" />
+    		</c:if>
+			<c:if test="${campoTexto.permiteDecimales}">
+			    <f:validateDoubleRange minimum="#{campoTexto.valorMinimo}" maximum="#{campoTexto.valorMaximo}" />
+			</c:if>
+			<c:if test="${not campoTexto.permiteDecimales}">
+			    <f:validateLongRange minimum="#{campoTexto.valorMinimo}" maximum="#{campoTexto.valorMaximo}" />
+			</c:if>
+    	</p:inputNumber>
+    	
+		<c:if test="${campoTexto.requerido or campoTexto.validadores}">
+    		<p:message for="frmFormulario:componente_#{campoTexto.idComponente}:nmr_#{campoTexto.idComponente}" display="text"/>
+    	</c:if>
+    	<p:tooltip rendered="#{campoTexto.tooltip}" 
+    		for="frmFormulario:componente_#{campoTexto.idComponente}:nmr_#{campoTexto.idComponente}"
+    		value="#{campoTexto.descripcionTooltip}"
+    		position="bottom" showEvent="mouseover" hideEvent="mouseout" />
+    </p:panelGrid>
+</ui:composition>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+ 
+	<p:panelGrid columns="1"
+		columnClasses="ui-xl-12 ui-lg-12 ui-g-12 ui-md-12 ui-sm-12"
+		layout="grid"
+		styleClass="ui-panelgrid-blank ui-fluid ui-panel-sin-pading">
+
+		<p:outputLabel for="checkbox_#{checkbox.idComponente}"
+			value="#{checkbox.tituloCampo}" styleClass="lbl-checkbox-interprete" />
+
+		<p:selectBooleanCheckbox id="checkbox_#{checkbox.idComponente}"
+			value="#{registrarFormularioBean.mapRespuestas[checkbox.respuestaComponente]}"
+			required="#{checkbox.requerido}"
+			requiredMessage="#{msg.msj_campo_requerido}"
+			disabled="#{!(registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 1 
+			    			or registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4) 
+			    			or (registrarFormularioBean.usuarioBack and registrarFormularioBean.validacionTramite == true)
+			    			or (registrarFormularioBean.tramiteActual.catEstatusTramiteDTO.idEstatusTramite == 4 and registrarFormularioBean.seccionActualDTO.contieneObservaciones == false)}"
+			itemLabel="#{checkbox.texto}" styleClass="checkbox-interprete"
+			escape="false">
+<!-- 			<p:ajax process="@this" update="checkbox_#{checkbox.idComponente}, tlpcheckbox_#{checkbox.idComponente}" /> -->
+			<f:validator disabled="#{checkbox.requerido == false}" validatorId="selectBooleanCheckboxValidator" />
+		</p:selectBooleanCheckbox>
+
+		<p:message for="frmFormulario:componente_#{checkbox.idComponente}:checkbox_#{checkbox.idComponente}"
+			styleClass="messages-obligatorios" display="text" />
+
+		<p:tooltip id="tlpcheckbox_#{checkbox.idComponente}"
+			for="frmFormulario:componente_#{checkbox.idComponente}:checkbox_#{checkbox.idComponente}"
+			rendered="#{checkbox.tooltip}" value="#{checkbox.descripcionTooltip}"
+			position="bottom" />
+	</p:panelGrid>
+
+</ui:composition>
